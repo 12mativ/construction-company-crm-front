@@ -1,5 +1,14 @@
+'use client'
+
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { redirect } from "next/navigation";
+
 export default function Home() {
-  return (
-    <h1>Need to redirect somewhere!</h1>
-  )
+  const user = useAppSelector((state) => state.userReducer.user);
+  
+  if (user) {
+    return redirect('/projects')
+  }
+
+  return redirect('/login')
 }

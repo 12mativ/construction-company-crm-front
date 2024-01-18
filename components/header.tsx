@@ -1,19 +1,27 @@
+"use client";
+
 import Image from "next/image";
-import logo from '/assets/1.png';
+import logo from "/assets/1.png";
 import UserAvatar from "./user-avatar";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { redirect } from "next/navigation";
 
 const Header = () => {
+  const user = useAppSelector((state) => state.userReducer.user);
+
+  if (!user) {
+    return redirect('/')
+  }
+
   return (
-    <div className='fixed flex items-center justify-between bg-white shadow-lg w-full h-[72px] px-12 z-50'>
+    <div className="fixed flex items-center justify-between bg-white shadow-lg w-full h-[72px] px-12 z-50">
       <div className="relative h-[48px] w-[48px]">
-        <Image src={logo} alt="Logo" fill className='rounded-full' />
+        <Image src={logo} alt="Logo" fill className="rounded-full" />
       </div>
 
-      <div className='flex items-center gap-x-2'>
+      <div className="flex items-center gap-x-2">
         <p>Кто Кто</p>
-        <UserAvatar
-          src='https://freesvg.org/img/FaceWoman.png'
-        />
+        <UserAvatar src="https://freesvg.org/img/FaceWoman.png" />
       </div>
     </div>
   );
