@@ -9,13 +9,14 @@ import {
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { getResourcePatterns } from "@/http/resourcesAPI";
+import { getResourcePatterns } from "@/http/resources/resourcesAPI";
 import { addResourcesPatterns } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { Bolt, BrickWall, Cog, Plus, Shield, UserRound } from "lucide-react";
+import { Bolt, BrickWall, Plus, Shield, UserRound } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 
 const ResourcePatterns = () => {
-  const [isResourcePatternsLoading, setIsResourcePatternsLoading] = useState(false);
+  const [isResourcePatternsLoading, setIsResourcePatternsLoading] =
+    useState(false);
 
   const resourcesPatterns = useAppSelector(
     (state) => state.resourcesPatternsReducer.resourcesPatterns
@@ -27,7 +28,7 @@ const ResourcePatterns = () => {
 
   useEffect(() => {
     setIsResourcePatternsLoading(true);
-    
+
     getResourcePatterns()
       .then((res) => {
         dispatch(addResourcesPatterns(res.data));
@@ -38,14 +39,34 @@ const ResourcePatterns = () => {
   }, []);
 
   const iconMap = {
-    ["HUMAN"]: <UserRound className="bg-neutral-400 text-neutral-700 rounded-full p-1" size={30} />,
-    ["MECHANICAL"]: <Bolt className="bg-neutral-400 text-neutral-700 rounded-full p-1" size={30} />,
-    ["MATERIAL"]: <BrickWall className="bg-neutral-400 text-neutral-700 rounded-full p-1" size={30} />,
-    ["INVOICES"]: <Shield className="bg-neutral-400 text-neutral-700 rounded-full p-1" size={30} />,
-  }
+    ["HUMAN"]: (
+      <UserRound
+        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        size={30}
+      />
+    ),
+    ["MECHANICAL"]: (
+      <Bolt
+        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        size={30}
+      />
+    ),
+    ["MATERIAL"]: (
+      <BrickWall
+        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        size={30}
+      />
+    ),
+    ["INVOICES"]: (
+      <Shield
+        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        size={30}
+      />
+    ),
+  };
 
   if (isResourcePatternsLoading) {
-    return <div>Загрузка...</div>
+    return <div>Загрузка...</div>;
   }
 
   return (

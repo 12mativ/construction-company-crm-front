@@ -1,21 +1,12 @@
 "use client";
 
-import { PlusCircle } from "lucide-react";
-import ProjectItem, { ProjectStatusEnum } from "./project-item";
-import { useModal } from "@/hooks/use-modal-store";
-import { useEffect, useState } from "react";
-import { getProjects } from "@/http/projectsAPI";
-import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { useModal } from "@/hooks/use-modal-store";
+import { getProjects } from "@/http/projects/projectsAPI";
 import { addProjects } from "@/lib/features/projects/projectsSlice";
-
-export interface ProjectType {
-  name: string;
-  startDate: null;
-  endDate: null;
-  workQuantity: number;
-  workDoneQuantity: number;
-}
+import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import ProjectItem from "./project-item";
 
 const Projects = () => {
   const [isProjectsLoading, setIsProjectsLoading] = useState(false);
@@ -26,6 +17,7 @@ const Projects = () => {
 
   useEffect(() => {
     setIsProjectsLoading(true);
+    
     getProjects()
       .then((res) => dispatch(addProjects(res.data)))
       .finally(() => setIsProjectsLoading(false));
@@ -34,20 +26,20 @@ const Projects = () => {
   const { onOpen } = useModal();
 
   if (isProjectsLoading) {
-    return <div>Загрузка...</div>
+    return <div>Загрузка...</div>;
   }
 
   return (
     <div className="flex gap-x-32 gap-y-10 flex-wrap">
       {projects.map((project) => {
-        return <ProjectItem key={project.name} {...project} />;
+        return <ProjectItem key={project.id} {...project} />;
       })}
 
       <div
         className="flex flex-col gap-y-2 group justify-center items-center w-[270px] h-[300px] shadow-md rounded-lg
           bg-neutral-300 hover:cursor-pointer transition mb-5"
         onClick={() => {
-          onOpen("createProject")
+          onOpen("createProject");
         }}
       >
         <PlusCircle

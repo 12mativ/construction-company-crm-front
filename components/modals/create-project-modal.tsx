@@ -1,9 +1,8 @@
 "use client";
 
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import axios from 'axios'
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,23 +12,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useModal } from "@/hooks/use-modal-store";
-import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useModal } from "@/hooks/use-modal-store";
+import { createProject } from "@/http/projects/projectsAPI";
 import { addProject } from "@/lib/features/projects/projectsSlice";
-import { createProject } from "@/http/projectsAPI";
 
 const formSchema = z.object({
   projectName: z
@@ -43,9 +39,9 @@ const formSchema = z.object({
 });
 
 export const CreateProjectModal = () => {
-  const {isOpen, onClose, type} = useModal();
+  const { isOpen, onClose, type } = useModal();
 
-  const isModalOpen = isOpen && type === 'createProject';
+  const isModalOpen = isOpen && type === "createProject";
 
   const dispatch = useAppDispatch();
 
@@ -60,25 +56,23 @@ export const CreateProjectModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await createProject(values.projectName);
-    
-    dispatch(addProject(response.data))
+
+    dispatch(addProject(response.data));
 
     handleClose();
-  }; 
+  };
 
   const handleClose = () => {
     form.reset();
     onClose();
-  }
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className='flex flex-col gap-y-2'>
+        <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте проект</DialogTitle>
-          <DialogDescription>
-            Введите данные нового проекта.
-          </DialogDescription>
+          <DialogDescription>Введите данные нового проекта.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -89,10 +83,10 @@ export const CreateProjectModal = () => {
                 <FormItem>
                   <FormLabel>Название проекта</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="Название проекта..."
-                      disabled={isLoading} 
-                      {...field} 
+                      disabled={isLoading}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -100,11 +94,12 @@ export const CreateProjectModal = () => {
               )}
             />
             <DialogFooter>
-              <Button disabled={isLoading} type="submit">Сохранить</Button>
+              <Button disabled={isLoading} type="submit">
+                Сохранить
+              </Button>
             </DialogFooter>
           </form>
         </Form>
-        
       </DialogContent>
     </Dialog>
   );

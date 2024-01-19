@@ -1,3 +1,4 @@
+import { findEqualItems } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type ResourcePatternType =
@@ -51,12 +52,6 @@ const initialState: ResourcesGroupsState = {
   ],
 };
 
-const findEqualResource = (array: IResourcePattern[], resource: IResourcePattern) => {
-  const equalResource = array.find((res) => res.id === resource.id);
-
-  return equalResource;
-};
-
 export const resourcesPatternsSlice = createSlice({
   name: "resourcesPatterns",
   initialState: initialState,
@@ -66,7 +61,7 @@ export const resourcesPatternsSlice = createSlice({
         switch (resource.resourceType) {
           case "HUMAN":
             if (
-              !findEqualResource(state.resourcesPatterns[0].resources, resource)
+              !findEqualItems(state.resourcesPatterns[0].resources, resource)
             ) {
               state.resourcesPatterns[0].resources.push({ ...resource });
             }
@@ -74,7 +69,7 @@ export const resourcesPatternsSlice = createSlice({
 
           case "MECHANICAL":
             if (
-              !findEqualResource(state.resourcesPatterns[1].resources, resource)
+              !findEqualItems(state.resourcesPatterns[1].resources, resource)
             ) {
               state.resourcesPatterns[1].resources.push({ ...resource });
             }
@@ -82,7 +77,7 @@ export const resourcesPatternsSlice = createSlice({
 
           case "MATERIAL":
             if (
-              !findEqualResource(state.resourcesPatterns[2].resources, resource)
+              !findEqualItems(state.resourcesPatterns[2].resources, resource)
             ) {
               state.resourcesPatterns[2].resources.push({ ...resource });
             }
@@ -90,7 +85,7 @@ export const resourcesPatternsSlice = createSlice({
 
           case "INVOICES":
             if (
-              !findEqualResource(state.resourcesPatterns[3].resources, resource)
+              !findEqualItems(state.resourcesPatterns[3].resources, resource)
             ) {
               state.resourcesPatterns[3].resources.push({ ...resource });
             }

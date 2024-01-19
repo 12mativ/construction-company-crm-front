@@ -4,7 +4,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 
 const transactions = [
@@ -29,27 +29,33 @@ const TransactionLog = () => {
   return (
     <div className="bg-white rounded-lg p-4 shadow-lg">
       <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className='w-[33%] font-semibold'>Дата</TableHead>
-          <TableHead className='w-[33%] text-center font-semibold'>Операция</TableHead>
-          <TableHead className="w-[33%] text-right font-semibold">Сумма</TableHead>
-        </TableRow>
-      </TableHeader>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[33%] font-semibold">Дата</TableHead>
+            <TableHead className="w-[33%] text-center font-semibold">
+              Операция
+            </TableHead>
+            <TableHead className="w-[33%] text-right font-semibold">
+              Сумма
+            </TableHead>
+          </TableRow>
+        </TableHeader>
         <TableBody>
-          {transactions.map((invoice) => (
-            <TableRow key={invoice.date}>
-              <TableCell className="w-[33%]">{invoice.date}</TableCell>
-              <TableCell className='w-[33%] text-center'>{invoice.transaction}</TableCell>
+          {transactions.map((transaction) => (
+            <TableRow key={transaction.date}>
+              <TableCell className="w-[33%]">{transaction.date}</TableCell>
+              <TableCell className="w-[33%] text-center">
+                {transaction.transaction}
+              </TableCell>
               <TableCell className="w-[33%] text-right font-bold">
-                {invoice.moneyAmount} 
+                {transaction.moneyAmount}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default TransactionLog
+export default TransactionLog;

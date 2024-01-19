@@ -1,7 +1,7 @@
 import { ResourcePatternType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { create } from "zustand";
 
-export type ModalType = "createProject" | "createResourcePattern";
+export type ModalType = "createProject" | "createResourcePattern" | "createCounterparty";
 
 interface ModalData {
   resourceType?: ResourcePatternType;

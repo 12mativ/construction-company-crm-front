@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -15,14 +15,14 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Link from "next/link";
-import { login } from "@/http/userAPI";
+import { login } from "@/http/user/userAPI";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { makeAuth } from "@/lib/features/user/userSlice";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 
 const formSchema = z.object({
-  username: z.string().email({ message: "Неверный формат почты." }),
+  username: z.string().email({ message: "Неверный формат электронной почты." }),
 
   password: z
     .string()
@@ -39,7 +39,7 @@ const AuthLogin = () => {
     },
   });
 
-  const [loginError, setLoginError] = useState('')
+  const [loginError, setLoginError] = useState("");
 
   const dispatch = useAppDispatch();
 
@@ -47,18 +47,17 @@ const AuthLogin = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await login(
-        values.username,
-        values.password
-      );
+      const response = await login(values.username, values.password);
 
       const role = response.data.authority;
-      const token = response.data.jwt
+      const token = response.data.jwt;
 
-      dispatch(makeAuth({ username: values.username, role: role, token: token }));
+      dispatch(
+        makeAuth({ username: values.username, role: role, token: token })
+      );
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
-        setLoginError(err.response?.data.message)
+        setLoginError(err.response?.data.message);
       } else {
         console.log(err);
       }
@@ -118,11 +117,9 @@ const AuthLogin = () => {
           </div>
         </form>
       </Form>
-  
-      {loginError && (
-        <p className="text-red-500 py-2">{loginError}</p>
-      )} 
-  
+
+      {loginError && <p className="text-red-500 py-2">{loginError}</p>}
+
       <p className="pt-5 text-center text-sm">
         Нет аккаунта? <br />
         <Link href={"/register"} className="text-red-500">

@@ -1,5 +1,5 @@
 import { ResourcePatternType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { $authHost } from ".";
+import { $authHost } from "..";
 
 interface IResourcePattern {
   name: string;

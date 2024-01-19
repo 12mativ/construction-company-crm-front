@@ -1,12 +1,23 @@
-import { resourcesPatternsSlice } from './features/resources-patterns/resourcesPatternsSlice';
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./features/user/userSlice";
 import projectsReducer from "./features/projects/projectsSlice";
 import resourcesPatternsReducer from "./features/resources-patterns/resourcesPatternsSlice";
+import counterpartiesReducer from "./features/counterparty/counterpartiesSlice";
+import userReducer from "./features/user/userSlice";
+
+export const findEqualItems = (array: any, item: any) => {
+  const equalItem = array.find((el: any) => el.id === item.id);
+
+  return equalItem;
+};
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { userReducer, projectsReducer, resourcesPatternsReducer },
+    reducer: {
+      userReducer,
+      projectsReducer,
+      resourcesPatternsReducer,
+      counterpartiesReducer,
+    },
   });
 };
 

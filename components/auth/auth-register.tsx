@@ -13,7 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import Link from "next/link";
-import { RoleType, login, register } from "@/http/userAPI";
+import { RoleType, login, register } from "@/http/user/userAPI";
 import { makeAuth } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
@@ -25,7 +25,7 @@ import {
 } from "../ui/select";
 
 const formSchema = z.object({
-  username: z.string().email({ message: "Неверный формат почты." }),
+  username: z.string().email({ message: "Неверный формат электронной почты." }),
 
   password: z
     .string()
@@ -38,14 +38,11 @@ const formSchema = z.object({
 });
 
 const AuthRegister = () => {
-  const user = useAppSelector((state) => state.userReducer.user);
-
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       password: "",
-      role: "",
     },
   });
 

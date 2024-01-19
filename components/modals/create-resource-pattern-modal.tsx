@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -19,12 +19,12 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createResourcePattern } from "@/http/resourcesAPI";
+import { createResourcePattern } from "@/http/resources/resourcesAPI";
 import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 
 const formSchema = z.object({
@@ -36,39 +36,30 @@ const formSchema = z.object({
     .max(50, {
       message: "Название ресурса не должно превышать 50 символов.",
     }),
-  costPricePerUnit: z
-    .coerce
+  costPricePerUnit: z.coerce
     .number()
-    .nonnegative({message: 'Себестоимость не может быть отрицательной.'}),
-  orderPricePerUnit: z
-    .coerce
+    .nonnegative({ message: "Себестоимость не может быть отрицательной." }),
+  orderPricePerUnit: z.coerce
     .number()
-    .nonnegative({message: 'Стоимость не может быть отрицательной.'}),
-  extraCharge: z
-    .coerce
-    .number()
-    .nonnegative({message: 'Наценка не может быть отрицательной.'}),
+    .nonnegative({ message: "Стоимость не может быть отрицательной." }),
   measureUnit: z
     .string()
-    .min(1, {message: 'Название единицы измерения обязательно.'})
+    .min(1, { message: "Название единицы измерения обязательно." }),
 });
 
 export const CreateResourcePatternModal = () => {
-  const {isOpen, onClose, type, data} = useModal();
+  const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === 'createResourcePattern';
+  const isModalOpen = isOpen && type === "createResourcePattern";
 
   const dispatch = useAppDispatch();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      costPricePerUnit: "",
-      orderPricePerUnit: "",
-      extraCharge: "",
       measureUnit: ""
-    },
+    }
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -78,29 +69,42 @@ export const CreateResourcePatternModal = () => {
       name: values.name,
       costPricePerUnit: values.costPricePerUnit,
       orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: values.extraCharge,
+      extraCharge: calculateExtraCharge(),
       measureUnit: values.measureUnit,
-      resourceType: data.resourceType!
+      resourceType: data.resourceType!,
     });
 
-    response.data.resourceType = data.resourceType
-    dispatch(addResource(response.data))
+    response.data.resourceType = data.resourceType;
+    dispatch(addResource(response.data));
     handleClose();
-  }; 
+  };
 
   const handleClose = () => {
     form.reset();
     onClose();
-  }
+  };
+
+  const watchFields = form.watch(["costPricePerUnit", "orderPricePerUnit"]);
+
+  const calculateExtraCharge = () => {
+    const costPricePerUnit = +watchFields[0] || 0;
+    const orderPricePerUnit = +watchFields[1] || 0;
+
+    if (costPricePerUnit > 0 && orderPricePerUnit > costPricePerUnit) {
+      const extraCharge =
+        ((orderPricePerUnit - costPricePerUnit) / costPricePerUnit) * 100;
+      return +extraCharge.toFixed(2);
+    }
+
+    return 0;
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className='flex flex-col gap-y-2'>
+        <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте ресурс</DialogTitle>
-          <DialogDescription>
-            Введите данные нового ресурса.
-          </DialogDescription>
+          <DialogDescription>Введите данные нового ресурса.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -111,10 +115,10 @@ export const CreateResourcePatternModal = () => {
                 <FormItem>
                   <FormLabel>Название ресурса</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="Название ресурса..."
-                      disabled={isLoading} 
-                      {...field} 
+                      disabled={isLoading}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -128,10 +132,10 @@ export const CreateResourcePatternModal = () => {
                 <FormItem>
                   <FormLabel>Себестоимость за единицу</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="Себестоимость за единицу..."
-                      disabled={isLoading} 
-                      {...field} 
+                      disabled={isLoading}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -145,27 +149,10 @@ export const CreateResourcePatternModal = () => {
                 <FormItem>
                   <FormLabel>Стоимость для заказчика за единицу</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="Стоимость для заказчика за единицу..."
-                      disabled={isLoading} 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="extraCharge"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Наценка</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="Наценка..."
-                      disabled={isLoading} 
-                      {...field} 
+                      disabled={isLoading}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -179,22 +166,28 @@ export const CreateResourcePatternModal = () => {
                 <FormItem>
                   <FormLabel>Единица измерения</FormLabel>
                   <FormControl>
-                    <Input 
+                    <Input
                       placeholder="Единица измерения..."
-                      disabled={isLoading} 
-                      {...field} 
+                      disabled={isLoading}
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <p className="text-neutral-400">
+              Процент наценки составляет <span className="font-semibold">{calculateExtraCharge()} %</span>
+            </p>
+
             <DialogFooter>
-              <Button disabled={isLoading} type="submit">Сохранить</Button>
+              <Button disabled={isLoading} type="submit">
+                Сохранить
+              </Button>
             </DialogFooter>
           </form>
         </Form>
-        
       </DialogContent>
     </Dialog>
   );

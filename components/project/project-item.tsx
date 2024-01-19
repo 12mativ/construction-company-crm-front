@@ -1,28 +1,26 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { CalendarDays } from "lucide-react";
-import { ProjectType } from "./projects";
 
-export enum ProjectStatusEnum {
-  INPROCESS="INPROCESS",
-  PLANNING="PLANNING"
-}
 interface ProjectItemProps {
-  projectItemTitle: string;
-  projectDate: string;
-  projectStatus: ProjectStatusEnum;
+  name: string;
+  startDate: null;
+  endDate: null;
+  totalWorkQuantity: number;
+  doneWorkQuantity: number;
 }
 
 const ProjectItem = ({
   name,
   startDate,
   endDate,
-  workQuantity,
-  workDoneQuantity
-}: ProjectType) => {
+  totalWorkQuantity,
+  doneWorkQuantity
+}: ProjectItemProps) => {
 
-  const isProjectPlanning = workDoneQuantity === 0;
-  const progress = (workDoneQuantity * 100) / workQuantity;
+  const isProjectPlanning = doneWorkQuantity === 0;
+  
+  const progress = (doneWorkQuantity * 100) / totalWorkQuantity;
   return (
     <div 
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg

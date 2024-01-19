@@ -1,5 +1,13 @@
-import { ProjectType } from "@/components/project/projects";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface ProjectType {
+  id: number
+  name: string;
+  startDate: null;
+  endDate: null;
+  totalWorkQuantity: number;
+  doneWorkQuantity: number;
+}
 
 interface ProjectsState {
   projects: ProjectType[];
@@ -22,7 +30,6 @@ export const projectsSlice = createSlice({
     },
   },
 });
-
 
 export default projectsSlice.reducer;
 
