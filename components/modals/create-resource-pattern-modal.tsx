@@ -1,0 +1,201 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useModal } from "@/hooks/use-modal-store";
+import { createResourcePattern } from "@/http/resourcesAPI";
+import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(1, {
+      message: "Название ресурса обязательно.",
+    })
+    .max(50, {
+      message: "Название ресурса не должно превышать 50 символов.",
+    }),
+  costPricePerUnit: z
+    .coerce
+    .number()
+    .nonnegative({message: 'Себестоимость не может быть отрицательной.'}),
+  orderPricePerUnit: z
+    .coerce
+    .number()
+    .nonnegative({message: 'Стоимость не может быть отрицательной.'}),
+  extraCharge: z
+    .coerce
+    .number()
+    .nonnegative({message: 'Наценка не может быть отрицательной.'}),
+  measureUnit: z
+    .string()
+    .min(1, {message: 'Название единицы измерения обязательно.'})
+});
+
+export const CreateResourcePatternModal = () => {
+  const {isOpen, onClose, type, data} = useModal();
+
+  const isModalOpen = isOpen && type === 'createResourcePattern';
+
+  const dispatch = useAppDispatch();
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      costPricePerUnit: "",
+      orderPricePerUnit: "",
+      extraCharge: "",
+      measureUnit: ""
+    },
+  });
+
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await createResourcePattern({
+      name: values.name,
+      costPricePerUnit: values.costPricePerUnit,
+      orderPricePerUnit: values.orderPricePerUnit,
+      extraCharge: values.extraCharge,
+      measureUnit: values.measureUnit,
+      resourceType: data.resourceType!
+    });
+
+    response.data.resourceType = data.resourceType
+    dispatch(addResource(response.data))
+    handleClose();
+  }; 
+
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  }
+
+  return (
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader className='flex flex-col gap-y-2'>
+          <DialogTitle>Создайте ресурс</DialogTitle>
+          <DialogDescription>
+            Введите данные нового ресурса.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Название ресурса</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Название ресурса..."
+                      disabled={isLoading} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="costPricePerUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Себестоимость за единицу</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Себестоимость за единицу..."
+                      disabled={isLoading} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="orderPricePerUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Стоимость для заказчика за единицу</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Стоимость для заказчика за единицу..."
+                      disabled={isLoading} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="extraCharge"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Наценка</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Наценка..."
+                      disabled={isLoading} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="measureUnit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Единица измерения</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Единица измерения..."
+                      disabled={isLoading} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button disabled={isLoading} type="submit">Сохранить</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+        
+      </DialogContent>
+    </Dialog>
+  );
+};

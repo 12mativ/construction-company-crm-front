@@ -1,10 +1,12 @@
+import { resourcesPatternsSlice } from './features/resources-patterns/resourcesPatternsSlice';
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/user/userSlice";
 import projectsReducer from "./features/projects/projectsSlice";
+import resourcesPatternsReducer from "./features/resources-patterns/resourcesPatternsSlice";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { userReducer, projectsReducer },
+    reducer: { userReducer, projectsReducer, resourcesPatternsReducer },
   });
 };
 

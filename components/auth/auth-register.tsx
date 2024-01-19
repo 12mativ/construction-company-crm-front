@@ -55,26 +55,27 @@ const AuthRegister = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const responseRole: any = await register(
+      const registerResponse: any = await register(
         values.username,
         values.password,
         values.role as RoleType
       );
 
-      if (responseRole.status === 400) {
+      if (registerResponse.status === 400) {
         return;
       }
 
-      const role = responseRole.data.user.authorities[0].authority;
+      const username = registerResponse.data.username;
 
-      const responseToken = await login(values.username, values.password);
-      if (responseToken.status === 400) {
+      const loginResponse = await login(values.username, values.password);
+      if (loginResponse.status === 400) {
         return;
       }
 
-      const token = responseToken.data.jwt;
+      const role = loginResponse.data.authority;
+      const token = loginResponse.data.jwt;
 
-      dispatch(makeAuth({ role: role, token: token }));
+      dispatch(makeAuth({ username: username, role: role, token: token }));
     } catch (err) {
       console.log(err);
     }
@@ -127,7 +128,7 @@ const AuthRegister = () => {
             name="role"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Роль</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}

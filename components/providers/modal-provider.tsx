@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react";
 import { CreateProjectModal } from "../modals/create-project-modal";
+import { CreateResourcePatternModal } from "../modals/create-resource-pattern-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
@@ -17,6 +18,7 @@ export function ModalProvider() {
   return (
     <>
       <CreateProjectModal />
+      <CreateResourcePatternModal />
     </>
   )
 }

@@ -29,6 +29,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { addProject } from "@/lib/features/projects/projectsSlice";
+import { createProject } from "@/http/projectsAPI";
 
 const formSchema = z.object({
   projectName: z
@@ -46,8 +47,6 @@ export const CreateProjectModal = () => {
 
   const isModalOpen = isOpen && type === 'createProject';
 
-  const router = useRouter();
-
   const dispatch = useAppDispatch();
 
   const form = useForm({
@@ -60,10 +59,11 @@ export const CreateProjectModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    axios.post(`http://localhost:8080/api/v1/projects`, {name: values.projectName})
-      .then(res => {
-        dispatch(addProject(res.data))
-      })
+    const response = await createProject(values.projectName);
+    
+    dispatch(addProject(response.data))
+
+    handleClose();
   }; 
 
   const handleClose = () => {

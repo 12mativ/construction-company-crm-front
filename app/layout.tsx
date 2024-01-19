@@ -8,7 +8,7 @@ import StoreProvider from "@/components/providers/redux-store-provider";
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Союз",
+  title: "Союз CRM",
   description: "CRM-система для управления строительством",
 };
 

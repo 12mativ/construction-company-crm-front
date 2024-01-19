@@ -20,7 +20,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-x-2">
-        <p>Кто Кто</p>
+        <p>{user.username}</p>
         <UserAvatar src="https://freesvg.org/img/FaceWoman.png" />
       </div>
     </div>

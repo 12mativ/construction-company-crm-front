@@ -1,11 +1,17 @@
+import { ResourcePatternType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { create } from "zustand";
 
-export type ModalType = "createProject";
+export type ModalType = "createProject" | "createResourcePattern";
+
+interface ModalData {
+  resourceType?: ResourcePatternType;
+}
 
 interface ModalStore {
   type: ModalType | null;
   isOpen: boolean;
-  onOpen: (type: ModalType) => void;
+  data: ModalData;
+  onOpen: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;
 }
 
@@ -13,7 +19,8 @@ export const useModal = create<ModalStore>((set) => {
   return {
     type: null,
     isOpen: false,
-    onOpen: (type) => set({ isOpen: true, type }),
+    data: {},
+    onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
     onClose: () => set({ type: null, isOpen: false }),
   };
 });

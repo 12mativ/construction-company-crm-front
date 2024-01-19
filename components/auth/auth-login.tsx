@@ -1,3 +1,5 @@
+'use client';
+
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +18,8 @@ import Link from "next/link";
 import { login } from "@/http/userAPI";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { makeAuth } from "@/lib/features/user/userSlice";
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат почты." }),
@@ -35,27 +39,29 @@ const AuthLogin = () => {
     },
   });
 
+  const [loginError, setLoginError] = useState('')
+
   const dispatch = useAppDispatch();
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response: any = await login(
+      const response = await login(
         values.username,
         values.password
       );
 
-      if (response.status === 400) {
-        return;
-      }
-
-      const role = response.data.user.authorities[0].authority;
+      const role = response.data.authority;
       const token = response.data.jwt
 
-      dispatch(makeAuth({ role: role, token: token }));
-    } catch (err) {
-      console.log(err);
+      dispatch(makeAuth({ username: values.username, role: role, token: token }));
+    } catch (err: AxiosError | any) {
+      if (axios.isAxiosError(err)) {
+        setLoginError(err.response?.data.message)
+      } else {
+        console.log(err);
+      }
     }
   };
 
@@ -91,6 +97,7 @@ const AuthLogin = () => {
                 <FormControl>
                   <Input
                     placeholder="Пароль..."
+                    type="password"
                     disabled={isLoading}
                     {...field}
                   />
@@ -111,9 +118,14 @@ const AuthLogin = () => {
           </div>
         </form>
       </Form>
+  
+      {loginError && (
+        <p className="text-red-500 py-2">{loginError}</p>
+      )} 
+  
       <p className="pt-5 text-center text-sm">
         Нет аккаунта? <br />
-        <Link href={"/register"} className="text-red-600">
+        <Link href={"/register"} className="text-red-500">
           Зарегистрируйтесь!
         </Link>
       </p>

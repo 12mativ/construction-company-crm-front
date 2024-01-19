@@ -26,7 +26,7 @@ const ProjectItem = ({
   return (
     <div 
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg
-      bg-white hover:cursor-pointer hover:shadow-xl transition"
+      bg-white hover:cursor-pointer hover:shadow-lg transition"
       >
       <div className={cn(
         "flex flex-col gap-y-2 p-5",

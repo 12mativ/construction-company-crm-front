@@ -5,3 +5,9 @@ export const getProjects = async () => {
 
   return response;
 }
+
+export const createProject = async (name: string) => {
+  const response = await $authHost.post('/api/v1/projects', {name: name});
+  
+  return response
+}
