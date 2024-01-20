@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ProjectType {
+export type ProjectType = {
   id: number
   name: string;
   startDate: null;
@@ -9,11 +9,11 @@ export interface ProjectType {
   doneWorkQuantity: number;
 }
 
-interface ProjectsState {
+interface IProjectsState {
   projects: ProjectType[];
 }
 
-const initialState: ProjectsState = {
+const initialState: IProjectsState = {
   projects: []
 };
 

@@ -1,10 +1,19 @@
 import { ResourcePatternType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { create } from "zustand";
 
-export type ModalType = "createProject" | "createResourcePattern" | "createCounterparty";
+export type ModalType =
+  | "createProject"
+  | "createResourcePattern"
+  | "createCounterparty"
+  | "createOrganisation"
+  | "createMoneyAccount"
+  | "createTransfer"
+  | "createOutcome"
+  | "createIncome";
 
 interface ModalData {
   resourceType?: ResourcePatternType;
+  organisationsNames?: string[]
 }
 
 interface ModalStore {

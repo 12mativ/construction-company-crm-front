@@ -73,7 +73,7 @@ const ResourcePatterns = () => {
     <div className="bg-white p-5 rounded-lg shadow-xl">
       <Table className="mb-2">
         <TableBody className="border-b">
-          <TableRow key="mainHeader" className="flex text-neutral-400 px-10">
+          <TableRow key="mainHeader" className="flex text-neutral-400 px-10 text-[16px]">
             <TableCell className="flex-1">Ресурсы</TableCell>
             <TableCell className="flex-2 w-[165px] text-center px-1">
               Цена, ед.

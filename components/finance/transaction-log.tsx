@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import AddButton from "../addButton";
 
 const transactions = [
   {
@@ -42,7 +43,7 @@ const TransactionLog = () => {
         </TableHeader>
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow key={transaction.date}>
+            <TableRow key={transaction.date} className="text-[16px]">
               <TableCell className="w-[33%]">{transaction.date}</TableCell>
               <TableCell className="w-[33%] text-center">
                 {transaction.transaction}
@@ -54,6 +55,11 @@ const TransactionLog = () => {
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-end gap-x-2 mt-8">
+        <AddButton buttonText='Доход' modalName='createIncome' />
+        <AddButton buttonText='Расход' modalName='createOutcome' />
+        <AddButton buttonText='Перевод' modalName='createTransfer' />
+      </div>
     </div>
   );
 };

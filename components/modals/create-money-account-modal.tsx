@@ -22,13 +22,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createCounterparty } from "@/http/counterparties/counterpartiesAPI";
-import {
-  PartnerType,
-  addCounterparty,
-} from "@/lib/features/counterparties/counterpartiesSlice";
+import { createMoneyAccount } from "@/http/organisations/organisationsAPI";
+import { addMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
 import {
   Select,
   SelectContent,
@@ -43,22 +40,29 @@ const formSchema = z.object({
     .min(1, {
       message: "Обязательно для заполнения.",
     })
-    .max(100, {
-      message: "Название/имя контрагента не должно превышать 100 символов.",
+    .max(50, {
+      message: "Название счета не должно превышать 50 символов.",
     }),
-  phoneNumber: z.string({ required_error: "Введите номер телефона." }),
-  email: z
-    .string({ required_error: "Введите электронную почту" })
-    .email({ message: "Неверный формат электронной почты." }),
-  partnerType: z.string({ required_error: "Выберите тип контрагента." }),
+  organisationId: z.string({ required_error: "Выберите организацию." }),
+  balance: z.coerce
+    .number({
+      invalid_type_error: "Введите числовое значение.",
+      required_error: "Обязательно для заполнения.",
+    })
+    .nonnegative({ message: "Баланс не может быть отрицательным." }),
+  numberOfAccount: z.string({ required_error: "Обязательно для заполнения." }),
 });
 
-export const CreateCounterpartyModal = () => {
+export const CreateMoneyAccountModal = () => {
   const { isOpen, onClose, type } = useModal();
 
-  const isModalOpen = isOpen && type === "createCounterparty";
+  const isModalOpen = isOpen && type === "createMoneyAccount";
 
   const dispatch = useAppDispatch();
+
+  const organisations = useAppSelector(
+    (state) => state.organisationsReducer.organisations
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,14 +71,14 @@ export const CreateCounterpartyModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createCounterparty(
+    const response = await createMoneyAccount(
       values.name,
-      values.phoneNumber,
-      values.email,
-      values.partnerType as PartnerType
+      +values.organisationId,
+      values.balance,
+      values.numberOfAccount
     );
 
-    dispatch(addCounterparty(response.data));
+    dispatch(addMoneyAccount(response.data));
 
     handleClose();
   };
@@ -88,10 +92,8 @@ export const CreateCounterpartyModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Добавьте контрагента</DialogTitle>
-          <DialogDescription>
-            Введите данные нового контрагента.
-          </DialogDescription>
+          <DialogTitle>Добавьте счет</DialogTitle>
+          <DialogDescription>Введите данные нового счета.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -100,10 +102,10 @@ export const CreateCounterpartyModal = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Название/имя контрагента</FormLabel>
+                  <FormLabel>Название счета</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Название/имя контрагента..."
+                      placeholder="Название счета..."
                       disabled={isLoading}
                       {...field}
                     />
@@ -114,58 +116,61 @@ export const CreateCounterpartyModal = () => {
             />
             <FormField
               control={form.control}
-              name="phoneNumber"
+              name="organisationId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Номер телефона</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Номер телефона..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Введите электронную почту</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Электронная почта..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="partnerType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Тип контрагента</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <FormLabel>Организация</FormLabel>
+                  <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Выберите тип контрагента" />
+                        <SelectValue placeholder="Выберите оргазнизацию" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="PHYSICAL">Физическое лицо</SelectItem>
-                      <SelectItem value="LEGAL">Юридическое лицо</SelectItem>
+                      {organisations.map((organisation) => (
+                        <SelectItem
+                          key={organisation.id}
+                          value={organisation.id.toString()}
+                        >
+                          {organisation.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="balance"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Баланс счета</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Баланс счета..."
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="numberOfAccount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Введите номер счета</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Номер счета..."
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

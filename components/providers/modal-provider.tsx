@@ -4,6 +4,11 @@ import {useEffect, useState} from "react";
 import { CreateProjectModal } from "../modals/create-project-modal";
 import { CreateResourcePatternModal } from "../modals/create-resource-pattern-modal";
 import { CreateCounterpartyModal } from "../modals/create-counterparty-modal";
+import { CreateOrganisationModal } from "../modals/create-organisation-modal copy";
+import { CreateMoneyAccountModal } from "../modals/create-money-account-modal";
+import { CreateTransferModal } from "../modals/create-transfer-modal";
+import { CreateOutcomeModal } from "../modals/create-outcome-modal";
+import { CreateIncomeModal } from "../modals/create-income-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
@@ -21,6 +26,11 @@ export function ModalProvider() {
       <CreateProjectModal />
       <CreateResourcePatternModal />
       <CreateCounterpartyModal />
+      <CreateOrganisationModal />
+      <CreateMoneyAccountModal />
+      <CreateTransferModal />
+      <CreateOutcomeModal />
+      <CreateIncomeModal />
     </>
   )
 }

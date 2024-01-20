@@ -1,24 +1,21 @@
-import { PartnerType } from "@/lib/features/counterparty/counterpartiesSlice";
-import {
-  TableCell,
-  TableRow
-} from "../ui/table";
+import { PartnerType } from "@/lib/features/counterparties/counterpartiesSlice";
+import { TableCell, TableRow } from "../ui/table";
 
 interface CounterpartyItemProps {
-  name: string
-  phoneNumber: string
-  email: string
-  partnerType: PartnerType
+  name: string;
+  phoneNumber: string;
+  email: string;
+  partnerType: PartnerType;
 }
 
 const CounterpartyItem = ({
   name,
   phoneNumber,
   email,
-  partnerType
+  partnerType,
 }: CounterpartyItemProps) => {
   return (
-    <TableRow>
+    <TableRow className='text-[16px]'>
       <TableCell className="flex-1 font-semibold">{name}</TableCell>
       <TableCell className="flex-2 w-[165px] text-center px-1">
         {phoneNumber}
@@ -27,7 +24,7 @@ const CounterpartyItem = ({
         {email}
       </TableCell>
       <TableCell className="flex-2 w-[167px] text-center px-1">
-        {partnerType === "LEGAL" ? 'Юр. лицо' : 'Физ. лицо'}
+        {partnerType === "LEGAL" ? "Юр. лицо" : "Физ. лицо"}
       </TableCell>
     </TableRow>
   );

@@ -1,4 +1,4 @@
-import { findEqualItems } from "@/lib/store";
+import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type ResourcePatternType =
@@ -23,11 +23,11 @@ interface IResourceGroup {
   resources: IResourcePattern[];
 }
 
-interface ResourcesGroupsState {
+interface IResourcesGroupsState {
   resourcesPatterns: IResourceGroup[];
 }
 
-const initialState: ResourcesGroupsState = {
+const initialState: IResourcesGroupsState = {
   resourcesPatterns: [
     {
       type: "HUMAN",
@@ -56,12 +56,18 @@ export const resourcesPatternsSlice = createSlice({
   name: "resourcesPatterns",
   initialState: initialState,
   reducers: {
-    addResourcesPatterns: (state, action: PayloadAction<IResourcePattern[]>) => {
+    addResourcesPatterns: (
+      state,
+      action: PayloadAction<IResourcePattern[]>
+    ) => {
       action.payload.forEach((resource) => {
         switch (resource.resourceType) {
           case "HUMAN":
             if (
-              !findEqualItems(state.resourcesPatterns[0].resources, resource)
+              !findEqualItemsById(
+                state.resourcesPatterns[0].resources,
+                resource
+              )
             ) {
               state.resourcesPatterns[0].resources.push({ ...resource });
             }
@@ -69,7 +75,10 @@ export const resourcesPatternsSlice = createSlice({
 
           case "MECHANICAL":
             if (
-              !findEqualItems(state.resourcesPatterns[1].resources, resource)
+              !findEqualItemsById(
+                state.resourcesPatterns[1].resources,
+                resource
+              )
             ) {
               state.resourcesPatterns[1].resources.push({ ...resource });
             }
@@ -77,7 +86,10 @@ export const resourcesPatternsSlice = createSlice({
 
           case "MATERIAL":
             if (
-              !findEqualItems(state.resourcesPatterns[2].resources, resource)
+              !findEqualItemsById(
+                state.resourcesPatterns[2].resources,
+                resource
+              )
             ) {
               state.resourcesPatterns[2].resources.push({ ...resource });
             }
@@ -85,7 +97,10 @@ export const resourcesPatternsSlice = createSlice({
 
           case "INVOICES":
             if (
-              !findEqualItems(state.resourcesPatterns[3].resources, resource)
+              !findEqualItemsById(
+                state.resourcesPatterns[3].resources,
+                resource
+              )
             ) {
               state.resourcesPatterns[3].resources.push({ ...resource });
             }

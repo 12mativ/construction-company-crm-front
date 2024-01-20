@@ -1,0 +1,77 @@
+import { findEqualItemsById } from "@/lib/store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+type MoneyAccountType = {
+  id: number;
+  name: string;
+  balance: number;
+  numberOfAccount: string;
+  organisationId: number;
+};
+
+export interface IOrganisation {
+  id: number;
+  name: string;
+  moneyAccountList: MoneyAccountType[];
+}
+
+interface ICounterpartiesState {
+  organisations: IOrganisation[];
+}
+
+const initialState: ICounterpartiesState = {
+  organisations: [],
+};
+
+export const organisationsSlice = createSlice({
+  name: "organisations",
+  initialState: initialState,
+  reducers: {
+    addOrganisations: (state, action: PayloadAction<IOrganisation[]>) => {
+      state.organisations = action.payload;
+    },
+
+    addOrganisation: (state, action: PayloadAction<IOrganisation>) => {
+      if (!findEqualItemsById(state.organisations, action.payload)) {
+        state.organisations.push(action.payload);
+      }
+    },
+
+    addMoneyAccount: (state, action: PayloadAction<MoneyAccountType>) => {
+      const organisation = state.organisations.find(
+        (organisation) => organisation.id === action.payload.organisationId
+      );
+
+      if (!findEqualItemsById(organisation?.moneyAccountList, action.payload)) {
+        organisation?.moneyAccountList.push(action.payload);
+      }
+    },
+
+    changeMoneyAccount: (
+      state,
+      action: PayloadAction<{ id: number; amount: number; operation: "increase" | "decrease" }>
+    ) => {
+      for (const organisation of state.organisations) {
+        const foundMoneyAccount = organisation.moneyAccountList.find(
+          (moneyAccount) => moneyAccount.id === action.payload.id
+        );
+
+        if (foundMoneyAccount) {
+          switch (action.payload.operation) {
+            case 'increase':
+              foundMoneyAccount.balance += action.payload.amount;
+              break;
+            case 'decrease':
+              foundMoneyAccount.balance -= action.payload.amount;
+              break;
+          }
+        }
+      }
+    },
+  },
+});
+
+export default organisationsSlice.reducer;
+
+export const { addOrganisations, addOrganisation, addMoneyAccount, changeMoneyAccount } =
+  organisationsSlice.actions;

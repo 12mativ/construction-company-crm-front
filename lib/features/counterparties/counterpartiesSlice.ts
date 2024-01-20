@@ -1,9 +1,9 @@
-import { findEqualItems } from "@/lib/store";
+import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type PartnerType = "PHYSICAL" | "LEGAL";
 
-interface CounterpartyType {
+interface ICounterparty {
   id: number;
   name: string;
   phoneNumber: string;
@@ -11,11 +11,11 @@ interface CounterpartyType {
   partnerType: PartnerType;
 }
 
-interface CounterpartiesState {
-  counterparties: CounterpartyType[];
+interface ICounterpartiesState {
+  counterparties: ICounterparty[];
 }
 
-const initialState: CounterpartiesState = {
+const initialState: ICounterpartiesState = {
   counterparties: [],
 };
 
@@ -23,12 +23,12 @@ export const counterpartiesSlice = createSlice({
   name: "counterparties",
   initialState: initialState,
   reducers: {
-    addCounterparties: (state, action: PayloadAction<CounterpartyType[]>) => {
+    addCounterparties: (state, action: PayloadAction<ICounterparty[]>) => {
       state.counterparties = action.payload;
     },
 
-    addCounterparty: (state, action: PayloadAction<CounterpartyType>) => {
-      if (!findEqualItems(state.counterparties, action.payload)) {
+    addCounterparty: (state, action: PayloadAction<ICounterparty>) => {
+      if (!findEqualItemsById(state.counterparties, action.payload)) {
         state.counterparties.push(action.payload);
       }
     },

@@ -29,7 +29,7 @@ import { addResource } from "@/lib/features/resources-patterns/resourcesPatterns
 
 const formSchema = z.object({
   name: z
-    .string()
+    .string({required_error: "Обязательно для заполнения."})
     .min(1, {
       message: "Название ресурса обязательно.",
     })
@@ -37,13 +37,13 @@ const formSchema = z.object({
       message: "Название ресурса не должно превышать 50 символов.",
     }),
   costPricePerUnit: z.coerce
-    .number()
+    .number({required_error: "Обязательно для заполнения.", invalid_type_error: "Введите числовое значение."})
     .nonnegative({ message: "Себестоимость не может быть отрицательной." }),
   orderPricePerUnit: z.coerce
-    .number()
+    .number({required_error: "Обязательно для заполнения.", invalid_type_error: "Введите числовое значение.",})
     .nonnegative({ message: "Стоимость не может быть отрицательной." }),
   measureUnit: z
-    .string()
+    .string({required_error: "Обязательно для заполнения."})
     .min(1, { message: "Название единицы измерения обязательно." }),
 });
 

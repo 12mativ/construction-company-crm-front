@@ -1,4 +1,4 @@
-import { PartnerType } from "@/lib/features/counterparty/counterpartiesSlice";
+import { PartnerType } from "@/lib/features/counterparties/counterpartiesSlice";
 import { $authHost } from "..";
 
 export const getCounterparties = async () => {
@@ -8,16 +8,16 @@ export const getCounterparties = async () => {
 };
 
 export const createCounterparty = async (
-  name: string, 
-  phoneNumber: string, 
-  email: string, 
+  name: string,
+  phoneNumber: string,
+  email: string,
   partnerType: PartnerType
 ) => {
-  const response = await $authHost.post("/api/v1/partner", { 
+  const response = await $authHost.post("/api/v1/partner", {
     name,
     phoneNumber,
     email,
-    partnerType
+    partnerType,
   });
 
   return response;
