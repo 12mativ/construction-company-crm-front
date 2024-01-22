@@ -22,19 +22,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import {
-  createIncome,
-  createOutcome
-} from "@/http/transactions/transactionsAPI";
+import { createIncome } from "@/http/transactions/transactionsAPI";
 import { changeMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
-import {
-  addIncome,
-  addOutcome
-} from "@/lib/features/transactions/transactionsSlice";
+import { addIncome } from "@/lib/features/transactions/transactionsSlice";
+import { cn } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import React, { useState } from "react";
+import { Calendar } from "../ui/calendar";
 import {
   Select,
   SelectContent,
@@ -44,7 +47,9 @@ import {
 } from "../ui/select";
 
 const formSchema = z.object({
-  recipientMoneyAccountId: z.string({ required_error: "Выберите счет зачисления." }),
+  recipientMoneyAccountId: z.string({
+    required_error: "Выберите счет зачисления.",
+  }),
   senderCounterpartyId: z.string({
     required_error: "Выберите контрагента.",
   }),
@@ -54,6 +59,13 @@ const formSchema = z.object({
       required_error: "Обязательно для заполнения.",
     })
     .positive({ message: "Сумма дохода должна быть положительной." }),
+  description: z
+    .string({ required_error: "Описание операции обязательно." })
+    .min(1, { message: "Описание операции обязательно." })
+    .max(100, { message: "Описание не должно превышать 100 символов." }),
+  date: z.date({
+    required_error: "Дата транзакции обязательна.",
+  }),
 });
 
 export const CreateIncomeModal = () => {
@@ -65,8 +77,12 @@ export const CreateIncomeModal = () => {
 
   const dispatch = useAppDispatch();
 
-  const organisations = useAppSelector((state) => state.organisationsReducer.organisations);
-  const counterparties = useAppSelector((state) => state.counterpartiesReducer.counterparties);
+  const organisations = useAppSelector(
+    (state) => state.organisationsReducer.organisations
+  );
+  const counterparties = useAppSelector(
+    (state) => state.counterpartiesReducer.counterparties
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,14 +95,17 @@ export const CreateIncomeModal = () => {
       const response = await createIncome(
         values.amount,
         +values.recipientMoneyAccountId,
-        +values.senderCounterpartyId
+        +values.senderCounterpartyId,
+        values.description,
+        format(values.date, "yyyy-MM-dd")
       );
 
       const dataForTransfer = {
         id: response.data.id,
         amount: response.data.amount,
-        senderCounterpartyId: +values.senderCounterpartyId,
+        senderCounterpartyId: response.data.partnerId,
         recipientMoneyAccountId: response.data.recipientMoneyAccountId,
+        description: response.data.description,
         date: response.data.timestamp,
       };
 
@@ -203,10 +222,66 @@ export const CreateIncomeModal = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Описание операции</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Описание операции..."
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Дата транзакции</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "dd.MM.yyyy")
+                          ) : (
+                            <span>Выберите дату</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            {incomeError && (
-              <p className="text-red-500 py-2">{incomeError}</p>
-            )}
+            {incomeError && <p className="text-red-500 py-2">{incomeError}</p>}
 
             <DialogFooter>
               <Button disabled={isLoading} type="submit">

@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import axios, { AxiosError } from "axios";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -38,6 +42,8 @@ const formSchema = z.object({
 });
 
 const AuthRegister = () => {
+  const [registerError, setRegisterError] = useState("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,29 +58,26 @@ const AuthRegister = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const registerResponse: any = await register(
+      const registerResponse = await register(
         values.username,
         values.password,
         values.role as RoleType
       );
 
-      if (registerResponse.status === 400) {
-        return;
-      }
-
       const username = registerResponse.data.username;
 
       const loginResponse = await login(values.username, values.password);
-      if (loginResponse.status === 400) {
-        return;
-      }
 
       const role = loginResponse.data.authority;
       const token = loginResponse.data.jwt;
 
       dispatch(makeAuth({ username: username, role: role, token: token }));
-    } catch (err) {
-      console.log(err);
+    } catch (err: AxiosError | any) {
+      if (axios.isAxiosError(err)) {
+        setRegisterError(err.response?.data.message);
+      } else {
+        console.log(err);
+      }
     }
   };
 
@@ -158,6 +161,9 @@ const AuthRegister = () => {
           </div>
         </form>
       </Form>
+
+      {registerError && <p className="text-red-500 py-2">{registerError}</p>}
+
       <p className="pt-5 text-center text-sm">
         Есть аккаунт? <br />
         <Link href={"/login"} className="text-red-600">

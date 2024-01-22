@@ -2,11 +2,13 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
 import { getOrganisations } from "@/http/organisations/organisationsAPI";
+import { getTransactions } from "@/http/transactions/transactionsAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 import {
   IOrganisation,
   addOrganisations,
 } from "@/lib/features/organisations/organisationsSlice";
+import { addTransactions } from "@/lib/features/transactions/transactionsSlice";
 import React, { useEffect, useState } from "react";
 
 const calculateTotalBalance = (organisations: IOrganisation[]) => {
@@ -31,18 +33,21 @@ const TotalBalance = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    getOrganisations()
-      .then((res) => {
-        dispatch(addOrganisations(res.data));
-      })
+    getOrganisations().then((res) => {
+      dispatch(addOrganisations(res.data));
+    });
+
+    getTransactions().then((res) => {
+      dispatch(addTransactions(res.data));
+    });
 
     getCounterparties()
       .then((res) => {
-        dispatch(addCounterparties(res.data))
+        dispatch(addCounterparties(res.data));
       })
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   }, []);
 
   if (isLoading) {

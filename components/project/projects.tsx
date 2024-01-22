@@ -46,7 +46,7 @@ const Projects = () => {
           className="text-neutral-600 group-hover:scale-110 transition"
           size={50}
         />
-        <p className="text-neutral-600 font-semibold">Добавить проект</p>
+        <p className="text-neutral-600 font-semibold uppercase">Добавить проект</p>
       </div>
     </div>
   );

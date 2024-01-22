@@ -1,32 +1,21 @@
+"use client";
+
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "@/components/ui/table";
+import { useAppSelector } from "@/hooks/redux-hooks";
 import AddButton from "../addButton";
-
-const transactions = [
-  {
-    date: "11/1/2023",
-    transaction: "Зачисление от заказчика",
-    moneyAmount: "+ 200 000 Р",
-  },
-  {
-    date: "11/1/2023",
-    transaction: "Покупка материалов",
-    moneyAmount: "- 100 000 Р",
-  },
-  {
-    date: "11/1/2023",
-    transaction: "Перевод",
-    moneyAmount: "200 000 Р",
-  },
-];
+import TransactionItem from "./transactionItem";
 
 const TransactionLog = () => {
+  const { transfers, outcomes, incomes } = useAppSelector(
+    (state) => state.transactionsReducer
+  );
+
   return (
     <div className="bg-white rounded-lg p-4 shadow-lg">
       <Table>
@@ -42,23 +31,36 @@ const TransactionLog = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction) => (
-            <TableRow key={transaction.date} className="text-[16px]">
-              <TableCell className="w-[33%]">{transaction.date}</TableCell>
-              <TableCell className="w-[33%] text-center">
-                {transaction.transaction}
-              </TableCell>
-              <TableCell className="w-[33%] text-right font-bold">
-                {transaction.moneyAmount}
-              </TableCell>
-            </TableRow>
+          {transfers.map((transfer) => (
+            <TransactionItem
+              key={transfer.id}
+              date={transfer.date}
+              amount={transfer.amount}
+              description={transfer.description}
+            />
+          ))}
+          {outcomes.map((outcome) => (
+            <TransactionItem
+              key={outcome.id}
+              date={outcome.date}
+              amount={outcome.amount}
+              description={outcome.description}
+            />
+          ))}
+          {incomes.map((income) => (
+            <TransactionItem
+              key={income.id}
+              date={income.date}
+              amount={income.amount}
+              description={income.description}
+            />
           ))}
         </TableBody>
       </Table>
       <div className="flex justify-end gap-x-2 mt-8">
-        <AddButton buttonText='Доход' modalName='createIncome' />
-        <AddButton buttonText='Расход' modalName='createOutcome' />
-        <AddButton buttonText='Перевод' modalName='createTransfer' />
+        <AddButton buttonText="Доход" modalName="createIncome" />
+        <AddButton buttonText="Расход" modalName="createOutcome" />
+        <AddButton buttonText="Перевод" modalName="createTransfer" />
       </div>
     </div>
   );

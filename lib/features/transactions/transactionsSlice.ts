@@ -1,11 +1,23 @@
 import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface ITransaction {
+  id: number;
+  amount: number;
+  recipientMoneyAccount: number | null;
+  senderMoneyAccount: number | null;
+  partnerId: number | null;
+  timestamp: string;
+  description: string;
+  type: "TRANSFER" | "OUTCOME" | "INCOME";
+}
+
 interface ITransfer {
   id: number;
   amount: number;
   senderMoneyAccountId: number;
   recipientMoneyAccountId: number;
+  description: string;
   date: string;
 }
 
@@ -14,6 +26,7 @@ interface IOutcome {
   amount: number;
   senderMoneyAccountId: number;
   recipientCounterpartyId: number;
+  description: string;
   date: string;
 }
 
@@ -22,6 +35,7 @@ interface IIncome {
   amount: number;
   senderCounterpartyId: number;
   recipientMoneyAccountId: number;
+  description: string;
   date: string;
 }
 
@@ -41,6 +55,52 @@ export const transactionsSlice = createSlice({
   name: "transactions",
   initialState: initialState,
   reducers: {
+    addTransactions: (state, action: PayloadAction<ITransaction[]>) => {
+      action.payload.forEach((transaction) => {
+        switch (transaction.type) {
+          case "TRANSFER":
+            if (!findEqualItemsById(state.transfers, transaction)) {
+              const dataForTransfer = {
+                id: transaction.id,
+                amount: transaction.amount,
+                senderMoneyAccountId: transaction.senderMoneyAccount!,
+                recipientMoneyAccountId: transaction.recipientMoneyAccount!,
+                description: transaction.description,
+                date: transaction.timestamp,
+              };
+              state.transfers.push(dataForTransfer);
+            }
+            break;
+          case "OUTCOME":
+            if (!findEqualItemsById(state.outcomes, transaction)) {
+              const dataForOutcome = {
+                id: transaction.id,
+                amount: transaction.amount,
+                senderMoneyAccountId: transaction.senderMoneyAccount!,
+                recipientCounterpartyId: transaction.partnerId!,
+                description: transaction.description,
+                date: transaction.timestamp,
+              };
+              state.outcomes.push(dataForOutcome);
+            }
+            break;
+          case "INCOME":
+            // TODO change 0 id of counterparty to normal id from server
+            if (!findEqualItemsById(state.incomes, transaction)) {
+              const dataForOutcome = {
+                id: transaction.id,
+                amount: transaction.amount,
+                senderCounterpartyId: transaction.partnerId!,
+                recipientMoneyAccountId: transaction.recipientMoneyAccount!,
+                description: transaction.description,
+                date: transaction.timestamp,
+              };
+              state.incomes.push(dataForOutcome);
+            }
+            break;
+        }
+      });
+    },
     addTransfer: (state, action: PayloadAction<ITransfer>) => {
       if (!findEqualItemsById(state.transfers, action.payload)) {
         state.transfers.push(action.payload);
@@ -61,4 +121,4 @@ export const transactionsSlice = createSlice({
 
 export default transactionsSlice.reducer;
 
-export const { addTransfer, addOutcome, addIncome } = transactionsSlice.actions;
+export const { addTransactions, addTransfer, addOutcome, addIncome } = transactionsSlice.actions;

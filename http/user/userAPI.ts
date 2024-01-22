@@ -8,15 +8,15 @@ export const register = async (
   password: string,
   role: RoleType
 ) => {
-  await $host.post("/api/v1/auth/register", {
+  const response = await $host.post("/api/v1/auth/register", {
     username,
     password,
     userType: role,
   });
 
-  const response = await login(username, password);
+  const responseWithJwt = await login(username, password);
 
-  localStorage.setItem("token", response.data.jwt);
+  localStorage.setItem("token", responseWithJwt.data.jwt);
   // return jwtDecode(response.data.jwt)
   return response;
 };
@@ -26,13 +26,16 @@ export const login = async (username: string, password: string) => {
     username,
     password,
   });
+  
   localStorage.setItem("token", response.data.jwt);
-  // return jwtDecode(response.data.jwt)
+
   return response;
 };
 
 export const check = async () => {
   const response = await $authHost.post("/api/v1/auth/register");
+  
   localStorage.setItem("token", response.data.jwt);
+  
   return response;
 };
