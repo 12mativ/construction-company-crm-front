@@ -3,7 +3,7 @@ import ResourcePatterns from "@/components/resource-patterns/resource-patterns";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const Catalog = () => {
+const Page = () => {
   return (
     <Tabs defaultValue="resourcePatterns">
       <TabsList className="grid w-full grid-cols-2 h-16 bg-neutral-200">
@@ -24,4 +24,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default Page;

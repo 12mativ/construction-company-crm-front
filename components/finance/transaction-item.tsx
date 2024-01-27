@@ -18,7 +18,7 @@ const TransactionItem = ({
     <TableRow key={date} className="text-[16px]">
       <TableCell className="w-[33%]">{stringToProperDateFormat(date)}</TableCell>
       <TableCell className="w-[33%] text-center">{description}</TableCell>
-      <TableCell className="w-[33%] text-right font-bold">{amount}</TableCell>
+      <TableCell className="w-[33%] text-right font-bold">{amount} ₽</TableCell>
     </TableRow>
   );
 };

@@ -8,7 +8,7 @@ import { getOrganisations } from "@/http/organisations/organisationsAPI";
 import { addOrganisations } from "@/lib/features/organisations/organisationsSlice";
 import { useEffect, useState } from "react";
 
-const Settings = () => {
+const Page = () => {
   const [isOrganisationsLoading, setIsOrganisationsLoading] = useState(false)
 
   const dispatch = useAppDispatch();
@@ -58,4 +58,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Page;

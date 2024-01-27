@@ -20,7 +20,7 @@ export const makeStore = () => {
       resourcesPatternsReducer,
       counterpartiesReducer,
       organisationsReducer,
-      transactionsReducer
+      transactionsReducer,
     },
   });
 };

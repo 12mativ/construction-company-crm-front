@@ -6,7 +6,7 @@ import { useAppSelector } from "@/hooks/redux-hooks";
 import { redirect } from "next/navigation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import NeedPayment from "@/components/finance/needPayment";
+import NeedPayment from "@/components/finance/need-payment";
 
 const Page = () => {
   const user = useAppSelector((state) => state.userReducer.user);

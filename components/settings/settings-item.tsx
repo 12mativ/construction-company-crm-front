@@ -1,9 +1,9 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { IOrganisation } from "@/lib/features/organisations/organisationsSlice";
 
-const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
+const SettingsItem = ({ name, moneyAccountList }: IOrganisation) => {
   return (
-    <div key={id}>
+    <>
       <div className="bg-neutral-200 rounded-lg p-3 shadow-xl">
         <p className="text-neutral-500 text-xl font-bold">{name}</p>
       </div>
@@ -27,7 +27,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 };
 

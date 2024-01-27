@@ -1,8 +1,10 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { CalendarDays } from "lucide-react";
+import Link from "next/link";
 
 interface ProjectItemProps {
+  id: number
   name: string;
   startDate: null;
   endDate: null;
@@ -11,6 +13,7 @@ interface ProjectItemProps {
 }
 
 const ProjectItem = ({
+  id,
   name,
   startDate,
   endDate,
@@ -22,7 +25,8 @@ const ProjectItem = ({
   
   const progress = (doneWorkQuantity * 100) / totalWorkQuantity;
   return (
-    <div 
+    <Link
+      href={`/projects/${id}`}
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg
       bg-white hover:cursor-pointer hover:shadow-lg transition"
       >
@@ -42,7 +46,7 @@ const ProjectItem = ({
       </div>
 
       {!isProjectPlanning && <Progress value={progress} />}
-    </div>
+    </Link>
   );
 };
 

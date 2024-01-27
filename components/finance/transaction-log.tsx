@@ -5,15 +5,23 @@ import {
   TableBody,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import AddButton from "../addButton";
-import TransactionItem from "./transactionItem";
+import TransactionItem from "./transaction-item";
 
 const TransactionLog = () => {
   const { transfers, outcomes, incomes } = useAppSelector(
     (state) => state.transactionsReducer
+  );
+
+  const allTransactions = [...transfers, ...outcomes, ...incomes].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      return dateB.getTime() - dateA.getTime();
+    }
   );
 
   return (
@@ -31,28 +39,12 @@ const TransactionLog = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transfers.map((transfer) => (
+          {allTransactions.map((transaction) => (
             <TransactionItem
-              key={transfer.id}
-              date={transfer.date}
-              amount={transfer.amount}
-              description={transfer.description}
-            />
-          ))}
-          {outcomes.map((outcome) => (
-            <TransactionItem
-              key={outcome.id}
-              date={outcome.date}
-              amount={outcome.amount}
-              description={outcome.description}
-            />
-          ))}
-          {incomes.map((income) => (
-            <TransactionItem
-              key={income.id}
-              date={income.date}
-              amount={income.amount}
-              description={income.description}
+              key={transaction.id}
+              date={transaction.date}
+              amount={transaction.amount}
+              description={transaction.description}
             />
           ))}
         </TableBody>
