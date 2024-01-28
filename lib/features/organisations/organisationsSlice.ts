@@ -32,7 +32,7 @@ export const organisationsSlice = createSlice({
     },
 
     addOrganisation: (state, action: PayloadAction<IOrganisation>) => {
-      if (!findEqualItemsById(state.organisations, action.payload)) {
+      if (!findEqualItemsById(state.organisations, action.payload.id)) {
         state.organisations.push(action.payload);
       }
     },
@@ -42,7 +42,7 @@ export const organisationsSlice = createSlice({
         (organisation) => organisation.id === action.payload.organisationId
       );
 
-      if (!findEqualItemsById(organisation?.moneyAccountList, action.payload)) {
+      if (!findEqualItemsById(organisation?.moneyAccountList, action.payload.id)) {
         organisation?.moneyAccountList.push(action.payload);
       }
     },

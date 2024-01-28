@@ -59,7 +59,7 @@ export const transactionsSlice = createSlice({
       action.payload.forEach((transaction) => {
         switch (transaction.type) {
           case "TRANSFER":
-            if (!findEqualItemsById(state.transfers, transaction)) {
+            if (!findEqualItemsById(state.transfers, transaction.id)) {
               const dataForTransfer = {
                 id: transaction.id,
                 amount: transaction.amount,
@@ -72,7 +72,7 @@ export const transactionsSlice = createSlice({
             }
             break;
           case "OUTCOME":
-            if (!findEqualItemsById(state.outcomes, transaction)) {
+            if (!findEqualItemsById(state.outcomes, transaction.id)) {
               const dataForOutcome = {
                 id: transaction.id,
                 amount: transaction.amount,
@@ -85,8 +85,7 @@ export const transactionsSlice = createSlice({
             }
             break;
           case "INCOME":
-            // TODO change 0 id of counterparty to normal id from server
-            if (!findEqualItemsById(state.incomes, transaction)) {
+            if (!findEqualItemsById(state.incomes, transaction.id)) {
               const dataForOutcome = {
                 id: transaction.id,
                 amount: transaction.amount,
@@ -102,17 +101,17 @@ export const transactionsSlice = createSlice({
       });
     },
     addTransfer: (state, action: PayloadAction<ITransfer>) => {
-      if (!findEqualItemsById(state.transfers, action.payload)) {
+      if (!findEqualItemsById(state.transfers, action.payload.id)) {
         state.transfers.push(action.payload);
       }
     },
     addOutcome: (state, action: PayloadAction<IOutcome>) => {
-      if (!findEqualItemsById(state.transfers, action.payload)) {
+      if (!findEqualItemsById(state.transfers, action.payload.id)) {
         state.outcomes.push(action.payload);
       }
     },
     addIncome: (state, action: PayloadAction<IIncome>) => {
-      if (!findEqualItemsById(state.transfers, action.payload)) {
+      if (!findEqualItemsById(state.transfers, action.payload.id)) {
         state.incomes.push(action.payload);
       }
     },

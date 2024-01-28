@@ -1,15 +1,11 @@
 import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type ResourcePatternType =
-  | "HUMAN"
-  | "MECHANICAL"
-  | "MATERIAL"
-  | "INVOICES";
+export type ResourceType = "HUMAN" | "MECHANICAL" | "MATERIAL" | "INVOICES";
 
 interface IResourcePattern {
   id: number;
-  resourceType: ResourcePatternType;
+  resourceType: ResourceType;
   name: string;
   costPricePerUnit: number;
   orderPricePerUnit: number;
@@ -18,7 +14,7 @@ interface IResourcePattern {
 }
 
 interface IResourceGroup {
-  type: ResourcePatternType;
+  type: ResourceType;
   name: string;
   resources: IResourcePattern[];
 }
@@ -66,7 +62,7 @@ export const resourcesPatternsSlice = createSlice({
             if (
               !findEqualItemsById(
                 state.resourcesPatterns[0].resources,
-                resource
+                resource.id
               )
             ) {
               state.resourcesPatterns[0].resources.push({ ...resource });
@@ -77,7 +73,7 @@ export const resourcesPatternsSlice = createSlice({
             if (
               !findEqualItemsById(
                 state.resourcesPatterns[1].resources,
-                resource
+                resource.id
               )
             ) {
               state.resourcesPatterns[1].resources.push({ ...resource });
@@ -88,7 +84,7 @@ export const resourcesPatternsSlice = createSlice({
             if (
               !findEqualItemsById(
                 state.resourcesPatterns[2].resources,
-                resource
+                resource.id
               )
             ) {
               state.resourcesPatterns[2].resources.push({ ...resource });
@@ -99,7 +95,7 @@ export const resourcesPatternsSlice = createSlice({
             if (
               !findEqualItemsById(
                 state.resourcesPatterns[3].resources,
-                resource
+                resource.id
               )
             ) {
               state.resourcesPatterns[3].resources.push({ ...resource });

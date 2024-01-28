@@ -44,7 +44,10 @@ const formSchema = z.object({
     .nonnegative({ message: "Стоимость не может быть отрицательной." }),
   measureUnit: z
     .string({required_error: "Обязательно для заполнения."})
-    .min(1, { message: "Название единицы измерения обязательно." }),
+    .min(1, { message: "Название единицы измерения обязательно." })
+    .max(50, {
+      message: "Единица измерения не должна превышать 50 символов.",
+    }),
 });
 
 export const CreateResourcePatternModal = () => {

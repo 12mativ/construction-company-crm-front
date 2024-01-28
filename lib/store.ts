@@ -4,10 +4,11 @@ import resourcesPatternsReducer from "./features/resources-patterns/resourcesPat
 import counterpartiesReducer from "./features/counterparties/counterpartiesSlice";
 import organisationsReducer from "./features/organisations/organisationsSlice";
 import transactionsReducer from "./features/transactions/transactionsSlice";
+import worksGroupsReducer from "./features/works-groups/worksGroupsSlice";
 import userReducer from "./features/user/userSlice";
 
-export const findEqualItemsById = (array: any, item: any) => {
-  const equalItem = array.find((el: any) => el.id === item.id);
+export const findEqualItemsById = (array: any, id: any) => {
+  const equalItem = array.find((el: any) => el.id === id);
 
   return equalItem;
 };
@@ -21,6 +22,7 @@ export const makeStore = () => {
       counterpartiesReducer,
       organisationsReducer,
       transactionsReducer,
+      worksGroupsReducer,
     },
   });
 };

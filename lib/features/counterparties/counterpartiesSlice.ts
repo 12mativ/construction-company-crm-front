@@ -28,7 +28,7 @@ export const counterpartiesSlice = createSlice({
     },
 
     addCounterparty: (state, action: PayloadAction<ICounterparty>) => {
-      if (!findEqualItemsById(state.counterparties, action.payload)) {
+      if (!findEqualItemsById(state.counterparties, action.payload.id)) {
         state.counterparties.push(action.payload);
       }
     },

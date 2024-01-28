@@ -1,4 +1,4 @@
-import { ResourcePatternType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { $authHost } from "..";
 
 interface IResourcePattern {
@@ -7,7 +7,7 @@ interface IResourcePattern {
   orderPricePerUnit: number;
   extraCharge: number;
   measureUnit: string;
-  resourceType: ResourcePatternType;
+  resourceType: ResourceType;
 }
 
 export const getResourcePatterns = async () => {
