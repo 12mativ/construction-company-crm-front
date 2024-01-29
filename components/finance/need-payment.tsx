@@ -11,15 +11,15 @@ const NeedPayment = () => {
   return (
     <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[20%] font-semibold">Дата поступления</TableHead>
-            <TableHead className="w-[20%] text-center font-semibold">
+          <TableRow className="text-neutral-400 px-10 text-[16px]">
+            <TableHead className="w-[20%]">Дата поступления</TableHead>
+            <TableHead className="w-[20%] text-center">
               Сумма
             </TableHead>
-            <TableHead className="w-[20%] text-center font-semibold">
+            <TableHead className=" w-[20%] text-center">
               Контрагент
             </TableHead>
-            <TableHead className="w-[20%] text-right font-semibold">
+            <TableHead className="w-[20%] text-right">
               Срок выплаты
             </TableHead>
           </TableRow>

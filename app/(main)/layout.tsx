@@ -9,11 +9,11 @@ export default function MainLayout({
   return (
     <div>
       <Header />
-      <div className='flex bg-neutral-100 p-4 pt-28 gap-x-2'>
+      <div className='flex bg-neutral-100 p-20 pt-32 gap-x-2'>
         <div className="flex justify-center flex-[1]">
           <Menu />
         </div>
-        <main className="flex-[4]">{children}</main>
+        <main className="flex-[4] ml-28">{children}</main>
       </div>
     </div>
   );

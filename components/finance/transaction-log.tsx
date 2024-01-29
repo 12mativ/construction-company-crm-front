@@ -28,12 +28,12 @@ const TransactionLog = () => {
     <div className="bg-white rounded-lg p-4 shadow-lg">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[33%] font-semibold">Дата</TableHead>
-            <TableHead className="w-[33%] text-center font-semibold">
+          <TableRow className="text-neutral-400 px-10 text-[16px]">
+            <TableHead className="w-[33%]">Дата</TableHead>
+            <TableHead className="w-[33%] text-center">
               Операция
             </TableHead>
-            <TableHead className="w-[33%] text-right font-semibold">
+            <TableHead className="w-[33%] text-right">
               Сумма
             </TableHead>
           </TableRow>

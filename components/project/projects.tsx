@@ -30,23 +30,23 @@ const Projects = () => {
   }
 
   return (
-    <div className="flex gap-x-32 gap-y-10 flex-wrap">
+    <div className="flex gap-x-20 gap-y-10 flex-wrap">
       {projects.map((project) => {
         return <ProjectItem key={project.id} {...project} />;
       })}
 
       <div
-        className="flex flex-col gap-y-2 group justify-center items-center w-[270px] h-[300px] shadow-md rounded-lg
+        className="flex flex-col gap-y-3 group justify-center items-center w-[270px] h-[300px] shadow-md rounded-lg
           bg-neutral-300 hover:cursor-pointer transition mb-5"
         onClick={() => {
           onOpen("createProject");
         }}
       >
         <PlusCircle
-          className="text-neutral-600 group-hover:scale-110 transition"
-          size={50}
+          className="text-neutral-500 stroke-1 group-hover:scale-110 transition group-hover:text-red-600"
+          size={60}
         />
-        <p className="text-neutral-600 font-semibold uppercase">Добавить проект</p>
+        <p className="text-neutral-500 font-medium uppercase">Добавить проект</p>
       </div>
     </div>
   );

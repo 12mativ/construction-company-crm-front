@@ -33,15 +33,15 @@ const Counterparties = () => {
     <div className="bg-white rounded-lg p-4 shadow-lg">
       <Table>
         <TableHeader>
-          <TableRow key="mainHeader">
-            <TableHead className="flex-1 text-lg">Компания</TableHead>
-            <TableHead className="flex-2 w-[165px] text-center px-1 text-lg">
+          <TableRow key="mainHeader" className="text-neutral-400 px-10 text-[16px]">
+            <TableHead className="flex-1">Компания</TableHead>
+            <TableHead className="flex-2 w-[165px] text-center px-1">
               Телефон
             </TableHead>
-            <TableHead className="flex-2 w-[165px] text-center px-1 text-lg">
+            <TableHead className="flex-2 w-[165px] text-center px-1">
               Почта
             </TableHead>
-            <TableHead className="flex-2 w-[167px] text-center px-1 text-lg">
+            <TableHead className="flex-2 w-[167px] text-center px-1">
               Тип
             </TableHead>
           </TableRow>

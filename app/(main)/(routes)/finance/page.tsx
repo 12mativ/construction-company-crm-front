@@ -20,11 +20,11 @@ const Page = () => {
       <TotalBalance />
 
       <Tabs defaultValue="transactionLog">
-        <TabsList className="grid w-full grid-cols-2 h-16 bg-neutral-200">
-          <TabsTrigger value="transactionLog" className="py-3">
+        <TabsList className="grid w-full grid-cols-2 h-16 bg-neutral-200 ">
+          <TabsTrigger value="transactionLog" className="py-3 hover:bg-neutral-300">
             Журнал операций
           </TabsTrigger>
-          <TabsTrigger value="needPayment" className="py-3">
+          <TabsTrigger value="needPayment" className="py-3 hover:bg-neutral-300">
             Требует оплаты
           </TabsTrigger>
         </TabsList>

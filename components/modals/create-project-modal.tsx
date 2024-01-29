@@ -94,8 +94,8 @@ export const CreateProjectModal = () => {
               )}
             />
             <DialogFooter>
-              <Button disabled={isLoading} type="submit">
-                Сохранить
+              <Button disabled={isLoading} type="submit" className="hover:bg-red-600">
+                Создать
               </Button>
             </DialogFooter>
           </form>

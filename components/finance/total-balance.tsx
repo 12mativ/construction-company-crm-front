@@ -59,7 +59,7 @@ const TotalBalance = () => {
       <Table>
         <TableBody>
           <TableRow key="totalAmount">
-            <TableCell className="font-bold text-2xl">Общий баланс</TableCell>
+            <TableCell className="font-medium text-2xl">Общий баланс</TableCell>
             <TableCell></TableCell>
             <TableCell className="font-bold text-2xl text-right">
               {calculateTotalBalance(organisations)} ₽

@@ -14,7 +14,7 @@ const Header = () => {
   }
 
   return (
-    <div className="fixed flex items-center justify-between bg-white shadow-lg w-full h-[72px] px-12 z-50">
+    <div className="fixed flex items-center justify-between bg-white shadow-lg w-full h-[72px] px-20 z-50">
       <div className="relative h-[48px] w-[48px]">
         <Image src={logo} alt="Logo" fill className="rounded-full" />
       </div>

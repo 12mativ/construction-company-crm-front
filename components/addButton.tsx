@@ -18,7 +18,7 @@ const AddButton = ({ buttonText, modalName, data }: AddButtonProps) => {
       <Button variant="ghost" className="flex items-center group gap-x-2 p-6">
         <p>{buttonText}</p>
         <Plus
-          className="bg-neutral-400 text-base text-neutral-600 group-hover:bg-red-500
+          className="bg-neutral-300 text-base text-neutral-500 group-hover:bg-red-600
             group-hover:text-neutral-100 rounded-full p-1 transition"
           size={30}
         />

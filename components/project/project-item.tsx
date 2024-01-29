@@ -28,13 +28,13 @@ const ProjectItem = ({
     <Link
       href={`/projects/${id}`}
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg
-      bg-white hover:cursor-pointer hover:shadow-lg transition"
+      bg-white hover:cursor-pointer hover:shadow-lg transition hover:text-red-600" 
       >
       <div className={cn(
-        "flex flex-col gap-y-2 p-5",
+        "flex flex-col gap-y-2 p-6 ",
         isProjectPlanning && 'h-full'
       )}>
-        <p className="text-red-500 text-xl">{name}</p>
+        <p className="text-black-600 text-xl">{name}</p>
         <p className="text-zinc-400 text-sm flex-1">{startDate} - {endDate}</p>
 
         {isProjectPlanning && (

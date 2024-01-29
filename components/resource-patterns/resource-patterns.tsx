@@ -41,25 +41,25 @@ const ResourcePatterns = () => {
   const iconMap = {
     ["HUMAN"]: (
       <UserRound
-        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        className="bg-neutral-100 text-neutral-500 rounded-full p-1"
         size={30}
       />
     ),
     ["MECHANICAL"]: (
       <Bolt
-        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        className="bg-neutral-100 text-neutral-500 rounded-full p-1"
         size={30}
       />
     ),
     ["MATERIAL"]: (
       <BrickWall
-        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        className="bg-neutral-100 text-neutral-500 rounded-full p-1"
         size={30}
       />
     ),
     ["INVOICES"]: (
       <Shield
-        className="bg-neutral-400 text-neutral-700 rounded-full p-1"
+        className="bg-neutral-100 text-neutral-500 rounded-full p-1"
         size={30}
       />
     ),
@@ -85,7 +85,7 @@ const ResourcePatterns = () => {
               Цена для заказчика
             </TableCell>
           </TableRow>
-        </TableBody>
+        </TableBody >
       </Table>
       {resourcesPatterns.map((resourcesPattern) => (
         <Fragment key={resourcesPattern.type}>
@@ -96,7 +96,7 @@ const ResourcePatterns = () => {
           >
             <AccordionItem value={resourcesPattern.name} className="p-2 ">
               <AccordionTrigger
-                className="w-fit bg-neutral-100 shadow-lg font-bold 
+                className="w-fit bg-neutral-100 shadow-lg font-medium 
                   text-lg rounded-lg p-2"
               >
                 {resourcesPattern.name}
@@ -134,7 +134,7 @@ const ResourcePatterns = () => {
                   }
                 >
                   <Plus
-                    className="bg-neutral-400 text-base text-neutral-600 group-hover:bg-red-500
+                    className="bg-neutral-300 text-base text-neutral-500 group-hover:bg-red-600
                   group-hover:text-neutral-100 rounded-full p-1 transition"
                     size={30}
                   />

@@ -31,15 +31,15 @@ const Page = () => {
   }
 
   return (
-    <div className='flex flex-col gap-y-4 bg-white p-5 rounded-lg'>
+    <div className='flex flex-col gap-y-4 bg-white p-10 rounded-lg'>
       <p className="text-2xl font-semibold pb-2">Счета</p>
 
       <Table>
         <TableHeader>
-          <TableRow key="settingsHeader">
-            <TableHead className="w-[33%] text-lg font-semibold px-4">Название</TableHead>
-            <TableHead className='w-[33%] text-lg font-semibold text-center px-4'>Номер счета</TableHead>
-            <TableHead className="w-[33%] text-lg font-semibold text-right px-4">
+          <TableRow key="settingsHeader" className="text-neutral-400 px-10 text-[16px]">
+            <TableHead className="w-[33%] px-4">Название</TableHead>
+            <TableHead className='w-[33%] text-center px-4'>Номер счета</TableHead>
+            <TableHead className="w-[33%] text-right px-4">
               Баланс
             </TableHead>
           </TableRow>
