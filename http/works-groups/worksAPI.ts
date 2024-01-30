@@ -18,7 +18,7 @@ interface ICreateWorkProps {
   measureUnit: string;
   startDate: string;
   endDate: string;
-  workGroupId: number;
+  worksGroupId: number;
   resourceEntityList: IResourceEntityForCreatingWork[];
 }
 
@@ -29,7 +29,7 @@ export const createWork = async ({
   measureUnit,
   startDate,
   endDate,
-  workGroupId,
+  worksGroupId,
   resourceEntityList,
 }: ICreateWorkProps) => {
   const response = await $authHost.post("/api/v1/work", {
@@ -39,7 +39,32 @@ export const createWork = async ({
     measureUnit,
     startDate,
     endDate,
-    workGroupId,
+    worksGroupId,
+    resourceEntityList,
+  });
+
+  return response;
+};
+
+export const updateWork = async ({
+  workId,
+  name,
+  number,
+  quantity,
+  measureUnit,
+  startDate,
+  endDate,
+  worksGroupId,
+  resourceEntityList,
+}: ICreateWorkProps & {workId: number}) => {
+  const response = await $authHost.put(`/api/v1/work/${workId}`, {
+    name,
+    number,
+    quantity,
+    measureUnit,
+    startDate,
+    endDate,
+    worksGroupId,
     resourceEntityList,
   });
 

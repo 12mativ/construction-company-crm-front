@@ -27,16 +27,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "../ui/calendar";
-import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createResourcePattern } from "@/http/resources/resourcesAPI";
-import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { createWork } from "@/http/works-groups/worksAPI";
 import { addWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "../ui/calendar";
 
 const formSchema = z.object({
   name: z
@@ -83,25 +81,22 @@ export const CreateWorkModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const currentWorkGroup = data.workGroups!.find((workGroup) => workGroup.id === data.workGroupId!);
-    let nextNumber = Number(`${currentWorkGroup!.number}.1`);
-
-    if (currentWorkGroup!.workEntityList.length > 0) {
-      nextNumber = currentWorkGroup!.workEntityList[currentWorkGroup!.workEntityList.length - 1].number + 0.1;
-    } 
+    let nextNumber = 1;
+    if (data.workGroups!.length > 0) {
+      nextNumber = data.workGroups![data.workGroups!.length - 1].number + 1
+    }
 
     const response = await createWork({
       name: values.name,
       number: nextNumber,
       quantity: values.quantity,
       measureUnit: values.measureUnit,
-      startDate: format(values.startDate, 'yyyy-MM-dd'),
-      endDate: format(values.endDate, 'yyyy-MM-dd'),
-      workGroupId: data.workGroupId!,
-      resourceEntityList: []
-    })
+      startDate: format(values.startDate, "yyyy-MM-dd"),
+      endDate: format(values.endDate, "yyyy-MM-dd"),
+      worksGroupId: data.worksGroupId!,
+      resourceEntityList: [],
+    });
 
-    response.data.workGroupId = data.workGroupId!;
     dispatch(addWork(response.data));
     handleClose();
   };

@@ -6,7 +6,7 @@ interface IResourceEntity {
   id: number;
   name: string;
   measureUnit: string;
-  quantity: string;
+  quantity: number;
   costPricePerUnit: number;
   orderPricePerUnit: number;
   extraCharge: number;
@@ -15,7 +15,7 @@ interface IResourceEntity {
   resourceType: ResourceType;
 }
 
-interface IWorkEntity {
+export interface IWorkEntity {
   id: number;
   name: string;
   number: number;
@@ -31,7 +31,7 @@ interface IWorkEntity {
   endDate: string;
   resourceEntityList: IResourceEntity[];
   done: boolean;
-  workGroupId: number;
+  worksGroupId: number;
 }
 
 export interface IWorkGroup {
@@ -61,11 +61,19 @@ export const worksGroupsSlice = createSlice({
         state.worksGroups.push(action.payload);
       }
     },
-    addWork: (state, action: PayloadAction<IWorkEntity & {workGroupId: number}>) => {
-      const currentWorkGroup = state.worksGroups.find((workGroup) => workGroup.id === action.payload.workGroupId);
+    addWork: (state, action: PayloadAction<IWorkEntity>) => {
+      const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
 
       if (!findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)) {
         currentWorkGroup?.workEntityList.push(action.payload)
+      }
+    },
+    addResourceToWork: (state, action: PayloadAction<IWorkEntity>) => {
+      const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
+      const currentWork = currentWorkGroup?.workEntityList.find((workEntity) => workEntity.id === action.payload.id);
+      
+      if (!findEqualItemsById(currentWork?.resourceEntityList, action.payload.resourceEntityList[0].id)) {
+        currentWork?.resourceEntityList.push(action.payload.resourceEntityList[0]);
       }
     },
   },
@@ -73,4 +81,4 @@ export const worksGroupsSlice = createSlice({
 
 export default worksGroupsSlice.reducer;
 
-export const { addWorksGroups, addWorkGroup, addWork } = worksGroupsSlice.actions;
+export const { addWorksGroups, addWorkGroup, addWork, addResourceToWork } = worksGroupsSlice.actions;

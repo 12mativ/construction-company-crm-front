@@ -13,7 +13,7 @@ export default function MainLayout({
         <div className="flex justify-center flex-[1]">
           <Menu />
         </div>
-        <main className="flex-[4] ml-28">{children}</main>
+        <main className="flex-[4] ml-10">{children}</main>
       </div>
     </div>
   );

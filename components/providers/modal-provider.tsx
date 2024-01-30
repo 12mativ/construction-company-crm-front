@@ -9,8 +9,9 @@ import { CreateMoneyAccountModal } from "../modals/create-money-account-modal";
 import { CreateTransferModal } from "../modals/create-transfer-modal";
 import { CreateOutcomeModal } from "../modals/create-outcome-modal";
 import { CreateIncomeModal } from "../modals/create-income-modal";
-import { CreateWorkGroupModal } from "../modals/create-work-group";
+import { CreateWorkGroupModal } from "../modals/create-works-group-modal";
 import { CreateWorkModal } from "../modals/create-work-modal";
+import { AddResourceModal } from "../modals/add-resource-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
@@ -35,6 +36,7 @@ export function ModalProvider() {
       <CreateIncomeModal />
       <CreateWorkGroupModal />
       <CreateWorkModal />
+      <AddResourceModal />
     </>
   )
 }

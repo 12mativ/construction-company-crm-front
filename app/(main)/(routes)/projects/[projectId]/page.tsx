@@ -9,12 +9,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useParams } from "next/navigation";
 import React from "react";
 import { useEffect, useState } from "react";
+import { PlusSquare } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +30,8 @@ const Page = () => {
     (state) => state.worksGroupsReducer.worksGroups
   );
   const dispatch = useAppDispatch();
+
+  const { onOpen } = useModal();
 
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -43,18 +53,14 @@ const Page = () => {
       <Table>
         <TableHeader>
           <TableRow key="projectHeader">
-            <TableHead className="w-[30%] px-4">Ресурсы и работа</TableHead>
-            <TableHead className="w-[10%]">Кол-во</TableHead>
-            <TableHead className="w-[10%]">Ед. изм.</TableHead>
-            <TableHead className="w-[10%]">Цена, ед.</TableHead>
-            <TableHead className="w-[10%]">Себестоимость</TableHead>
-            <TableHead className="w-[10%]">Наценка</TableHead>
-            <TableHead className="w-[10%]">
-              Цена для заказчика
-            </TableHead>
-            <TableHead className="w-[10%]">
-              Стоим. для заказчика
-            </TableHead>
+            <TableHead className="w-[24%] px-4">Ресурсы и работа</TableHead>
+            <TableHead className="w-[140px]">Кол-во</TableHead>
+            <TableHead className="w-[140px]">Ед. изм.</TableHead>
+            <TableHead className="w-[140px]">Цена, ед.</TableHead>
+            <TableHead className="w-[140px]">Себестоимость</TableHead>
+            <TableHead className="w-[140px]">Наценка</TableHead>
+            <TableHead className="w-[140px]">Цена для заказчика</TableHead>
+            <TableHead className="w-[140px]">Стоим. для заказчика</TableHead>
           </TableRow>
         </TableHeader>
       </Table>
@@ -67,41 +73,94 @@ const Page = () => {
             </p>
           </div>
           {worksGroup.workEntityList.map((workEntity) => (
-            <Table key={workEntity.id}>
-              <TableBody>
-                <TableRow key={workEntity.id}>
-                  <TableCell className="w-[30%] px-4">
-                    {workEntity.name}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.quantity}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.measureUnit}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.costPricePerUnit}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.costPrice}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.extraCharge}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.orderPricePerUnit}
-                  </TableCell>
-                  <TableCell className="px-4 w-[10%]">
-                    {workEntity.orderPrice}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <Accordion key={workEntity.id} type="single" collapsible>
+              <AccordionItem value={workEntity.name}>
+                <AccordionTrigger className="py-0">
+                  <Table>
+                    <TableBody>
+                      <TableRow
+                        key={workEntity.id}
+                        className="hover:bg-muted/0"
+                      >
+                        <TableCell className="px-4 w-[20%] text-left">
+                          {worksGroup.number}.{workEntity.number}{" "}
+                          {workEntity.name}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.quantity}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.measureUnit}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.costPricePerUnit}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.costPrice}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.extraCharge}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.orderPricePerUnit}
+                        </TableCell>
+                        <TableCell className="px-1 w-[140px]">
+                          {workEntity.orderPrice}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </AccordionTrigger>
+
+                <AccordionContent className="bg-neutral-100">
+                  {workEntity.resourceEntityList.map((resourceEntity) => (
+                    <Table key={resourceEntity.id}>
+                      <TableBody>
+                        <TableRow key={resourceEntity.id}>
+                          <TableCell className="w-[22%] px-4">
+                            {resourceEntity.name}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.quantity}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.measureUnit}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.costPricePerUnit}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.costPrice}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.extraCharge}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.orderPricePerUnit}
+                          </TableCell>
+                          <TableCell className="px-1 w-[140px] text-center">
+                            {resourceEntity.orderPrice}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  ))}
+
+                  <button
+                    className="flex items-center gap-x-3 p-3"
+                    onClick={() => onOpen("addResourceModal", {work: workEntity})}
+                  >
+                    <PlusSquare />
+                    Добавить ресурс
+                  </button>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           ))}
           <AddButton
             buttonText="Новая работа"
             modalName="createWork"
-            data={{ workGroupId: worksGroup.id, workGroups: worksGroups }}
+            data={{ worksGroupId: worksGroup.id, workGroups: worksGroups }}
           />
         </React.Fragment>
       ))}
