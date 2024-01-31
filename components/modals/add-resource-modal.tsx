@@ -157,6 +157,7 @@ export const AddResourceModal = () => {
                 </button>
               </DialogDescription>
             </DialogHeader>
+            
           </>
         ) : (
           <>

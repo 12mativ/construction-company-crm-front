@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type ResourceType = "HUMAN" | "MECHANICAL" | "MATERIAL" | "INVOICES";
 
-interface IResourcePattern {
+export interface IResourcePattern {
   id: number;
   resourceType: ResourceType;
   name: string;

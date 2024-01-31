@@ -1,7 +1,8 @@
-import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { IResourcePattern, ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { $authHost } from "..";
+import { AxiosResponse } from "axios";
 
-interface IResourcePattern {
+interface IResourcePatternForCreate {
   name: string;
   costPricePerUnit: number;
   orderPricePerUnit: number;
@@ -10,7 +11,7 @@ interface IResourcePattern {
   resourceType: ResourceType;
 }
 
-export const getResourcePatterns = async () => {
+export const getResourcePatterns = async (): Promise<AxiosResponse<IResourcePattern[]>> => {
   const response = await $authHost.get("/api/v1/resource/pattern");
 
   return response;
@@ -23,7 +24,7 @@ export const createResourcePattern = async ({
   extraCharge,
   measureUnit,
   resourceType,
-}: IResourcePattern) => {
+}: IResourcePatternForCreate) => {
   const response = await $authHost.post("/api/v1/resource/pattern", {
     name,
     costPricePerUnit,

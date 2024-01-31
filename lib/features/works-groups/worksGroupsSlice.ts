@@ -70,10 +70,12 @@ export const worksGroupsSlice = createSlice({
     },
     addResourceToWork: (state, action: PayloadAction<IWorkEntity>) => {
       const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
-      const currentWork = currentWorkGroup?.workEntityList.find((workEntity) => workEntity.id === action.payload.id);
+
+      const index = currentWorkGroup!.workEntityList.indexOf(action.payload);
+      currentWorkGroup!.workEntityList.splice(index, 1);
       
-      if (!findEqualItemsById(currentWork?.resourceEntityList, action.payload.resourceEntityList[0].id)) {
-        currentWork?.resourceEntityList.push(action.payload.resourceEntityList[0]);
+      if (!findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)) {
+        currentWorkGroup!.workEntityList.push(action.payload);
       }
     },
   },
