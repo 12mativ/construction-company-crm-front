@@ -51,12 +51,6 @@ const formSchema = z.object({
       invalid_type_error: "Введите числовое значение.",
     })
     .positive({ message: "Количество должно быть положительным." }),
-  orderPricePerUnit: z.coerce
-    .number({
-      required_error: "Обязательно для заполнения.",
-      invalid_type_error: "Введите числовое значение.",
-    })
-    .nonnegative({ message: "Стоимость не может быть отрицательной." }),
   measureUnit: z
     .string({ required_error: "Обязательно для заполнения." })
     .min(1, { message: "Название единицы измерения обязательно." })
@@ -82,8 +76,9 @@ export const CreateWorkModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let nextNumber = 1;
-    if (data.workGroups!.length > 0) {
-      nextNumber = data.workGroups![data.workGroups!.length - 1].number + 1
+    const currentWorksGroup = data.workGroups!.find((worksGroup) => worksGroup.id === data.worksGroupId)
+    if (currentWorksGroup!.workEntityList.length > 0) {
+      nextNumber = currentWorksGroup!.workEntityList[currentWorksGroup!.workEntityList.length - 1].number + 1
     }
 
     const response = await createWork({
@@ -141,23 +136,6 @@ export const CreateWorkModal = () => {
                   <FormControl>
                     <Input
                       placeholder="Количество..."
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="orderPricePerUnit"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Стоимость для заказчика за единицу</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Стоимость для заказчика за единицу..."
                       disabled={isLoading}
                       {...field}
                     />
