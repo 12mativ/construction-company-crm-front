@@ -93,19 +93,19 @@ const Page = () => {
                           {workEntity.measureUnit}
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.costPricePerUnit}
+                          {workEntity.costPricePerUnit} ₽
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.costPrice}
+                          {workEntity.costPrice} ₽
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.extraCharge}
+                          {workEntity.extraCharge} ₽
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.orderPricePerUnit}
+                          {workEntity.orderPricePerUnit} ₽
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.orderPrice}
+                          {workEntity.orderPrice} ₽
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -124,22 +124,22 @@ const Page = () => {
                             {resourceEntity.quantity}
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.measureUnit}
+                            {resourceEntity.measureUnit} 
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.costPricePerUnit}
+                            {resourceEntity.costPricePerUnit} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.costPrice}
+                            {resourceEntity.costPrice} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.extraCharge}
+                            {resourceEntity.extraCharge} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.orderPricePerUnit}
+                            {resourceEntity.orderPricePerUnit} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.orderPrice}
+                            {resourceEntity.orderPrice} ₽
                           </TableCell>
                         </TableRow>
                       </TableBody>

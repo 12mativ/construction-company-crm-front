@@ -65,67 +65,73 @@ const AuthLogin = () => {
   };
 
   return (
-    <div className="bg-white p-5 rounded-lg shadow-lg">
-      <p className="text-center font-bold text-lg pb-4">Войдите в аккаунт</p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Логин (email)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Логин (email)..."
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Пароль</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Пароль..."
-                    type="password"
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex flex-col w-full">
-            <Button
-              disabled={isLoading}
-              type="submit"
-              className="w-fit self-end"
-            >
-              Войти
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-      {loginError && <p className="text-red-500 py-2">{loginError}</p>}
-
-      <p className="pt-5 text-center text-sm">
-        Нет аккаунта? <br />
-        <Link href={"/register"} className="text-red-500">
-          Зарегистрируйтесь!
-        </Link>
-      </p>
+    <div className="flex bg-white p-5 rounded-lg shadow-lg"> 
+      <div> 
+        <img src="/soyuz.png" alt="" width={380} height={100}/> 
+      </div> 
+      <div className=" w-80 flex flex-col justify-between"> 
+        <p className="text-center font-bold text-lg pt-8">Войдите в аккаунт</p> 
+        <Form {...form}> 
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> 
+            <FormField 
+              control={form.control} 
+              name="username" 
+              render={({ field }) => ( 
+                <FormItem> 
+                  <FormLabel>Логин (email)</FormLabel> 
+                  <FormControl> 
+                    <Input 
+                      placeholder="Логин (email)..." 
+                      disabled={isLoading} 
+                      {...field} 
+                    /> 
+                  </FormControl> 
+                  <FormMessage /> 
+                </FormItem> 
+              )} 
+            /> 
+ 
+            <FormField 
+              control={form.control} 
+              name="password" 
+              render={({ field }) => ( 
+                <FormItem> 
+                  <FormLabel>Пароль</FormLabel> 
+                  <FormControl> 
+                    <Input 
+                      placeholder="Пароль..." 
+                      type="password" 
+                      disabled={isLoading} 
+                      {...field} 
+                    /> 
+                  </FormControl> 
+                  <FormMessage /> 
+                </FormItem> 
+              )} 
+            /> 
+ 
+            <div className="flex flex-col w-full"> 
+              <Button 
+                disabled={isLoading} 
+                type="submit" 
+                className="hover:bg-red-600" 
+              > 
+                Войти 
+              </Button> 
+            </div> 
+          </form> 
+        </Form> 
+ 
+        {loginError && <p className="text-red-500 py-2">{loginError}</p>} 
+ 
+        <p className="pt-5 text-center text-sm"> 
+          Нет аккаунта? <br /> 
+          <Link href={"/register"} className="text-red-500"> 
+            Зарегистрируйтесь! 
+          </Link> 
+        </p> 
+      </div> 
+       
     </div>
   );
 };

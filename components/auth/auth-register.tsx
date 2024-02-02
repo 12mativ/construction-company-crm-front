@@ -82,94 +82,99 @@ const AuthRegister = () => {
   };
 
   return (
-    <div className="bg-white p-5 rounded-lg shadow-lg">
-      <p className="text-center font-bold text-lg pb-4">Зарегистрируйтесь</p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Логин (email)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Логин (email)..."
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Пароль</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Пароль..."
-                    disabled={isLoading}
-                    type="password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Роль</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Выберите вашу роль" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="ADMIN">Застройщик</SelectItem>
-                    <SelectItem value="CUSTOMER">Заказчик</SelectItem>
-                    <SelectItem value="ACCOUNTANT">Финансист</SelectItem>
-                    <SelectItem value="EMPLOYEE">Прораб</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex flex-col w-full">
-            <Button
-              disabled={isLoading}
-              type="submit"
-              className="w-fit self-end"
-            >
-              Зарегистрироваться
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-      {registerError && <p className="text-red-500 py-2">{registerError}</p>}
-
-      <p className="pt-5 text-center text-sm">
-        Есть аккаунт? <br />
-        <Link href={"/login"} className="text-red-600">
-          Войдите!
-        </Link>
-      </p>
+    <div className="flex bg-white p-5 rounded-lg shadow-lg"> 
+       <div> 
+        <img src="/soyuz.png" alt="" width={380} height={100}/> 
+      </div> 
+      <div className=" w-80 flex flex-col justify-between"> 
+        <p className="text-center font-bold text-lg pt-8">Зарегистрируйтесь</p> 
+        <Form {...form}> 
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> 
+            <FormField 
+              control={form.control} 
+              name="username" 
+              render={({ field }) => ( 
+                <FormItem> 
+                  <FormLabel>Логин (email)</FormLabel> 
+                  <FormControl> 
+                    <Input 
+                      placeholder="Логин (email)..." 
+                      disabled={isLoading} 
+                      {...field} 
+                    /> 
+                  </FormControl> 
+                  <FormMessage /> 
+                </FormItem> 
+              )} 
+            /> 
+ 
+            <FormField 
+              control={form.control} 
+              name="password" 
+              render={({ field }) => ( 
+                <FormItem> 
+                  <FormLabel>Пароль</FormLabel> 
+                  <FormControl> 
+                    <Input 
+                      placeholder="Пароль..." 
+                      disabled={isLoading} 
+                      type="password" 
+                      {...field} 
+                    /> 
+                  </FormControl> 
+                  <FormMessage /> 
+                </FormItem> 
+              )} 
+            /> 
+ 
+            <FormField 
+              control={form.control} 
+              name="role" 
+              render={({ field }) => ( 
+                <FormItem> 
+                  <FormLabel>Роль</FormLabel> 
+                  <Select 
+                    onValueChange={field.onChange} 
+                    defaultValue={field.value} 
+                  > 
+                    <FormControl> 
+                      <SelectTrigger> 
+                        <SelectValue placeholder="Выберите вашу роль" /> 
+                      </SelectTrigger> 
+                    </FormControl> 
+                    <SelectContent> 
+                      <SelectItem value="ADMIN">Застройщик</SelectItem> 
+                      <SelectItem value="CUSTOMER">Заказчик</SelectItem> 
+                      <SelectItem value="ACCOUNTANT">Финансист</SelectItem> 
+                      <SelectItem value="EMPLOYEE">Прораб</SelectItem> 
+                    </SelectContent> 
+                  </Select> 
+                  <FormMessage /> 
+                </FormItem> 
+              )} 
+            /> 
+ 
+            <div className="flex flex-col w-full"> 
+              <Button 
+                disabled={isLoading} 
+                type="submit" 
+                className="hover:bg-red-600" 
+              > 
+                Зарегистрироваться 
+              </Button> 
+            </div> 
+          </form> 
+        </Form> 
+ 
+        {registerError && <p className="text-red-500 py-2">{registerError}</p>} 
+ 
+        <p className="pt-5 text-center text-sm"> 
+          Есть аккаунт? <br /> 
+          <Link href={"/login"} className="text-red-600"> 
+            Войдите! 
+          </Link> 
+        </p> 
+      </div> 
     </div>
   );
 };
