@@ -12,13 +12,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getResourcePatterns } from "@/http/resources/resourcesAPI";
-import { IResourcePattern, ResourceType, addResourcesPatterns } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { ResourceType, addResourcesPatterns } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Bolt, BrickWall, Shield, UserRound } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";

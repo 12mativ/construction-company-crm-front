@@ -308,26 +308,26 @@ export const AddResourceModal = () => {
                         </FormItem>
                       )}
                     />
+                    <div>
+                      <p className="text-neutral-400">
+                        Процент наценки составляет{" "}
+                        <span className="font-semibold">
+                          {calculateExtraCharge()} %
+                        </span>
+                      </p>
+
+                      <DialogFooter>
+                        <Button
+                          disabled={isLoading}
+                          type="submit"
+                          className="hover:bg-red-600"
+                        >
+                          Создать
+                        </Button>
+                      </DialogFooter>
+                    </div>
                   </form>
                 </Form>
-                <div>
-                  <p className="text-neutral-400">
-                    Процент наценки составляет{" "}
-                    <span className="font-semibold">
-                      {calculateExtraCharge()} %
-                    </span>
-                  </p>
-
-                  <DialogFooter>
-                    <Button
-                      disabled={isLoading}
-                      type="submit"
-                      className="hover:bg-red-600"
-                    >
-                      Создать
-                    </Button>
-                  </DialogFooter>
-                </div>
               </div>
             </div>
           </>
