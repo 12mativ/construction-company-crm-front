@@ -186,7 +186,7 @@ export const CreateResourcePatternModal = () => {
 
             <DialogFooter>
               <Button disabled={isLoading} type="submit">
-                Сохранить
+                Создать
               </Button>
             </DialogFooter>
           </form>

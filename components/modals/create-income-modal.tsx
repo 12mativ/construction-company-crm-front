@@ -270,9 +270,6 @@ export const CreateIncomeModal = () => {
                         selected={field.value}
                         onSelect={field.onChange}
                           disabled={() => false}
-                        // disabled={(date) =>
-                        //   date > new Date("2100-01-01") || date < new Date("1900-01-01")
-                        // }
                         initialFocus
                       />
                     </PopoverContent>

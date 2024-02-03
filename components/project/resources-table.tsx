@@ -140,20 +140,20 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
 
   return (
     <>
-      <Table className="mb-2">
+      <Table className="mb-2 ">
         <TableBody className="border-b">
           <TableRow
             key="mainHeader"
-            className="flex text-neutral-400 px-10 text-[16px]"
+            className="flex text-neutral-400 text-[16px]"
           >
             <TableCell className="flex-1">Ресурсы</TableCell>
-            <TableCell className="flex-2 w-[165px] text-center px-1">
+            <TableCell className="flex-2 w-[155px] text-center px-1">
               Цена, ед.
             </TableCell>
-            <TableCell className="flex-2 w-[165px] text-center px-1">
+            <TableCell className="flex-2 w-[155px] text-center px-1">
               Наценка
             </TableCell>
-            <TableCell className="flex-2 w-[167px] text-center px-1">
+            <TableCell className="flex-2 w-[165px] text-center px-1">
               Цена для заказчика
             </TableCell>
           </TableRow>
@@ -297,7 +297,7 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
               </>
             )}
           />
-          <Button type="submit">Сохранить</Button>
+          <Button type="submit" className="hover:bg-red-600 " >Создать</Button>
         </form>
       </Form>
     </>
