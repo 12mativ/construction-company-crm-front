@@ -36,7 +36,7 @@ import {
   SelectTrigger,
 } from "../ui/select";
 import { useState } from "react";
-import ResourcesTable from "../project/resource-table";
+import ResourcesTable from "../project/resources-table";
 
 const formSchema = z.object({
   name: z
@@ -159,7 +159,7 @@ export const AddResourceModal = () => {
                 </button>
               </DialogDescription>
             </DialogHeader>
-            <ResourcesTable />
+            <ResourcesTable currentWork={data.work!} onClose={onClose} />
           </>
         ) : (
           <>

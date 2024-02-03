@@ -99,7 +99,7 @@ const Page = () => {
                           {workEntity.costPrice} ₽
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
-                          {workEntity.extraCharge} ₽
+                          {workEntity.extraCharge} %
                         </TableCell>
                         <TableCell className="px-1 w-[140px]">
                           {workEntity.orderPricePerUnit} ₽
@@ -133,7 +133,7 @@ const Page = () => {
                             {resourceEntity.costPrice} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
-                            {resourceEntity.extraCharge} ₽
+                            {resourceEntity.extraCharge} %
                           </TableCell>
                           <TableCell className="px-1 w-[140px] text-center">
                             {resourceEntity.orderPricePerUnit} ₽
