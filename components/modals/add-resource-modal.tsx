@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -28,15 +27,15 @@ import { useModal } from "@/hooks/use-modal-store";
 import { updateWork } from "@/http/works-groups/worksAPI";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { useState } from "react";
+import ResourcesTable from "../project/resources-table";
 import {
   Select,
   SelectContent,
   SelectItem,
-  SelectValue,
   SelectTrigger,
+  SelectValue,
 } from "../ui/select";
-import { useState } from "react";
-import ResourcesTable from "../project/resources-table";
 
 const formSchema = z.object({
   name: z
@@ -105,7 +104,6 @@ export const AddResourceModal = () => {
       endDate: currentWork.endDate,
       worksGroupId: currentWork.worksGroupId,
       resourceEntityList: [
-        ...currentWork.resourceEntityList,
         {
           name: values.name,
           measureUnit: values.measureUnit,
@@ -115,6 +113,7 @@ export const AddResourceModal = () => {
           extraCharge: calculateExtraCharge(),
           resourceType: values.resourceType as ResourceType,
         },
+        ...currentWork.resourceEntityList,
       ],
     });
 

@@ -29,6 +29,15 @@ const Page = () => {
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
   );
+  const sortedWorkGroups = worksGroups.map((workGroup) => {
+    const sortedWorkEntityList = workGroup.workEntityList.slice().sort((a, b) => a.number - b.number);
+    
+    return {
+      ...workGroup,
+      workEntityList: sortedWorkEntityList,
+    };
+  });
+
   const dispatch = useAppDispatch();
 
   const { onOpen } = useModal();
@@ -65,7 +74,7 @@ const Page = () => {
         </TableHeader>
       </Table>
 
-      {worksGroups.map((worksGroup) => (
+      {sortedWorkGroups.map((worksGroup) => (
         <React.Fragment key={worksGroup.id}>
           <div className="bg-neutral-200 rounded-lg p-3 shadow-xl my-5">
             <p className="text-neutral-500 text-xl font-bold">

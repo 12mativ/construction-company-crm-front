@@ -71,8 +71,8 @@ export const worksGroupsSlice = createSlice({
     addResourceToWork: (state, action: PayloadAction<IWorkEntity>) => {
       const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
 
-      const index = currentWorkGroup!.workEntityList.indexOf(action.payload);
-      currentWorkGroup!.workEntityList.splice(index, 1);
+      const index = currentWorkGroup!.workEntityList.findIndex((workEntity) => workEntity.id === action.payload.id);
+      currentWorkGroup!.workEntityList.splice(index!, 1);
       
       if (!findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)) {
         currentWorkGroup!.workEntityList.push(action.payload);
