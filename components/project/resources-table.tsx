@@ -147,13 +147,13 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
             className="flex text-neutral-400 text-[16px]"
           >
             <TableCell className="flex-1">Ресурсы</TableCell>
-            <TableCell className="flex-2 w-[155px] text-center px-1">
+            <TableCell className="flex-1 w-[130px] text-center px-1">
               Цена, ед.
             </TableCell>
-            <TableCell className="flex-2 w-[155px] text-center px-1">
+            <TableCell className="flex-2 w-[130px] text-center px-1">
               Наценка
             </TableCell>
-            <TableCell className="flex-2 w-[165px] text-center px-1">
+            <TableCell className="flex-2 w-[275px] text-center px-1">
               Цена для заказчика
             </TableCell>
           </TableRow>
@@ -236,22 +236,22 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
                                         {iconMap[resource.resourceType]}
                                         <p>{resource.name}</p>
                                       </div>
-                                      <div className="flex-2 w-[165px] text-center px-1">
+                                      <div className="flex-2 w-[155px] text-center px-1">
                                         {resource.costPricePerUnit} ₽
                                       </div>
-                                      <div className="flex-2 w-[165px] text-center px-1">
+                                      <div className="flex-2 w-[155px] text-center px-1">
                                         {resource.extraCharge} %
                                       </div>
-                                      <div className="flex-2 w-[167px] text-center px-1">
+                                      <div className="flex-2 w-[165px] text-center px-1">
                                         {resource.orderPricePerUnit} ₽
                                       </div>
                                       {field.value?.some(
                                           (item) => item.id === resource.id
                                         ) && (
-                                          <div className="flex flex-col gap-y-1">
+                                          <div className="flex flex-col gap-y-1 p-2">
                                             <FormLabel className="text-center">Кол-во</FormLabel>
                                             <Input
-                                              className="w-16 p-1"
+                                              className="w-12 text-center "
                                               value={
                                                 field.value.find(
                                                   (item) =>

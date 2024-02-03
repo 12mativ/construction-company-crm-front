@@ -144,7 +144,7 @@ export const AddResourceModal = () => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[625px]">
+      <DialogContent className="sm:max-w-[800px]">
         {isChoosingFromCatalog ? (
           <>
             <DialogHeader>
