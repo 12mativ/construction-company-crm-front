@@ -141,7 +141,7 @@ export default function TimeTable({
               style={{
                 ...ganttTimePeriodCell,
                 backgroundColor:
-                  dayOfTheWeek === 'S' ? 'var(--color-tertiary)' : '#fff',
+                  dayOfTheWeek === 'Вс' || dayOfTheWeek === 'Сб' ? 'var(--color-tertiary)' : '#fff',
               }}
               data-task={task?.id}
               data-date={formattedDate}

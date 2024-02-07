@@ -14,46 +14,50 @@ export default function Tasks({ tasks }) {
     <div id="gantt-grid-container__tasks">
       <div className="gantt-task-row"></div>
       <div className="gantt-task-row"></div>
+      <div className="gantt-task-row"></div>
       {tasks &&
-        tasks.map((tsk, i) => (
-          <div key={`${i}-${tsk?.id}-${tsk.name}`}>
-            <div className="gantt-task-row">
-              <p data-task-id={task?.id} ref={(el) => (inputRef.current[task.id] = el)}>
-                {tsk.number}. {tsk.name}
+        (
+          <>
+            {/* <div className="gantt-task-row">
+              <p data-task-id={1} ref={(el) => (inputRef.current[1] = el)}>
+                Заголовок
               </p>
+            </div> */}
+            {
+              tasks.map((tsk, i) => (
+                <div key={`${i}-${tsk?.id}-${tsk.name}`} className="gantt-task-row">
+                  <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)}>
+                    {tsk?.name}
+                  </p>
+                </div>
+              ))
+            }
+          </>
 
-            </div>
-            {tsk.tasks.map((task, index) => (
-              <div key={`${index}-${task?.id}-${task.name}`} className="gantt-task-row">
-                <p data-task-id={task?.id} ref={(el) => (inputRef.current[task.id] = el)}>
-                  {task?.name}
-                </p>
-              </div>
-            ))}
-          </div>
+        )
 
-        ))}
+      }
 
       <style jsx>{`
         #gantt-grid-container__tasks {
           outline: 0.5px solid var(--color-outline);
+          width: 200px;
         }
 
         .gantt-task-row {
           display: flex;
           outline: 0.5px solid var(--color-outline);
-          text-align: center;
           align-items: center;
-          justify-content: center;
           height: var(--cell-height);
           border: none;
         }
 
         p {
-          width: 127px;
+          width: 100%;
           border: none;
           outline: none;
           background: none;
+          padding: 10px;
         }
 
         button {

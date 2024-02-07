@@ -39,20 +39,17 @@ export default function WorksChart() {
     };
   });
 
-  sortedWorksGroups.forEach((worksGroup) => {
-    const groupTasks = worksGroup.workEntityList.map((workEntity) => ({
-      id: workEntity.id,
-      name: `${worksGroup.number}.${workEntity.number} ${workEntity.name}`,
-    }));
-
-    tasks.push({
-      id: worksGroup.id,
-      name: worksGroup.name,
-      number: worksGroup.number,
-      tasks: groupTasks,
+  sortedWorksGroups.forEach((workGroup) => {
+    taskDurations.push({
+      id: workGroup.id,
+      start: '2022-01-8',
+      end: '2022-01-8',
+      task: workGroup.id
     });
 
-    worksGroup.workEntityList.map((workEntity) => {
+    workGroup.workEntityList.forEach((workEntity) => {
+      tasks.push({ id: workEntity.id, name: `${workGroup.number}.${workEntity.number} ${workEntity.name}` });
+
       const startDate = new Date(workEntity.startDate).toISOString().split('T')[0];
       const endDate = new Date(workEntity.endDate).toISOString().split('T')[0];
 
@@ -62,8 +59,7 @@ export default function WorksChart() {
         end: endDate,
         task: workEntity.id
       });
-    })
-
+    });
   });
 
   useEffect(() => {
@@ -106,7 +102,7 @@ export default function WorksChart() {
           --color-orange: #ef5350;
           --color-outline: #e9eaeb;
           --border-radius: 5px;
-          --cell-height: 40px;
+          --cell-height: 60px;
           padding: 1rem;
         }
       `}</style>
