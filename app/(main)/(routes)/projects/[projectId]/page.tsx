@@ -1,11 +1,12 @@
 import ProjectEstimate from "@/components/project/project-estimate";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import WorksChart from "@/components/project/works-chart/works-chart";
 
 const Page = () => {
   return (
     <>
       <Tabs defaultValue="estimate">
-        <TabsList className="grid w-[30%] grid-cols-2 bg-neutral-200 ">
+        <TabsList className="grid w-[250px] grid-cols-2 bg-neutral-200 ">
           <TabsTrigger value="estimate" className="hover:bg-neutral-300">
             Смета
           </TabsTrigger>
@@ -17,10 +18,9 @@ const Page = () => {
           <ProjectEstimate />
         </TabsContent>
         <TabsContent value="workChart">
-          <div>График</div>
+          <WorksChart />
         </TabsContent>
-      </Tabs>  
-      
+      </Tabs>
     </>
   );
 };
