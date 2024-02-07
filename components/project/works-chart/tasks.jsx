@@ -14,14 +14,24 @@ export default function Tasks({ tasks }) {
     <div id="gantt-grid-container__tasks">
       <div className="gantt-task-row"></div>
       <div className="gantt-task-row"></div>
-      <div className="gantt-task-row"></div>
       {tasks &&
         tasks.map((tsk, i) => (
-          <div key={`${i}-${tsk?.id}-${tsk.name}`} className="gantt-task-row">
-            <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)}>
-              {tsk?.name}
-            </p>
+          <div key={`${i}-${tsk?.id}-${tsk.name}`}>
+            <div className="gantt-task-row">
+              <p data-task-id={task?.id} ref={(el) => (inputRef.current[task.id] = el)}>
+                {tsk.number}. {tsk.name}
+              </p>
+
+            </div>
+            {tsk.tasks.map((task, index) => (
+              <div key={`${index}-${task?.id}-${task.name}`} className="gantt-task-row">
+                <p data-task-id={task?.id} ref={(el) => (inputRef.current[task.id] = el)}>
+                  {task?.name}
+                </p>
+              </div>
+            ))}
           </div>
+
         ))}
 
       <style jsx>{`
@@ -44,7 +54,6 @@ export default function Tasks({ tasks }) {
           border: none;
           outline: none;
           background: none;
-          font-weight: bold;
         }
 
         button {

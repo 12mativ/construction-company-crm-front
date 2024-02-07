@@ -1,6 +1,10 @@
 'use client';
 
+import { useParams } from "next/navigation";
 import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import Grid from './grid';
 import Settings from './settings';
 import Tasks from './tasks';
@@ -8,8 +12,10 @@ import TimeRange from './time-range';
 import TimeTable from './time-table';
 
 export default function WorksChart() {
-  const [tasks, setTasks] = useState(null);
-  const [taskDurations, setTaskDurations] = useState(null);
+  const tasks = [];
+  const taskDurations = [];
+
+  const [isLoading, setIsLoading] = useState(false);
   const [timeRange, setTimeRange] = useState({
     fromSelectMonth: 0,
     fromSelectYear: new Date().getFullYear(),
@@ -17,9 +23,62 @@ export default function WorksChart() {
     toSelectYear: new Date().getFullYear(),
   });
 
+  const { projectId } = useParams();
+
+  const dispatch = useAppDispatch();
+  const worksGroups = useAppSelector(
+    (state) => state.worksGroupsReducer.worksGroups
+  );
+
+  const sortedWorksGroups = worksGroups.map((workGroup) => {
+    const sortedWorkEntityList = workGroup.workEntityList.slice().sort((a, b) => a.number - b.number);
+
+    return {
+      ...workGroup,
+      workEntityList: sortedWorkEntityList,
+    };
+  });
+
+  sortedWorksGroups.forEach((worksGroup) => {
+    const groupTasks = worksGroup.workEntityList.map((workEntity) => ({
+      id: workEntity.id,
+      name: `${worksGroup.number}.${workEntity.number} ${workEntity.name}`,
+    }));
+
+    tasks.push({
+      id: worksGroup.id,
+      name: worksGroup.name,
+      number: worksGroup.number,
+      tasks: groupTasks,
+    });
+
+    worksGroup.workEntityList.map((workEntity) => {
+      const startDate = new Date(workEntity.startDate).toISOString().split('T')[0];
+      const endDate = new Date(workEntity.endDate).toISOString().split('T')[0];
+
+      taskDurations.push({
+        id: workEntity.id,
+        start: startDate,
+        end: endDate,
+        task: workEntity.id
+      });
+    })
+
+  });
+
   useEffect(() => {
-    //TODO make request for works list
+    setIsLoading(true);
+    getWorksGroups(projectId)
+      .then((res) => {
+        dispatch(addWorksGroups(res.data));
+        console.log(res.data);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
+
+  if (isLoading) {
+    return <div>Загрузка...</div>
+  }
 
   return (
     <div id="gantt-container">
@@ -34,7 +93,6 @@ export default function WorksChart() {
           timeRange={timeRange}
           tasks={tasks}
           taskDurations={taskDurations}
-          setTaskDurations={setTaskDurations}
         />
       </Grid>
 
