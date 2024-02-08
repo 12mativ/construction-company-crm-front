@@ -26,7 +26,7 @@ const ProjectItem = ({
   const progress = (doneWorkQuantity * 100) / totalWorkQuantity;
   return (
     <Link
-      href={`/projects/${id}`}
+      href={`/project/${id}`}
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg
       bg-white hover:cursor-pointer hover:shadow-lg transition hover:text-red-600" 
       >

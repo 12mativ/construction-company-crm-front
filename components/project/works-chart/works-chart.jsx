@@ -40,15 +40,14 @@ export default function WorksChart() {
   });
 
   sortedWorksGroups.forEach((workGroup) => {
-    taskDurations.push({
-      id: workGroup.id,
-      start: '2022-01-8',
-      end: '2022-01-8',
-      task: workGroup.id
-    });
-
     workGroup.workEntityList.forEach((workEntity) => {
-      tasks.push({ id: workEntity.id, name: `${workGroup.number}.${workEntity.number} ${workEntity.name}` });
+      tasks.push({
+        id: workEntity.id,
+        name: `${workGroup.number}.${workEntity.number} ${workEntity.name}`,
+        number: workEntity.number,
+        worksGroupName: workGroup.name,
+        worksGroupNumber: workGroup.number
+      });
 
       const startDate = new Date(workEntity.startDate).toISOString().split('T')[0];
       const endDate = new Date(workEntity.endDate).toISOString().split('T')[0];
@@ -67,7 +66,6 @@ export default function WorksChart() {
     getWorksGroups(projectId)
       .then((res) => {
         dispatch(addWorksGroups(res.data));
-        console.log(res.data);
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -102,7 +100,7 @@ export default function WorksChart() {
           --color-orange: #ef5350;
           --color-outline: #e9eaeb;
           --border-radius: 5px;
-          --cell-height: 60px;
+          --cell-height: 70px;
           padding: 1rem;
         }
       `}</style>

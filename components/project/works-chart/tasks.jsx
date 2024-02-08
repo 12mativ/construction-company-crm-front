@@ -12,21 +12,19 @@ export default function Tasks({ tasks }) {
 
   return (
     <div id="gantt-grid-container__tasks">
-      <div className="gantt-task-row"></div>
-      <div className="gantt-task-row"></div>
-      <div className="gantt-task-row"></div>
+      <div className="gantt-task-row-small"></div>
+      <div className="gantt-task-row-small"></div>
+      <div className="gantt-task-row-small"></div>
       {tasks &&
         (
           <>
-            {/* <div className="gantt-task-row">
-              <p data-task-id={1} ref={(el) => (inputRef.current[1] = el)}>
-                Заголовок
-              </p>
-            </div> */}
             {
               tasks.map((tsk, i) => (
                 <div key={`${i}-${tsk?.id}-${tsk.name}`} className="gantt-task-row">
-                  <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)}>
+                  {tsk.number === 1 &&
+                    <p className='font-semibold text-lg line-clamp-1'>{tsk.worksGroupNumber}. {tsk.worksGroupName}</p>
+                  }
+                  <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)} className='line-clamp-1'>
                     {tsk?.name}
                   </p>
                 </div>
@@ -41,14 +39,26 @@ export default function Tasks({ tasks }) {
       <style jsx>{`
         #gantt-grid-container__tasks {
           outline: 0.5px solid var(--color-outline);
-          width: 200px;
+          width: 300px;
         }
 
         .gantt-task-row {
           display: flex;
+          flex-direction: column;
           outline: 0.5px solid var(--color-outline);
           align-items: center;
           height: var(--cell-height);
+          border: none;
+          padding: 10px;
+        }
+
+        .gantt-task-row-small {
+          display: flex;
+          outline: 0.5px solid var(--color-outline);
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          height: 40px;
           border: none;
         }
 
@@ -57,7 +67,9 @@ export default function Tasks({ tasks }) {
           border: none;
           outline: none;
           background: none;
-          padding: 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         button {

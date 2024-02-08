@@ -16,6 +16,15 @@ export default function TimeTable({
   const [taskDurationElDraggedId, setTaskDurationElDraggedId] = useState(null);
 
   // for dynamic css styling
+  const ganttTimePeriodTop = {
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridAutoColumns: 'minmax(30px, 1fr)',
+    outline: '0.5px solid var(--color-outline)',
+    textAlign: 'center',
+    height: '40px',
+  };
+
   const ganttTimePeriod = {
     display: 'grid',
     gridAutoFlow: 'column',
@@ -27,8 +36,14 @@ export default function TimeTable({
 
   const ganttTimePeriodSpan = {
     margin: 'auto',
-    fontWeight: 'bold',
   };
+
+  const ganttTimePeriodMonth = {
+    margin: 'auto',
+    fontWeight: 'bold',
+    fontSize: '20px'
+  };
+
 
   const ganttTimePeriodCell = {
     position: 'relative',
@@ -41,10 +56,9 @@ export default function TimeTable({
     height: 'calc(var(--cell-height) - 1px)',
     zIndex: '1',
     background:
-      'linear-gradient(90deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%)',
+      'linear-gradient(90deg, #de5b5b 0%, #d42424 100%)',
     borderRadius: 'var(--border-radius)',
     boxShadow: '3px 3px 3px rgba(0, 0, 0, 0.05)',
-    cursor: 'move',
   };
 
   // creating rows
@@ -70,8 +84,8 @@ export default function TimeTable({
   for (let i = 0; i < numMonths; i++) {
     // create month rows
     monthRows.push(
-      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
-        <span style={ganttTimePeriodSpan}>
+      <div key={i} style={{ ...ganttTimePeriodTop, outline: 'none' }}>
+        <span style={ganttTimePeriodMonth}>
           {months[month.getMonth()] + ' ' + month.getFullYear()}
         </span>
       </div>
@@ -84,13 +98,13 @@ export default function TimeTable({
 
     for (let j = 1; j <= numDays; j++) {
       dayRow.push(
-        <div key={j} style={{ ...ganttTimePeriod, outline: 'none' }}>
+        <div key={j} style={{ ...ganttTimePeriodTop, outline: 'none' }}>
           <span style={ganttTimePeriodSpan}>{j}</span>
         </div>
       );
 
       weekRow.push(
-        <div key={j} style={{ ...ganttTimePeriod, outline: 'none' }}>
+        <div key={j} style={{ ...ganttTimePeriodTop, outline: 'none' }}>
           <span style={{ ...ganttTimePeriodSpan, color: 'red' }}>
             {getDayOfWeek(currYear, currMonth - 1, j - 1)}
           </span>
@@ -99,13 +113,13 @@ export default function TimeTable({
     }
 
     dayRows.push(
-      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
+      <div key={i} style={{ ...ganttTimePeriodTop, outline: 'none' }}>
         {dayRow}
       </div>
     );
 
     weekRows.push(
-      <div key={i} style={{ ...ganttTimePeriod, outline: 'none' }}>
+      <div key={i} style={{ ...ganttTimePeriodTop, outline: 'none' }}>
         {weekRow}
       </div>
     );
@@ -151,7 +165,6 @@ export default function TimeTable({
                   return (
                     <div
                       key={`${i}-${el?.id}`}
-                      draggable="true"
                       tabIndex="0"
                       style={{
                         ...taskDuration,
@@ -162,7 +175,6 @@ export default function TimeTable({
                         opacity:
                           taskDurationElDraggedId === el?.id ? '0.5' : '1',
                       }}
-                      onKeyDown={(e) => deleteTaskDuration(e, el?.id)}
                     ></div>
                   );
                 }
@@ -199,7 +211,6 @@ export default function TimeTable({
           gridTemplateColumns: `repeat(${numMonths}, 1fr)`,
           paddingLeft: '0.5px',
         }}
-        onDragOver={(e) => e.preventDefault()}
       >
         {taskRows}
       </div>
@@ -217,20 +228,11 @@ export default function TimeTable({
           z-index: 1;
           background: linear-gradient(
             90deg,
-            var(--color-primary-light) 0%,
-            var(--color-primary-dark) 100%
+            #b53f3f 0%,
+            #802d2d 100%
           );
           border-radius: 2px;
           box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);
-          cursor: move;
-        }
-
-        .taskDuration:focus {
-          outline: 1px solid black;
-        }
-
-        .dragging {
-          opacity: 0.5;
         }
       `}</style>
     </div>
