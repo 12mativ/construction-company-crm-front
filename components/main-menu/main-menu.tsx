@@ -1,11 +1,11 @@
 "use client";
 
 import { BookOpen, FolderDot, Settings, Wallet } from "lucide-react";
-import MenuItem from "./menu-item";
+import MenuItem from "../menu-item";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const Menu = () => {
+const MainMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();
 
   const params = usePathname();
@@ -63,4 +63,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default MainMenu;

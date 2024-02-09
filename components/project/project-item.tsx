@@ -4,7 +4,7 @@ import { CalendarDays } from "lucide-react";
 import Link from "next/link";
 
 interface ProjectItemProps {
-  id: number
+  id: number;
   name: string;
   startDate: null;
   endDate: null;
@@ -18,29 +18,34 @@ const ProjectItem = ({
   startDate,
   endDate,
   totalWorkQuantity,
-  doneWorkQuantity
+  doneWorkQuantity,
 }: ProjectItemProps) => {
-
   const isProjectPlanning = doneWorkQuantity === 0;
-  
+
   const progress = (doneWorkQuantity * 100) / totalWorkQuantity;
   return (
     <Link
-      href={`/project/${id}`}
+      href={`/project/${id}/planning`}
       className="flex flex-col justify-between w-[270px] h-[300px] shadow-md rounded-lg
-      bg-white hover:cursor-pointer hover:shadow-lg transition hover:text-red-600" 
+      bg-white hover:cursor-pointer hover:shadow-lg transition hover:text-red-600"
+    >
+      <div
+        className={cn(
+          "flex flex-col gap-y-2 p-6 ",
+          isProjectPlanning && "h-full"
+        )}
       >
-      <div className={cn(
-        "flex flex-col gap-y-2 p-6 ",
-        isProjectPlanning && 'h-full'
-      )}>
         <p className="text-black-600 text-xl">{name}</p>
-        <p className="text-zinc-400 text-sm flex-1">{startDate} - {endDate}</p>
+        <p className="text-zinc-400 text-sm flex-1">
+          {startDate} - {endDate}
+        </p>
 
         {isProjectPlanning && (
           <div className="flex items-center w-fit gap-x-2 bg-neutral-300 py-1 px-3 rounded-lg">
-            <CalendarDays size={20} className='text-neutral-600' />
-            <p className='text-neutral-600 text-sm font-semibold'>Планирование</p>
+            <CalendarDays size={20} className="text-neutral-600" />
+            <p className="text-neutral-600 text-sm font-semibold">
+              Планирование
+            </p>
           </div>
         )}
       </div>
