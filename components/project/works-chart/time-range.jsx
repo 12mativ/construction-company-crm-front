@@ -47,7 +47,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
   return (
     <div id="time-range__container">
       <div id="time-range">
-        <fieldset id="select-from" style={{ paddingLeft: '0px' }}>
+        <fieldset id="select-from" style={{ paddingLeft: '0px', paddingRight: '10px' }}>
           <legend>От</legend>
           <select
             id="from-select-month"
@@ -90,9 +90,7 @@ export default function TimeRange({ timeRange, setTimeRange }) {
         </fieldset>
       </div>
       <style jsx>{`
-        #time-range__container {
-          padding: 10px;
-        }
+
 
         #time-range__container > * {
           display: flex;
@@ -108,7 +106,6 @@ export default function TimeRange({ timeRange, setTimeRange }) {
 
         fieldset {
           border: none;
-          padding: 0.5rem;
         }
 
         fieldset label {

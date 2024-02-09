@@ -1,4 +1,10 @@
 import { useEffect, useRef } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export default function Tasks({ tasks }) {
   const inputRef = useRef([]);
@@ -21,12 +27,26 @@ export default function Tasks({ tasks }) {
             {
               tasks.map((tsk, i) => (
                 <div key={`${i}-${tsk?.id}-${tsk.name}`} className="gantt-task-row">
-                  {tsk.number === 1 &&
-                    <p className='font-semibold text-lg line-clamp-1'>{tsk.worksGroupNumber}. {tsk.worksGroupName}</p>
-                  }
-                  <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)} className='line-clamp-1'>
-                    {tsk?.name}
-                  </p>
+                  <TooltipProvider className="w-full overflow-hidden text-ellipsis text-left">
+                    <Tooltip className="flex flex-col">
+                      <TooltipTrigger className='w-full text-left'>
+                        {tsk.number === 1 &&
+                          <p className='font-semibold text-lg'>{tsk.worksGroupNumber}. {tsk.worksGroupName}</p>
+                        }
+                        <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)} className=' text-sm'>
+                          {tsk?.name}
+                        </p>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {tsk.number === 1 &&
+                          <p className='font-semibold text-lg'>{tsk.worksGroupNumber}. {tsk.worksGroupName}</p>
+                        }
+                        <p data-task-id={tsk?.id} ref={(el) => (inputRef.current[i] = el)}>
+                          {tsk?.name}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               ))
             }
@@ -47,6 +67,7 @@ export default function Tasks({ tasks }) {
           flex-direction: column;
           outline: 0.5px solid var(--color-outline);
           align-items: center;
+          justify-content: center;
           height: var(--cell-height);
           border: none;
           padding: 10px;

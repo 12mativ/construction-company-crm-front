@@ -53,7 +53,8 @@ export default function TimeTable({
 
   const taskDuration = {
     position: 'absolute',
-    height: 'calc(var(--cell-height) - 1px)',
+    marginTop: '8px',
+    height: 'calc(var(--cell-height) - 16px)',
     zIndex: '1',
     background:
       'linear-gradient(90deg, #de5b5b 0%, #d42424 100%)',

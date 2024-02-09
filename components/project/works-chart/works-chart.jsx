@@ -46,7 +46,7 @@ export default function WorksChart() {
         name: `${workGroup.number}.${workEntity.number} ${workEntity.name}`,
         number: workEntity.number,
         worksGroupName: workGroup.name,
-        worksGroupNumber: workGroup.number
+        worksGroupNumber: workGroup.number,
       });
 
       const startDate = new Date(workEntity.startDate).toISOString().split('T')[0];

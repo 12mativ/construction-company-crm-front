@@ -7,7 +7,7 @@ export default function Settings({ children }) {
           display: flex;
           justify-content: end;
           flex-wrap: wrap;
-          padding: 10px 0 ;
+          padding: 10px 0;
         }
       `}</style>
     </div>

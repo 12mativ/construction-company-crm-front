@@ -20,7 +20,7 @@ const Page = () => {
           onClick={() => router.push("/projects")}
           className="w-10 h-10 rounded-full hover:bg-neutral-300 cursor-pointer transition"
         />
-        <div>
+        <div className="flex flex-col gap-y-2">
           <p className="text-xl font-semibold uppercase">
             {currentProject?.name}
           </p>
