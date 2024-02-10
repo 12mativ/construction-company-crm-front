@@ -5,6 +5,7 @@ import counterpartiesReducer from "./features/counterparties/counterpartiesSlice
 import organisationsReducer from "./features/organisations/organisationsSlice";
 import transactionsReducer from "./features/transactions/transactionsSlice";
 import worksGroupsReducer from "./features/works-groups/worksGroupsSlice";
+import worksProgressReducer from "./features/works-progress/worksProgressSlice";
 import userReducer from "./features/user/userSlice";
 
 export const findEqualItemsById = (array: any, id: any) => {
@@ -23,6 +24,7 @@ export const makeStore = () => {
       organisationsReducer,
       transactionsReducer,
       worksGroupsReducer,
+      worksProgressReducer
     },
   });
 };
