@@ -1,7 +1,10 @@
 import { $authHost } from "..";
 
-interface IGetWorksProgressProps {
-  projectId: string;
+interface ICreateWorksProgressProps {
+  quantityBefore: number;
+  quantityAfter: number;
+  timestamp: string;
+  workId: number;
 }
 
 export const getWorksProgress = async (projectId: string) => {
@@ -10,27 +13,18 @@ export const getWorksProgress = async (projectId: string) => {
   return response;
 };
 
-// export const updateWork = async ({
-//   workId,
-//   name,
-//   number,
-//   quantity,
-//   measureUnit,
-//   startDate,
-//   endDate,
-//   worksGroupId,
-//   resourceEntityList,
-// }: ICreateWorkProps & {workId: number}) => {
-//   const response = await $authHost.put(`/api/v1/work/${workId}`, {
-//     name,
-//     number,
-//     quantity,
-//     measureUnit,
-//     startDate,
-//     endDate,
-//     worksGroupId,
-//     resourceEntityList,
-//   });
+export const updateWorkProgress = async ({
+  quantityBefore,
+  quantityAfter,
+  timestamp,
+  workId,
+}: ICreateWorksProgressProps) => {
+  const response = await $authHost.post("/api/v1/progressOfWork", {
+    quantityBefore,
+    quantityAfter,
+    timestamp,
+    workId,
+  });
 
-//   return response;
-// };
+  return response;
+};

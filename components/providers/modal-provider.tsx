@@ -12,6 +12,7 @@ import { CreateIncomeModal } from "../modals/create-income-modal";
 import { CreateWorkGroupModal } from "../modals/create-works-group-modal";
 import { CreateWorkModal } from "../modals/create-work-modal";
 import { AddResourceModal } from "../modals/add-resource-modal";
+import { UpdateWorkProgressModal } from "../modals/update-work-progress";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
@@ -37,6 +38,7 @@ export function ModalProvider() {
       <CreateWorkGroupModal />
       <CreateWorkModal />
       <AddResourceModal />
+      <UpdateWorkProgressModal />
     </>
   )
 }

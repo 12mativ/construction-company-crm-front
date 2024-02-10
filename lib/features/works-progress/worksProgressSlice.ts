@@ -1,3 +1,4 @@
+import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IWorksProgress {
@@ -23,6 +24,11 @@ export const worksProgressSlice = createSlice({
   reducers: {
     addWorksProgress: (state, action: PayloadAction<IWorksProgress[]>) => {
       state.worksProgress = action.payload;
+    }, 
+    addWorkProgress: (state, action: PayloadAction<IWorksProgress>) => {
+      if (!findEqualItemsById(state.worksProgress, action.payload.id)) {
+        state.worksProgress.push(action.payload);
+      }
     }, 
   },
 });

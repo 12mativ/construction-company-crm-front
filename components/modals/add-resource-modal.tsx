@@ -78,7 +78,7 @@ export const AddResourceModal = () => {
 
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === "addResourceModal";
+  const isModalOpen = isOpen && type === "addResource";
 
   const dispatch = useAppDispatch();
 

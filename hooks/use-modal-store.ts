@@ -1,5 +1,8 @@
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { IWorkEntity, IWorkGroup } from "@/lib/features/works-groups/worksGroupsSlice";
+import {
+  IWorkEntity,
+  IWorkGroup,
+} from "@/lib/features/works-groups/worksGroupsSlice";
 import { create } from "zustand";
 
 export type ModalType =
@@ -13,7 +16,8 @@ export type ModalType =
   | "createIncome"
   | "createWorkGroup"
   | "createWork"
-  | "addResourceModal";
+  | "addResource"
+  | "updateWorkProgress";
 
 export interface ModalData {
   resourceType?: ResourceType;
@@ -21,7 +25,7 @@ export interface ModalData {
   projectId?: string;
   workGroups?: IWorkGroup[];
   worksGroupId?: number;
-  work?: IWorkEntity
+  work?: IWorkEntity;
 }
 
 interface ModalStore {
