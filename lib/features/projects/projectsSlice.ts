@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type ProjectType = {
   id: number
   name: string;
-  startDate: null;
-  endDate: null;
+  startDate: string;
+  endDate: string;
   totalWorkQuantity: number;
   doneWorkQuantity: number;
 }

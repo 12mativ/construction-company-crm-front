@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="p-2">
       <Header />
       <div className="flex bg-neutral-100 p-20 pt-32 gap-x-2">
         <div className="flex justify-center flex-[1]">

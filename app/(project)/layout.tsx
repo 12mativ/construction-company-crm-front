@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { useAppSelector } from "@/hooks/redux-hooks";
 import { useParams, useRouter } from "next/navigation";
 import ProjectMenu from "@/components/project-menu/project-menu";
+import { formateComplexDate } from "@/lib/utils";
 
 export default function MainLayout({
   children,
@@ -17,7 +18,7 @@ export default function MainLayout({
   const router = useRouter();
 
   return (
-    <div>
+    <div className="pb-5">
       <Header />
       <div className="px-20 pt-32 flex">
         <div className="flex items-center gap-x-4 w-[295px] mb-6">
@@ -29,8 +30,12 @@ export default function MainLayout({
             <p className="text-xl font-semibold uppercase">
               {currentProject?.name}
             </p>
-            <div className="bg-white p-2 rounded-lg shadow-lg text-center">
-              {currentProject?.startDate} - {currentProject?.endDate}
+
+            <div className="bg-white text-neutral-500 p-2 rounded-lg shadow-lg text-center">
+              {currentProject!.startDate && currentProject!.endDate
+                ? `${formateComplexDate(currentProject!.startDate)} -
+                ${formateComplexDate(currentProject!.endDate)}`
+                : "-"}
             </div>
           </div>
         </div>

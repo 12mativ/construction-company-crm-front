@@ -1,9 +1,9 @@
+import { ModalProvider } from "@/components/providers/modal-provider";
+import StoreProvider from "@/components/providers/redux-store-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
+import "react-photo-view/dist/react-photo-view.css";
 import "./globals.css";
-import { ModalProvider } from "@/components/providers/modal-provider";
-import { Provider } from "react-redux";
-import StoreProvider from "@/components/providers/redux-store-provider";
 
 const font = Open_Sans({ subsets: ["latin"] });
 

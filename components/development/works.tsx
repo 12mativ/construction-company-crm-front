@@ -77,7 +77,7 @@ const Works = () => {
             <TableBody key={workEntity.id}>
               <TableRow
                 onClick={() =>
-                  onOpen("updateWorkProgress", { work: workEntity })
+                  onOpen("updateWorkProgress", { work: workEntity, projectId: projectId })
                 }
                 key={workEntity.id}
                 className="flex hover:bg-muted/0 rounded-lg cursor-pointer hover:bg-neutral-100 transition"

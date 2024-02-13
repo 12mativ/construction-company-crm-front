@@ -5,6 +5,7 @@ import {
   FileCheck2,
   FolderDot,
   HardHat,
+  Image,
   Settings,
   UsersRound,
   Wallet,
@@ -50,10 +51,17 @@ const ProjectMenu = () => {
     },
     {
       id: 5,
+      projectMenuItemName: "Фото",
+      icon: <Image className="stroke-1" size={25} />,
+      href: `/project/${projectId}/photos`,
+      isActive: activeId === 5,
+    },
+    {
+      id: 6,
       projectMenuItemName: "Команда",
       icon: <UsersRound className="stroke-1" size={25} />,
       href: `/project/${projectId}/team`,
-      isActive: activeId === 5,
+      isActive: activeId === 6,
     },
   ];
 

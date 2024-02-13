@@ -1,13 +1,13 @@
 import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
+import { cn, formateComplexDate } from "@/lib/utils";
 import { CalendarDays } from "lucide-react";
 import Link from "next/link";
 
 interface ProjectItemProps {
   id: number;
   name: string;
-  startDate: null;
-  endDate: null;
+  startDate: string;
+  endDate: string;
   totalWorkQuantity: number;
   doneWorkQuantity: number;
 }
@@ -37,7 +37,7 @@ const ProjectItem = ({
       >
         <p className="text-black-600 text-xl">{name}</p>
         <p className="text-zinc-400 text-sm flex-1">
-          {startDate} - {endDate}
+          {startDate && endDate ? `${formateComplexDate(startDate)} - ${formateComplexDate(endDate)}` : "-"}
         </p>
 
         {isProjectPlanning && (

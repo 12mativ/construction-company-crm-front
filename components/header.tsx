@@ -1,10 +1,10 @@
 "use client";
 
+import { useAppSelector } from "@/hooks/redux-hooks";
 import Image from "next/image";
-import logo from "/assets/1.png";
-import UserAvatar from "./user-avatar";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { redirect } from "next/navigation";
+import UserAvatar from "./user-avatar";
+import logo from "/assets/1.png";
 
 const Header = () => {
   const user = useAppSelector((state) => state.userReducer.user);

@@ -35,6 +35,8 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
+import { getProjects } from "@/http/projects/projectsAPI";
+import { addProjects } from "@/lib/features/projects/projectsSlice";
 
 const formSchema = z.object({
   name: z
@@ -91,8 +93,11 @@ export const CreateWorkModal = () => {
       worksGroupId: data.worksGroupId!,
       resourceEntityList: [],
     });
-
     dispatch(addWork(response.data));
+
+    const newProjects = await getProjects()
+    dispatch(addProjects(newProjects.data))
+    
     handleClose();
   };
 

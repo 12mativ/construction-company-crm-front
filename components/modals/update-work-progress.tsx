@@ -29,13 +29,14 @@ import {
 } from "@/components/ui/popover";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { updateWorkProgress } from "@/http/works-progress/worksProgressAPI";
-import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { getWorksProgress, updateWorkProgress } from "@/http/works-progress/worksProgressAPI";
+import { addWorkProgress, addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Calendar } from "../ui/calendar";
 import { Progress } from "../ui/progress";
+import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 
 export const UpdateWorkProgressModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -66,14 +67,17 @@ export const UpdateWorkProgressModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateWorkProgress({
+    const updatedWorkProgress = await updateWorkProgress({
       quantityBefore: data.work!.doneQuantity,
       quantityAfter: data.work!.doneQuantity + values.quantity,
       timestamp: format(values.timestamp, "yyyy-MM-dd"),
       workId: data.work!.id,
     });
 
-    dispatch(addResource(response.data));
+    const newWorksGroups = await getWorksGroups(data.projectId!);
+    dispatch(addWorksGroups(newWorksGroups.data));
+      
+    dispatch(addWorkProgress(updatedWorkProgress.data));
     handleClose();
   };
 
@@ -109,7 +113,7 @@ export const UpdateWorkProgressModal = () => {
           <p className="text-neutral-400 text-sm">Прогресс работ</p>
           <div className="flex gap-x-2 items-center">
             <Progress value={calculateProgress()} />
-            <span className="text-neutral-400">{calculateProgress()}%</span>
+            <span className="text-neutral-400">{calculateProgress().toFixed(2)}%</span>
           </div>
         </div>
 
@@ -176,7 +180,7 @@ export const UpdateWorkProgressModal = () => {
               <Button disabled={isLoading} type="submit">
                 Создать
               </Button>
-              <Button onClick={handleClose} disabled={isLoading} type="button">
+              <Button onClick={handleClose} className="bg-red-500 hover:bg-red-400" disabled={isLoading} type="button">
                 Отмена
               </Button>
             </DialogFooter>
