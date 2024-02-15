@@ -22,12 +22,14 @@ const WorksJournal = () => {
     (state) => state.worksProgressReducer.worksProgress
   );
 
-  const sortedWorksProgress = worksProgress.slice().sort((a, b) => {
-    const dateA = new Date(a.timestamp);
-    const dateB = new Date(b.timestamp);
+  const sortedWorksProgress = worksProgress
+    .slice()
+    .sort((a, b) => {
+      const dateA = new Date(a.timestamp);
+      const dateB = new Date(b.timestamp);
 
-    return dateB.getTime() - dateA.getTime();
-  });
+      return dateB.getTime() - dateA.getTime();
+    });
 
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
@@ -87,7 +89,8 @@ const WorksJournal = () => {
                   {formateSimpleDate(workProgress.timestamp)}
                 </TableCell>
                 <TableCell className="w-[180px] text-center px-1">
-                  {workProgress.quantityAfter - workProgress.quantityBefore} {currentWork?.measureUnit}
+                  {workProgress.quantityAfter - workProgress.quantityBefore}{" "}
+                  {currentWork?.measureUnit}
                 </TableCell>
                 <TableCell className="w-[180px] text-center px-1">
                   <span className="text-red-500">

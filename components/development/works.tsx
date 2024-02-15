@@ -12,7 +12,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
-import { formateComplexDate } from "@/lib/utils";
+import { cn, formateComplexDate } from "@/lib/utils";
+import { CheckSquare2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -31,6 +32,15 @@ const Works = () => {
         const dateB = new Date(b.endDate);
 
         return dateA.getTime() - dateB.getTime();
+      })
+      .sort((a, b) => {
+        if (a.doneQuantity === a.quantity && b.doneQuantity !== b.quantity) {
+          return 1;
+        } else if (a.doneQuantity !== a.quantity && b.doneQuantity === b.quantity) {
+          return -1;
+        } else {
+          return 0;
+        }
       });
 
     return {
@@ -82,7 +92,8 @@ const Works = () => {
                 key={workEntity.id}
                 className="flex hover:bg-muted/0 rounded-lg cursor-pointer hover:bg-neutral-100 transition"
               >
-                <TableCell className="flex-1 text-left">
+                <TableCell className="flex gap-x-1 items-center flex-1 text-left">
+                  {workEntity.quantity === workEntity.doneQuantity && <CheckSquare2 className="text-emerald-500" />}
                   {workEntity.name}
                 </TableCell>
                 <TableCell className="flex-2 w-[180px] text-center px-1">
@@ -90,7 +101,7 @@ const Works = () => {
                 </TableCell>
                 <TableCell className="flex-2 w-[180px] text-center px-1">
                   <p>
-                    <span className="text-red-500">
+                    <span className={cn("text-red-500", workEntity.quantity === workEntity.doneQuantity && "text-emerald-500")}>
                       {workEntity.doneQuantity}
                     </span>
                     /{workEntity.quantity} {workEntity.measureUnit}

@@ -32,7 +32,7 @@ export default function MainLayout({
             </p>
 
             <div className="bg-white text-neutral-500 p-2 rounded-lg shadow-lg text-center">
-              {currentProject!.startDate && currentProject!.endDate
+              {currentProject && currentProject.startDate && currentProject.endDate
                 ? `${formateComplexDate(currentProject!.startDate)} -
                 ${formateComplexDate(currentProject!.endDate)}`
                 : "-"}
