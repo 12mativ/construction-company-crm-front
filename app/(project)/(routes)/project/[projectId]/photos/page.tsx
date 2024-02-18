@@ -10,6 +10,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PhotoView, PhotoProvider } from "react-photo-view";
+import { X } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +19,8 @@ const Page = () => {
   const { worksProgress } = useAppSelector(
     (state) => state.worksProgressReducer
   );
+
+  const { onOpen } = useModal();
 
   const { projectId } = useParams<{ projectId: string }>();
   const dispatch = useAppDispatch();
@@ -61,7 +65,10 @@ const Page = () => {
         });
 
         return (
-          <div key={`${workProgress.id}-${currentWork?.id}`} className="flex flex-col gap-y-3">
+          <div
+            key={`${workProgress.id}-${currentWork?.id}`}
+            className="flex flex-col gap-y-3"
+          >
             <div>
               <p className="text-2xl font-semibold">{currentWork?.name}</p>
               <p className="text-sm text-neutral-400">
@@ -78,6 +85,14 @@ const Page = () => {
                       src={`http://localhost:8080/api/v1/photos/static/${imageId}`}
                     >
                       <div className="relative w-64 h-64 cursor-pointer">
+                        <X
+                          onClick={(e) => {
+                            onOpen("deleteWorkProgressPhoto", { imageId });
+                            e.stopPropagation();
+                          }}
+                          className="bg-white text-red-500 rounded-full absolute top-3 right-3 
+                            z-10 hover:scale-110 transition"
+                        />
                         <Image
                           fill
                           className="rounded-lg"

@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import { CreateProjectModal } from "../modals/create-project-modal";
 import { CreateResourcePatternModal } from "../modals/create-resource-pattern-modal";
 import { CreateCounterpartyModal } from "../modals/create-counterparty-modal";
-import { CreateOrganisationModal } from "../modals/create-organisation-modal copy";
+import { CreateOrganisationModal } from "../modals/create-organisation-modal";
 import { CreateMoneyAccountModal } from "../modals/create-money-account-modal";
 import { CreateTransferModal } from "../modals/create-transfer-modal";
 import { CreateOutcomeModal } from "../modals/create-outcome-modal";
@@ -13,6 +13,9 @@ import { CreateWorkGroupModal } from "../modals/create-works-group-modal";
 import { CreateWorkModal } from "../modals/create-work-modal";
 import { AddResourceModal } from "../modals/add-resource-modal";
 import { UpdateWorkProgressModal } from "../modals/update-work-progress";
+import { DeleteWorksProgressPhotoModal } from "../modals/delete-work-progress-image";
+import { DeleteOrganisationModal } from "../modals/delete-organisation";
+import { EditOrganisationModal } from "../modals/edit-organisation-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
@@ -39,6 +42,9 @@ export function ModalProvider() {
       <CreateWorkModal />
       <AddResourceModal />
       <UpdateWorkProgressModal />
+      <DeleteWorksProgressPhotoModal />
+      <DeleteOrganisationModal />
+      <EditOrganisationModal />
     </>
   )
 }

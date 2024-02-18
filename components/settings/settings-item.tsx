@@ -1,11 +1,41 @@
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { IOrganisation } from "@/lib/features/organisations/organisationsSlice";
+"use client";
 
-const SettingsItem = ({ name, moneyAccountList }: IOrganisation) => {
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { useModal } from "@/hooks/use-modal-store";
+import { IOrganisation } from "@/lib/features/organisations/organisationsSlice";
+import { Pencil, Trash2 } from "lucide-react";
+
+const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
+  const { onOpen } = useModal();
   return (
     <>
-      <div className="bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl">
+      <div
+        className="flex h-[64px] items-center justify-between group 
+        bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl transition"
+      >
         <p className="text-neutral-600 text-xl font-semibold">{name}</p>
+        <div className="flex items-center gap-x-2">
+          <Pencil
+            onClick={() =>
+              onOpen("editOrganisation", {
+                organisationId: id,
+                organisationName: name,
+              })
+            }
+            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+              p-1 text-neutral-500 transition"
+          />
+          <Trash2
+            onClick={() =>
+              onOpen("deleteOrganisation", {
+                organisationId: id,
+                organisationName: name,
+              })
+            }
+            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+          p-1 text-red-400 transition"
+          />
+        </div>
       </div>
       <Table>
         <TableBody>

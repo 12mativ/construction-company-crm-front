@@ -17,15 +17,21 @@ export type ModalType =
   | "createWorkGroup"
   | "createWork"
   | "addResource"
-  | "updateWorkProgress";
+  | "updateWorkProgress"
+  | "deleteWorkProgressPhoto"
+  | "deleteOrganisation"
+  | "editOrganisation";
 
 export interface ModalData {
   resourceType?: ResourceType;
   organisationsNames?: string[];
+  organisationName?: string;
+  organisationId?: number;
   projectId?: string;
   workGroups?: IWorkGroup[];
   worksGroupId?: number;
   work?: IWorkEntity;
+  imageId?: string;
 }
 
 interface ModalStore {

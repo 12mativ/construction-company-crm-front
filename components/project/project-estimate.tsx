@@ -19,10 +19,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
-import { cn } from "@/lib/utils";
 import { Bolt, BrickWall, PlusSquare, Shield, UserRound } from "lucide-react";
 import { useParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProjectEstimate = () => {
   const iconMap = {
@@ -111,10 +110,15 @@ const ProjectEstimate = () => {
             </p>
           </div>
           {worksGroup.workEntityList.map((workEntity) => (
-            <Accordion key={workEntity.id} type="single" collapsible>
+            <Accordion
+              key={workEntity.id}
+              type="single"
+              collapsible
+              className="overflow-x-auto"
+            >
               <AccordionItem value={workEntity.name}>
                 <AccordionTrigger className="py-0">
-                  <Table>
+                  <Table className="overflow-x-auto">
                     <TableBody>
                       <TableRow
                         key={workEntity.id}

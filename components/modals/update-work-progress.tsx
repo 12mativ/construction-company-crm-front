@@ -91,8 +91,7 @@ export const UpdateWorkProgressModal = () => {
   const calculateProgress = () => {
     if (data.work) {
       const progress =
-        data.work.doneQuantity +
-        ((watchFields[0] ? watchFields[0] : 0) / data.work.quantity) * 100;
+        (data.work.doneQuantity + (watchFields[0] ? +watchFields[0] : 0)) / data.work.quantity * 100;
       if (progress < 100) {
         return progress;
       } else {

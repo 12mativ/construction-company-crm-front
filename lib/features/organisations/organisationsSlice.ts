@@ -37,19 +37,48 @@ export const organisationsSlice = createSlice({
       }
     },
 
+    removeOrganisation: (
+      state,
+      action: PayloadAction<{ organisationId: number }>
+    ) => {
+      state.organisations = state.organisations.filter(
+        (organisation) => organisation.id !== action.payload.organisationId
+      );
+    },
+
+    editOrganisation: (
+      state,
+      action: PayloadAction<{
+        organisationId: number;
+        organisationName: string;
+      }>
+    ) => {
+      state.organisations.forEach((organisation) => {
+        if (organisation.id === action.payload.organisationId) {
+          organisation.name = action.payload.organisationName;
+        }
+      });
+    },
+
     addMoneyAccount: (state, action: PayloadAction<MoneyAccountType>) => {
       const organisation = state.organisations.find(
         (organisation) => organisation.id === action.payload.organisationId
       );
 
-      if (!findEqualItemsById(organisation?.moneyAccountList, action.payload.id)) {
+      if (
+        !findEqualItemsById(organisation?.moneyAccountList, action.payload.id)
+      ) {
         organisation?.moneyAccountList.push(action.payload);
       }
     },
 
     changeMoneyAccount: (
       state,
-      action: PayloadAction<{ id: number; amount: number; operation: "increase" | "decrease" }>
+      action: PayloadAction<{
+        id: number;
+        amount: number;
+        operation: "increase" | "decrease";
+      }>
     ) => {
       for (const organisation of state.organisations) {
         const foundMoneyAccount = organisation.moneyAccountList.find(
@@ -58,10 +87,10 @@ export const organisationsSlice = createSlice({
 
         if (foundMoneyAccount) {
           switch (action.payload.operation) {
-            case 'increase':
+            case "increase":
               foundMoneyAccount.balance += action.payload.amount;
               break;
-            case 'decrease':
+            case "decrease":
               foundMoneyAccount.balance -= action.payload.amount;
               break;
           }
@@ -73,5 +102,11 @@ export const organisationsSlice = createSlice({
 
 export default organisationsSlice.reducer;
 
-export const { addOrganisations, addOrganisation, addMoneyAccount, changeMoneyAccount } =
-  organisationsSlice.actions;
+export const {
+  addOrganisations,
+  addOrganisation,
+  addMoneyAccount,
+  changeMoneyAccount,
+  removeOrganisation,
+  editOrganisation,
+} = organisationsSlice.actions;

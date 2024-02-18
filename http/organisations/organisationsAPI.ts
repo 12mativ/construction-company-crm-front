@@ -14,6 +14,19 @@ export const createOrganisation = async (name: string) => {
   return response;
 };
 
+export const deleteOrganisation = async (organisationId: number) => {
+  await $authHost.delete(`/api/v1/organisation/${organisationId}`);
+};
+
+export const updateOrganisation = async ({organisationId, organisationName}: {
+  organisationId: number,
+  organisationName: string
+}) => {
+  const response = await $authHost.put(`/api/v1/organisation/${organisationId}`, {name: organisationName});
+  
+  return response;
+};
+
 export const createMoneyAccount = async (
   name: string,
   organisationId: number,
@@ -24,7 +37,7 @@ export const createMoneyAccount = async (
     name,
     organisationId,
     balance,
-    numberOfAccount
+    numberOfAccount,
   });
 
   return response;

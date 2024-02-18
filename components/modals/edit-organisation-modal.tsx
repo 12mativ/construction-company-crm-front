@@ -24,18 +24,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createOrganisation } from "@/http/organisations/organisationsAPI";
-import {
-  addCounterparty
-} from "@/lib/features/counterparties/counterpartiesSlice";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { addOrganisation } from "@/lib/features/organisations/organisationsSlice";
+import { createOrganisation, updateOrganisation } from "@/http/organisations/organisationsAPI";
+import { addOrganisation, editOrganisation } from "@/lib/features/organisations/organisationsSlice";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -48,30 +39,36 @@ const formSchema = z.object({
     }),
 });
 
-export const CreateOrganisationModal = () => {
-  const { isOpen, onClose, type } = useModal();
+export const EditOrganisationModal = () => {
+  const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === "createOrganisation";
+  const isModalOpen = isOpen && type === "editOrganisation";
+  const {organisationId, organisationName} = data;
 
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: ""
-    }
+      name: "",
+    },
   });
+
+  useEffect(() => {
+    if (organisationName) {
+      form.setValue('name', organisationName)
+    }
+  }, [form, organisationId, organisationName]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createOrganisation(
-      values.name,
-    );
+    const response = await updateOrganisation({organisationId: data.organisationId!, organisationName: values.name});
 
-    response.data.moneyAccountList = [];
-    dispatch(addOrganisation(response.data));
+    const dataForEditOrganisation = {organisationId: response.data.id, organisationName: response.data.name}
+    dispatch(editOrganisation(dataForEditOrganisation));
 
+    form.reset();
     handleClose();
   };
 
@@ -84,9 +81,9 @@ export const CreateOrganisationModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Добавьте организацию</DialogTitle>
+          <DialogTitle>Редактрирование организации</DialogTitle>
           <DialogDescription>
-            Введите данные новой организации.
+            Введите новые данные организации.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -108,7 +105,7 @@ export const CreateOrganisationModal = () => {
                 </FormItem>
               )}
             />
-            
+
             <DialogFooter>
               <Button disabled={isLoading} type="submit">
                 Сохранить

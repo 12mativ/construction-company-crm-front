@@ -36,10 +36,15 @@ export const worksProgressSlice = createSlice({
         currentWorkProgress?.imageIdsList.push(action.payload.imageId);
       }
     }, 
+    removeWorkProgressPhoto: (state, action: PayloadAction<{imageId: string}>) => {
+      state.worksProgress.forEach((worksProgress) => {
+        worksProgress.imageIdsList = worksProgress.imageIdsList.filter((imageId) => imageId !== action.payload.imageId)
+      })
+    },
   },
 });
 
 export default worksProgressSlice.reducer;
 
-export const { addWorksProgress, addWorkProgress, addWorkProgressImage } =
+export const { addWorksProgress, addWorkProgress, addWorkProgressImage, removeWorkProgressPhoto } =
   worksProgressSlice.actions;
