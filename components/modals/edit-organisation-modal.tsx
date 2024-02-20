@@ -24,8 +24,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createOrganisation, updateOrganisation } from "@/http/organisations/organisationsAPI";
-import { addOrganisation, editOrganisation } from "@/lib/features/organisations/organisationsSlice";
+import {
+  updateOrganisation
+} from "@/http/organisations/organisationsAPI";
+import {
+  editOrganisation
+} from "@/lib/features/organisations/organisationsSlice";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -43,31 +47,35 @@ export const EditOrganisationModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
   const isModalOpen = isOpen && type === "editOrganisation";
-  const {organisationId, organisationName} = data;
-
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: data.organisationName || "",
     },
   });
 
   useEffect(() => {
-    if (organisationName) {
-      form.setValue('name', organisationName)
+    if (data.organisationName) {
+      form.setValue("name", data.organisationName);
     }
-  }, [form, organisationId, organisationName]);
+  }, [form, data.organisationId, data.organisationName, isOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateOrganisation({organisationId: data.organisationId!, organisationName: values.name});
+    const response = await updateOrganisation({
+      organisationId: data.organisationId!,
+      organisationName: values.name,
+    });
 
-    const dataForEditOrganisation = {organisationId: response.data.id, organisationName: response.data.name}
+    const dataForEditOrganisation = {
+      organisationId: response.data.id,
+      organisationName: response.data.name,
+    };
     dispatch(editOrganisation(dataForEditOrganisation));
-
+    
     form.reset();
     handleClose();
   };
