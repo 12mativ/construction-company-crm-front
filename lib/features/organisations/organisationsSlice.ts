@@ -72,6 +72,37 @@ export const organisationsSlice = createSlice({
       }
     },
 
+    removeMoneyAccount: (
+      state,
+      action: PayloadAction<{ moneyAccountId: number }>
+    ) => {
+      state.organisations.forEach((moneyAccount) => {
+        moneyAccount.moneyAccountList = moneyAccount.moneyAccountList.filter((moneyAccount) => moneyAccount.id !== action.payload.moneyAccountId);
+      });
+    },
+
+    editMoneyAccount: (
+      state,
+      action: PayloadAction<{
+        moneyAccountId: number,
+        moneyAccountName: string,
+        organisationId: number,
+        balance: number,
+        numberOfAccount: string
+      }>
+    ) => {
+
+      state.organisations.forEach((moneyAccount) => {
+        const foundMoneyAccount = moneyAccount.moneyAccountList.find((moneyAccount) => moneyAccount.id === action.payload.moneyAccountId && moneyAccount.id === action.payload.organisationId);
+    
+        if (foundMoneyAccount) {
+          foundMoneyAccount.name = action.payload.moneyAccountName;
+          foundMoneyAccount.balance = action.payload.balance;
+          foundMoneyAccount.numberOfAccount = action.payload.numberOfAccount;
+        }
+      });
+    },
+
     changeMoneyAccount: (
       state,
       action: PayloadAction<{
@@ -109,4 +140,6 @@ export const {
   changeMoneyAccount,
   removeOrganisation,
   editOrganisation,
+  removeMoneyAccount,
+  editMoneyAccount,
 } = organisationsSlice.actions;

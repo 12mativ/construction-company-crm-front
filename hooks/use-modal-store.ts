@@ -20,13 +20,21 @@ export type ModalType =
   | "updateWorkProgress"
   | "deleteWorkProgressPhoto"
   | "deleteOrganisation"
-  | "editOrganisation";
+  | "editOrganisation"
+  | "deleteMoneyAccount"
+  | "updateMoneyAccount"
+  | "removeCounterparty"
+  | "editCounterparty";
 
 export interface ModalData {
   resourceType?: ResourceType;
   organisationsNames?: string[];
   organisationName?: string;
   organisationId?: number;
+  moneyAccountId?: number;
+  moneyAccountName?: string;
+  balance?: number;
+  numberOfAccount?: string;
   projectId?: string;
   workGroups?: IWorkGroup[];
   worksGroupId?: number;

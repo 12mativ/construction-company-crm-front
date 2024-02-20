@@ -16,7 +16,8 @@ import { UpdateWorkProgressModal } from "../modals/update-work-progress";
 import { DeleteWorksProgressPhotoModal } from "../modals/delete-work-progress-image";
 import { DeleteOrganisationModal } from "../modals/delete-organisation";
 import { EditOrganisationModal } from "../modals/edit-organisation-modal";
-
+import { DeleteMoneyAccountModal } from "../modals/delete-money-account-modal";
+import { EditMoneyAccountModal } from "../modals/edit-money-account-modal";
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -45,6 +46,8 @@ export function ModalProvider() {
       <DeleteWorksProgressPhotoModal />
       <DeleteOrganisationModal />
       <EditOrganisationModal />
+      <DeleteMoneyAccountModal />
+      <EditMoneyAccountModal />
     </>
   )
 }

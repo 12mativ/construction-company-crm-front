@@ -37,11 +37,12 @@ const Page = () => {
       <Table>
         <TableHeader>
           <TableRow key="settingsHeader" className="text-neutral-400 px-10 text-[16px]">
-            <TableHead className="w-[33%] px-4">Название</TableHead>
-            <TableHead className='w-[33%] text-center px-4'>Номер счета</TableHead>
-            <TableHead className="w-[33%] text-right px-4">
+            <TableHead className="w-[30%] px-4">Название</TableHead>
+            <TableHead className='w-[30%] text-center px-4'>Номер счета</TableHead>
+            <TableHead className="w-[30%] text-right px-11">
               Баланс
             </TableHead>
+            <TableHead className="w-[10%]"></TableHead>
           </TableRow>
         </TableHeader>
       </Table>

@@ -32,10 +32,39 @@ export const counterpartiesSlice = createSlice({
         state.counterparties.push(action.payload);
       }
     },
+
+    removeCounterparty: (
+      state,
+      action: PayloadAction<{ partnerId: number }>
+    ) => {
+      state.counterparties = state.counterparties.filter(
+        (counterparty) => counterparty.id !== action.payload.partnerId
+      );
+    },
+
+    editCounterparty: (
+      state,
+      action: PayloadAction<{
+        partnerId: number,
+        counterpartynName: string,
+        phoneNumber: string,
+        email: string,
+        partnerType: PartnerType
+      }>
+    ) => {
+      state.counterparties.forEach((counterparty) => {
+        if (counterparty.id === action.payload.partnerId) {
+          counterparty.name = action.payload.counterpartynName;
+          counterparty.phoneNumber = action.payload.phoneNumber;
+          counterparty.email = action.payload.email;
+          counterparty.partnerType = action.payload.partnerType;
+        }
+      });
+    },
   },
 });
 
 export default counterpartiesSlice.reducer;
 
-export const { addCounterparties, addCounterparty } =
+export const { addCounterparties, addCounterparty, removeCounterparty, editCounterparty } =
   counterpartiesSlice.actions;

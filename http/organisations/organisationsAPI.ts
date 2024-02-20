@@ -42,3 +42,19 @@ export const createMoneyAccount = async (
 
   return response;
 };
+
+export const deleteMoneyAccount = async (moneyAccountId: number) => {
+  await $authHost.delete(`/api/v1/moneyAccount/${moneyAccountId}`);
+};
+
+export const updateMoneyAccount = async ({moneyAccountId, moneyAccountName, organisationId, balance, numberOfAccount}: {
+  moneyAccountId: number,
+  moneyAccountName: string,
+  organisationId: number,
+  balance: number,
+  numberOfAccount: string
+}) => {
+  const response = await $authHost.put(`/api/v1/moneyAccount/${moneyAccountId}`, {name: moneyAccountName, organisationId: organisationId, balance: balance, numberOfAccount: numberOfAccount});
+  
+  return response;
+};

@@ -22,3 +22,19 @@ export const createCounterparty = async (
 
   return response;
 };
+
+export const deleteCounterparty = async (partnerId: number) => {
+  await $authHost.delete(`/api/v1/partner/${partnerId}`);
+};
+
+export const updateCounterparty = async ({partnerId, counterpartynName, phoneNumber, email, partnerType}: {
+  partnerId: number,
+  counterpartynName: string,
+  phoneNumber: string,
+  email: string,
+  partnerType: PartnerType
+}) => {
+  const response = await $authHost.put(`/api/v1/partner/${partnerId}`, {name: counterpartynName, phoneNumber: phoneNumber, email: email, partnerType: partnerType});
+  
+  return response;
+};
