@@ -13,6 +13,7 @@ interface IResourceEntity {
   costPrice: number;
   orderPrice: number;
   resourceType: ResourceType;
+  workId: number;
 }
 
 export interface IWorkEntity {
@@ -68,15 +69,15 @@ export const worksGroupsSlice = createSlice({
         currentWorkGroup?.workEntityList.push(action.payload)
       }
     },
-    addResourceToWork: (state, action: PayloadAction<IWorkEntity>) => {
-      const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
-
-      const index = currentWorkGroup!.workEntityList.findIndex((workEntity) => workEntity.id === action.payload.id);
-      currentWorkGroup!.workEntityList.splice(index!, 1);
-      
-      if (!findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)) {
-        currentWorkGroup!.workEntityList.push(action.payload);
-      }
+    addResourceToWork: (state, action: PayloadAction<IResourceEntity>) => {
+      state.worksGroups.forEach((worksGroup) => {
+        const currentWork = worksGroup.workEntityList.find((workEntity) => (
+          workEntity.id === action.payload.workId
+        ))
+        if (!findEqualItemsById(currentWork?.resourceEntityList, action.payload.id)) {
+          currentWork?.resourceEntityList.push(action.payload)
+        }
+      })
     },
   },
 });

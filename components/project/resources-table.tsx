@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { getResourcePatterns } from "@/http/resources/resourcesAPI";
+import { createResource, getResourcePatterns } from "@/http/resources/resourcesAPI";
 import {
   ResourceType,
   addResourcesPatterns,
@@ -30,7 +30,6 @@ import * as z from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IWorkEntity, addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
-import { updateWork } from "@/http/works-groups/worksAPI";
 
 interface ResourcesTableProps {
   currentWork: IWorkEntity;
@@ -69,22 +68,19 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateWork({
-      workId: currentWork.id,
-      name: currentWork.name,
-      number: currentWork.number,
-      quantity: currentWork.quantity,
-      measureUnit: currentWork.measureUnit,
-      startDate: currentWork.startDate,
-      endDate: currentWork.endDate,
-      worksGroupId: currentWork.worksGroupId,
-      resourceEntityList: [
-        ...values.items,
-        ...currentWork.resourceEntityList,
-      ],
-    });
-
-    dispatch(addResourceToWork(response.data));
+    values.items.forEach(async (item) => {      
+      const response = await createResource({
+        workId: currentWork.id,
+        name: item.name,
+        costPricePerUnit: item.costPricePerUnit,
+        orderPricePerUnit: item.orderPricePerUnit,
+        extraCharge: item.extraCharge,
+        measureUnit: item.measureUnit,
+        quantity: item.quantity,
+        resourceType: item.resourceType as ResourceType,
+      })
+      dispatch(addResourceToWork(response.data));
+    })    
     onClose();
   };
 

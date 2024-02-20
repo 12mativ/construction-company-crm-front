@@ -24,7 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { updateWork } from "@/http/works-groups/worksAPI";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useState } from "react";
@@ -36,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { createResource } from "@/http/resources/resourcesAPI";
 
 const formSchema = z.object({
   name: z
@@ -94,28 +94,16 @@ export const AddResourceModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const currentWork = data.work!;
-    const response = await updateWork({
+    const response = await createResource({
       workId: currentWork.id,
       name: currentWork.name,
-      number: currentWork.number,
-      quantity: currentWork.quantity,
-      measureUnit: currentWork.measureUnit,
-      startDate: currentWork.startDate,
-      endDate: currentWork.endDate,
-      worksGroupId: currentWork.worksGroupId,
-      resourceEntityList: [
-        {
-          name: values.name,
-          measureUnit: values.measureUnit,
-          quantity: values.quantity,
-          costPricePerUnit: values.costPricePerUnit,
-          orderPricePerUnit: values.orderPricePerUnit,
-          extraCharge: calculateExtraCharge(),
-          resourceType: values.resourceType as ResourceType,
-        },
-        ...currentWork.resourceEntityList,
-      ],
-    });
+      costPricePerUnit: values.costPricePerUnit,
+      orderPricePerUnit: values.orderPricePerUnit,
+      extraCharge: calculateExtraCharge(),
+      measureUnit: values.measureUnit,
+      quantity: values.quantity,
+      resourceType: values.resourceType as ResourceType,
+    })
 
     dispatch(addResourceToWork(response.data));
     handleClose();
@@ -217,7 +205,6 @@ export const AddResourceModal = () => {
                           <SelectContent>
                             <SelectItem
                               value="HUMAN"
-                              // className="flex items-center group gap-x-2 p-6"
                             >
                               <p>Рабочие</p>
                             </SelectItem>
