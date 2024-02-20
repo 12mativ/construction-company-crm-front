@@ -41,6 +41,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
         <TableBody>
           {moneyAccountList.map((moneyAccount) => (
             <div
+            key={moneyAccount.id}
             className="group transition"
             >
               <TableRow
