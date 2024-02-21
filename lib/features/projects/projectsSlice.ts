@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type ProjectStatusType = "PLANNING" | "INWORK" | "COMPLETED";
+
 export type ProjectType = {
   id: number
   name: string;
@@ -7,6 +9,7 @@ export type ProjectType = {
   endDate: string;
   totalWorkQuantity: number;
   doneWorkQuantity: number;
+  projectStatus: ProjectStatusType
 }
 
 interface IProjectsState {
@@ -28,9 +31,17 @@ export const projectsSlice = createSlice({
     addProject: (state, action: PayloadAction<ProjectType>) => {
       state.projects.push(action.payload);
     },
+
+    updateProject: (state, action: PayloadAction<ProjectType>) => {
+      state.projects.forEach((project) => {
+        if (project.id === action.payload.id) {
+          project = action.payload;
+        }
+      })
+    },
   },
 });
 
 export default projectsSlice.reducer;
 
-export const { addProjects, addProject } = projectsSlice.actions;
+export const { addProjects, addProject, updateProject } = projectsSlice.actions;
