@@ -96,7 +96,7 @@ export const AddResourceModal = () => {
     const currentWork = data.work!;
     const response = await createResource({
       workId: currentWork.id,
-      name: currentWork.name,
+      name: values.name,
       costPricePerUnit: values.costPricePerUnit,
       orderPricePerUnit: values.orderPricePerUnit,
       extraCharge: calculateExtraCharge(),
