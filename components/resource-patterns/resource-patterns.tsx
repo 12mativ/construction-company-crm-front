@@ -14,6 +14,8 @@ import { addResourcesPatterns } from "@/lib/features/resources-patterns/resource
 import { Bolt, BrickWall, Plus, Shield, UserRound } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 
+import { Pencil, Trash2 } from "lucide-react";
+
 const ResourcePatterns = () => {
   const [isResourcePatternsLoading, setIsResourcePatternsLoading] =
     useState(false);
@@ -84,6 +86,9 @@ const ResourcePatterns = () => {
             <TableCell className="flex-2 w-[167px] text-center px-1">
               Цена для заказчика
             </TableCell>
+            <TableCell className="flex w-[80px] text-center px-1">
+              
+            </TableCell>
           </TableRow>
         </TableBody >
       </Table>
@@ -106,7 +111,7 @@ const ResourcePatterns = () => {
                 {resourcesPattern.resources.map((resource) => (
                   <div
                     key={resource.id}
-                    className="flex last:border-b-0 border-b-2 bg-neutral-200 border-neutral-400 py-4"
+                    className="flex group items-center transition last:border-b-0 border-b-2 bg-neutral-200 border-neutral-400 py-4"
                   >
                     <div className="flex-1 flex items-center gap-x-2 px-1">
                       {iconMap[resource.resourceType]}
@@ -120,6 +125,33 @@ const ResourcePatterns = () => {
                     </div>
                     <div className="flex-2 w-[167px] text-center px-1">
                       {resource.orderPricePerUnit} ₽
+                    </div>
+                    <div className="flex w-[70px] text-center px-1">
+                    <Pencil
+                      onClick={() =>
+                        onOpen("editResource", {
+                          resourcePatternId: resource.id,
+                          resourcePatternName: resource.name,
+                          costPricePerUnit: resource.costPricePerUnit,
+                          orderPricePerUnit: resource.orderPricePerUnit,
+                          extraCharge: resource.extraCharge,
+                          measureUnit: resource.measureUnit,
+                          resourceType: resource.resourceType,
+                        })
+                      }
+                      className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                        p-1 text-neutral-500 transition"
+                    />
+                    <Trash2
+                      onClick={() =>
+                        onOpen("deleteResource", {
+                          resourcePatternId: resource.id,
+                          resourcePatternName: resource.name,
+                        })
+                      }
+                      className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                    p-1 text-red-400 transition"
+                    />
                     </div>
                   </div>
                 ))}

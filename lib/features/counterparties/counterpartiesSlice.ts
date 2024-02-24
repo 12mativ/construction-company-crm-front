@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type PartnerType = "PHYSICAL" | "LEGAL";
 
-interface ICounterparty {
+export interface ICounterparty {
   id: number;
   name: string;
   phoneNumber: string;
@@ -46,7 +46,7 @@ export const counterpartiesSlice = createSlice({
       state,
       action: PayloadAction<{
         partnerId: number,
-        counterpartynName: string,
+        counterpartyName: string,
         phoneNumber: string,
         email: string,
         partnerType: PartnerType
@@ -54,7 +54,7 @@ export const counterpartiesSlice = createSlice({
     ) => {
       state.counterparties.forEach((counterparty) => {
         if (counterparty.id === action.payload.partnerId) {
-          counterparty.name = action.payload.counterpartynName;
+          counterparty.name = action.payload.counterpartyName;
           counterparty.phoneNumber = action.payload.phoneNumber;
           counterparty.email = action.payload.email;
           counterparty.partnerType = action.payload.partnerType;

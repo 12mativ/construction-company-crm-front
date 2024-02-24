@@ -60,7 +60,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                 <TableCell className="flex w-[10%] ">
                   <Pencil
                     onClick={() =>
-                      onOpen("updateMoneyAccount", {
+                      onOpen("editMoneyAccount", {
                         moneyAccountId: moneyAccount.id,
                         moneyAccountName: moneyAccount.name,
                         organisationId: moneyAccount.organisationId,
