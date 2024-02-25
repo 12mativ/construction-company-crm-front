@@ -24,7 +24,8 @@ export type ModalType =
   | "deleteMoneyAccount"
   | "updateMoneyAccount"
   | "removeCounterparty"
-  | "editCounterparty";
+  | "editCounterparty"
+  | "addUserToProject";
 
 export interface ModalData {
   resourceType?: ResourceType;

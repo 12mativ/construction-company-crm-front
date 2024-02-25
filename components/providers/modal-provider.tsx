@@ -18,6 +18,7 @@ import { DeleteOrganisationModal } from "../modals/delete-organisation";
 import { EditOrganisationModal } from "../modals/edit-organisation-modal";
 import { DeleteMoneyAccountModal } from "../modals/delete-money-account-modal";
 import { EditMoneyAccountModal } from "../modals/edit-money-account-modal";
+import { AddUserToProjectModal } from "../modals/add-user-to-project-modal";
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -48,6 +49,7 @@ export function ModalProvider() {
       <EditOrganisationModal />
       <DeleteMoneyAccountModal />
       <EditMoneyAccountModal />
+      <AddUserToProjectModal />
     </>
   )
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import AddButton from "@/components/addButton";
 import {
   Table,
   TableBody,
@@ -47,18 +48,18 @@ const Page = () => {
         </TableHeader>
         <TableBody>
           {users.map((user) => (
-            <TableRow>
-            	{user.email}
-            </TableCell>
-						<TableCell>
-							{user.email}
-						</TableCell>
+            <TableRow key={user.id}>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.phoneNumber}</TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
       {users.length === 0 && (
         <p className="text-center">В команде нет ни одного сотрудника.</p>
       )}
+
+      <AddButton buttonText="Добваить сотрудника" modalName="addUserToProject" data={{projectId: projectId}} />
     </div>
   );
 };

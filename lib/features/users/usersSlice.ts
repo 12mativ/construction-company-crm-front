@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProjectStatusType } from "../projects/projectsSlice";
+import { findEqualItemsById } from "@/lib/store";
 
 interface IProject {
   id: number;
@@ -34,9 +35,14 @@ export const usersSlice = createSlice({
     addUsers: (state, action: PayloadAction<IUser[]>) => {
       state.users = action.payload;
     },
+    addUser: (state, action: PayloadAction<IUser>) => {
+      if(!findEqualItemsById(state.users, action.payload.id)) {
+        state.users.push(action.payload);
+      }
+    },
   },
 });
 
 export default usersSlice.reducer;
 
-export const { addUsers } = usersSlice.actions;
+export const { addUsers, addUser } = usersSlice.actions;
