@@ -8,6 +8,8 @@ services:
       - '3000:3000'
     networks:
       - rest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   rest:
