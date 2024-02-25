@@ -10,5 +10,5 @@ services:
 
 networks:
   rest:
-    name: frontend-bridge-network
-    driver: bridge
+    name: rest-network
+    external: true
