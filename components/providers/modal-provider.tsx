@@ -18,14 +18,13 @@ import { DeleteOrganisationModal } from "../modals/delete-organisation";
 import { EditOrganisationModal } from "../modals/edit-organisation-modal";
 import { DeleteMoneyAccountModal } from "../modals/delete-money-account-modal";
 import { EditMoneyAccountModal } from "../modals/edit-money-account-modal";
+import { AddUserToProjectModal } from "../modals/add-user-to-project-modal";
 import { DeleteCounterpartyModal } from "../modals/delete-counterparty-modal";
 import { EditCounterpartyModal } from "../modals/edit-counterparty-modal";
 import { DeleteResourcesModal } from "../modals/delete-resource-modal";
 import { EditResourceModal } from "../modals/edit-resource-modal";
 import { DeleteWorksGroupsModal } from "../modals/delete-works-groups-modal";
 import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
-
-
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -56,6 +55,7 @@ export function ModalProvider() {
       <EditOrganisationModal />
       <DeleteMoneyAccountModal />
       <EditMoneyAccountModal />
+      <AddUserToProjectModal />
       <DeleteCounterpartyModal />
       <EditCounterpartyModal />
       <DeleteResourcesModal />

@@ -6,12 +6,15 @@ import organisationsReducer from "./features/organisations/organisationsSlice";
 import transactionsReducer from "./features/transactions/transactionsSlice";
 import worksGroupsReducer from "./features/works-groups/worksGroupsSlice";
 import worksProgressReducer from "./features/works-progress/worksProgressSlice";
+import projectQueriesReducer from "./features/project-queries/projectQueriesSlice";
+import usersReducer from "./features/users/usersSlice";
 import userReducer from "./features/user/userSlice";
 
 export const findEqualItemsById = (array: any, id: any) => {
   const equalItem = array.find((el: any) => el.id === id);
-
-  return equalItem;
+  if (equalItem) {
+    return equalItem;
+  } else return null;
 };
 
 export const makeStore = () => {
@@ -24,7 +27,9 @@ export const makeStore = () => {
       organisationsReducer,
       transactionsReducer,
       worksGroupsReducer,
-      worksProgressReducer
+      worksProgressReducer,
+      projectQueriesReducer,
+      usersReducer
     },
   });
 };

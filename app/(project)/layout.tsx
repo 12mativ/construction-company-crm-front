@@ -2,10 +2,22 @@
 
 import Header from "@/components/header";
 import { ChevronLeft } from "lucide-react";
-import { useAppSelector } from "@/hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useParams, useRouter } from "next/navigation";
 import ProjectMenu from "@/components/project-menu/project-menu";
 import { formateComplexDate } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { updateProjectStatus } from "@/http/projects/projectsAPI";
+import {
+  ProjectStatusType,
+  updateProject,
+} from "@/lib/features/projects/projectsSlice";
 
 export default function MainLayout({
   children,
@@ -15,7 +27,17 @@ export default function MainLayout({
   const { projects } = useAppSelector((state) => state.projectsReducer);
   const { projectId } = useParams<{ projectId: string }>();
   const currentProject = projects.find((project) => project.id === +projectId);
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const handleUpdateProjectStatus = async (projectStatus: string) => {
+    const response = await updateProjectStatus({
+      projectId: +projectId,
+      projectStatus: projectStatus as ProjectStatusType,
+    });
+
+    dispatch(updateProject(response.data));
+  };
 
   return (
     <div className="pb-5">
@@ -32,11 +54,27 @@ export default function MainLayout({
             </p>
 
             <div className="bg-white text-neutral-500 p-2 rounded-lg shadow-lg text-center">
-              {currentProject && currentProject.startDate && currentProject.endDate
+              {currentProject &&
+              currentProject.startDate &&
+              currentProject.endDate
                 ? `${formateComplexDate(currentProject!.startDate)} -
                 ${formateComplexDate(currentProject!.endDate)}`
                 : "-"}
             </div>
+            <Select
+              onValueChange={(e) => handleUpdateProjectStatus(e)}
+              defaultValue={currentProject?.projectStatus}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Выберите статус проекта" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="PLANNING">Планирование</SelectItem>
+                <SelectItem value="INWORK">В работе</SelectItem>
+                <SelectItem value="COMPLETED">Завершен</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <ProjectMenu />
