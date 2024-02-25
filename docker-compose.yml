@@ -1,0 +1,12 @@
+services:
+  frontend:
+    container_name: souz-frontend
+    build:
+      context: .
+    ports:
+      - '3000:3000'
+    networks:
+      - rest
+
+networks:
+  rest:
