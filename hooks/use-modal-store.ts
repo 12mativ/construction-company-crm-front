@@ -1,4 +1,5 @@
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { PartnerType } from "@/lib/features/counterparties/counterpartiesSlice";
 import {
   IWorkEntity,
   IWorkGroup,
@@ -22,12 +23,15 @@ export type ModalType =
   | "deleteOrganisation"
   | "editOrganisation"
   | "deleteMoneyAccount"
-  | "updateMoneyAccount"
-  | "removeCounterparty"
-  | "editCounterparty";
+  | "editMoneyAccount"
+  | "deleteCounterparty"
+  | "editCounterparty"
+  | "deleteResource"
+  | "editResource"
+  | "deleteWorksGroup"
+  | "editWorksGroup";
 
 export interface ModalData {
-  resourceType?: ResourceType;
   organisationsNames?: string[];
   organisationName?: string;
   organisationId?: number;
@@ -40,6 +44,20 @@ export interface ModalData {
   worksGroupId?: number;
   work?: IWorkEntity;
   imageId?: string;
+  partnerId?: number;
+  counterpartyName?: string;
+  phoneNumber?: string;
+  email?: string;
+  partnerType?: PartnerType;
+  resourcePatternId?: number;
+  resourcePatternName?: string;
+  costPricePerUnit?: number;
+  orderPricePerUnit?: number;
+  extraCharge?: number;
+  measureUnit?: string;
+  resourceType?: ResourceType;
+  works_group_id?: number;
+  worksGroupName?: string;
 }
 
 interface ModalStore {

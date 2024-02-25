@@ -62,6 +62,29 @@ export const worksGroupsSlice = createSlice({
         state.worksGroups.push(action.payload);
       }
     },
+    removeWorksGroup: (
+      state,
+      action: PayloadAction<{ works_group_id: number }>
+    ) => {
+      state.worksGroups = state.worksGroups.filter(
+        (worksGroup) => worksGroup.id !== action.payload.works_group_id
+      );
+    },
+    editWorksGroup: (
+      state,
+      action: PayloadAction<{
+        works_group_id: number;
+        worksGroupName: string;
+      }>
+    ) => {
+      state.worksGroups.forEach((worksGroup) => {
+        if (worksGroup.id === action.payload.works_group_id) {
+          worksGroup.name = action.payload.worksGroupName;
+        }
+      });
+    },
+
+
     addWork: (state, action: PayloadAction<IWorkEntity>) => {
       const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
 
@@ -69,6 +92,7 @@ export const worksGroupsSlice = createSlice({
         currentWorkGroup?.workEntityList.push(action.payload)
       }
     },
+    
     addResourceToWork: (state, action: PayloadAction<IResourceEntity>) => {
       state.worksGroups.forEach((worksGroup) => {
         const currentWork = worksGroup.workEntityList.find((workEntity) => (
@@ -84,4 +108,4 @@ export const worksGroupsSlice = createSlice({
 
 export default worksGroupsSlice.reducer;
 
-export const { addWorksGroups, addWorkGroup, addWork, addResourceToWork } = worksGroupsSlice.actions;
+export const { addWorksGroups, addWorkGroup, removeWorksGroup, editWorksGroup, addWork, addResourceToWork } = worksGroupsSlice.actions;

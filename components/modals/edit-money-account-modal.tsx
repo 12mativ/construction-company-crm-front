@@ -58,7 +58,7 @@ export const EditMoneyAccountModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const {moneyAccountId, moneyAccountName, organisationId, balance, numberOfAccount} = data;
 
-  const isModalOpen = isOpen && type === "updateMoneyAccount";
+  const isModalOpen = isOpen && type === "editMoneyAccount";
 
   const dispatch = useAppDispatch();
 
@@ -76,6 +76,7 @@ export const EditMoneyAccountModal = () => {
     if (moneyAccountName) { 
       form.setValue('name', moneyAccountName) 
     }
+    
     if (typeof organisationId === 'number') {   
       form.setValue('organisationId', organisationId.toString())  
       
@@ -99,14 +100,24 @@ export const EditMoneyAccountModal = () => {
     if (numberOfAccount) {
       form.setValue('numberOfAccount', numberOfAccount) 
     } 
-  }, [form, moneyAccountId, moneyAccountName, organisationId, balance, numberOfAccount]);
+  }, [form, moneyAccountName, organisationId, balance, numberOfAccount]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateMoneyAccount({moneyAccountId: data.moneyAccountId!, moneyAccountName: values.name, organisationId: data.organisationId!, balance: values.balance, numberOfAccount: values.numberOfAccount});
+    const response = await updateMoneyAccount({
+      moneyAccountId: data.moneyAccountId!, 
+      moneyAccountName: values.name, 
+      organisationId: data.organisationId!, 
+      balance: values.balance, 
+      numberOfAccount: values.numberOfAccount});
 
-    const dataForEditMoneyAccount = {moneyAccountId: response.data.id,moneyAccountName: response.data.name, organisationId: response.data.organisationId, balance: response.data.balance, numberOfAccount: response.data.numberOfAccount}
+    const dataForEditMoneyAccount = {
+      moneyAccountId: response.data.id,
+      moneyAccountName: response.data.name, 
+      organisationId: response.data.organisationId, 
+      balance: response.data.balance, 
+      numberOfAccount: response.data.numberOfAccount}
     dispatch(editMoneyAccount(dataForEditMoneyAccount));
 
     form.reset();
@@ -144,7 +155,7 @@ export const EditMoneyAccountModal = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="organisationId"
               render={({ field }) => (
@@ -170,7 +181,7 @@ export const EditMoneyAccountModal = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="balance"

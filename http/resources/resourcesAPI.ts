@@ -75,3 +75,21 @@ export const createResource = async ({
 
   return response;
 };
+
+export const deleteResource = async (resourcePatternId: number) => {
+  await $authHost.delete(`/api/v1/resource/${resourcePatternId}`);
+};
+
+export const updateResource= async ({resourcePatternId, resourcePatternName, costPricePerUnit, orderPricePerUnit, extraCharge, measureUnit, resourceType}: {
+  resourcePatternId: number,
+  resourcePatternName: string,
+  costPricePerUnit: number,
+  orderPricePerUnit: number,
+  extraCharge: number,
+  measureUnit: string,
+  resourceType: ResourceType,
+}) => {
+  const response = await $authHost.put(`/api/v1/resource/${resourcePatternId}`, {name: resourcePatternName, costPricePerUnit: costPricePerUnit, orderPricePerUnit: orderPricePerUnit, extraCharge: extraCharge, measureUnit: measureUnit, resourceType: resourceType});
+  
+  return response;
+};
