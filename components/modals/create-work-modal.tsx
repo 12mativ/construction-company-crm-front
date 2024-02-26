@@ -78,7 +78,7 @@ export const CreateWorkModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let nextNumber = 1;
-    const currentWorksGroup = data.workGroups!.find((worksGroup) => worksGroup.id === data.worksGroupId)
+    const currentWorksGroup = data.workGroups!.find((worksGroup) => worksGroup.id === data.worksGroup!.worksGroupId)
     if (currentWorksGroup!.workEntityList.length > 0) {
       nextNumber = currentWorksGroup!.workEntityList[currentWorksGroup!.workEntityList.length - 1].number + 1
     }
@@ -90,8 +90,7 @@ export const CreateWorkModal = () => {
       measureUnit: values.measureUnit,
       startDate: format(values.startDate, "yyyy-MM-dd"),
       endDate: format(values.endDate, "yyyy-MM-dd"),
-      worksGroupId: data.worksGroupId!,
-      resourceEntityList: [],
+      worksGroupId: data.worksGroup!.worksGroupId,
     });
     dispatch(addWork(response.data));
 

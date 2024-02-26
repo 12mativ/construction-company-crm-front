@@ -24,7 +24,6 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 
-
 const ProjectEstimate = () => {
   const iconMap = {
     ["HUMAN"]: (
@@ -107,8 +106,10 @@ const ProjectEstimate = () => {
 
       {sortedWorkGroups.map((worksGroup) => (
         <React.Fragment key={worksGroup.id}>
-          <div className="flex h-[64px] items-center justify-between group 
-        bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl transition">
+          <div
+            className="flex h-[64px] items-center justify-between group 
+        bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl transition"
+          >
             <p className="text-neutral-500 text-xl font-bold">
               {worksGroup.number}. {worksGroup.name}
             </p>
@@ -116,8 +117,12 @@ const ProjectEstimate = () => {
               <Pencil
                 onClick={() =>
                   onOpen("editWorksGroup", {
-                    works_group_id: worksGroup.id,
-                    worksGroupName: worksGroup.name,
+                    worksGroup: {
+                      worksGroupId: worksGroup.id,
+                      worksGroupName: worksGroup.name,
+                      worksGroupNumber: worksGroup.number,
+                    },
+                    projectId: projectId
                   })
                 }
                 className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -126,8 +131,12 @@ const ProjectEstimate = () => {
               <Trash2
                 onClick={() =>
                   onOpen("deleteWorksGroup", {
-                    works_group_id: worksGroup.id,
-                    worksGroupName: worksGroup.name,
+                    worksGroup: {
+                      worksGroupId: worksGroup.id,
+                      worksGroupName: worksGroup.name,
+                      worksGroupNumber: worksGroup.number,
+                    },
+                    projectId: projectId
                   })
                 }
                 className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -175,13 +184,13 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[140px]">
                           {workEntity.orderPrice} ₽
                         </TableCell>
-                        <TableCell className="px-1 w-[10px] group transition" >
+                        <TableCell className="px-1 w-[10px] group transition">
                           <div className="flex items-center gap-x-2">
                             <Pencil
                               onClick={() =>
                                 onOpen("editOrganisation", {
-                                  organisationId: id,
-                                  organisationName: name,
+                                  organisationId: workEntity.id,
+                                  organisationName: workEntity.name,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -190,8 +199,8 @@ const ProjectEstimate = () => {
                             <Trash2
                               onClick={() =>
                                 onOpen("deleteOrganisation", {
-                                  organisationId: id,
-                                  organisationName: name,
+                                  organisationId: workEntity.id,
+                                  organisationName: workEntity.name,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -203,7 +212,6 @@ const ProjectEstimate = () => {
                     </TableBody>
                   </Table>
                 </AccordionTrigger>
-                
 
                 <AccordionContent className="bg-neutral-100">
                   {workEntity.resourceEntityList.map((resourceEntity) => (
@@ -256,7 +264,14 @@ const ProjectEstimate = () => {
           <AddButton
             buttonText="Новая работа"
             modalName="createWork"
-            data={{ worksGroupId: worksGroup.id, workGroups: worksGroups }}
+            data={{
+              worksGroup: {
+                worksGroupId: worksGroup.id,
+                worksGroupName: worksGroup.name,
+                worksGroupNumber: worksGroup.number,
+              },
+              workGroups: worksGroups,
+            }}
           />
         </React.Fragment>
       ))}

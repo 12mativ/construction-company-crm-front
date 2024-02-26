@@ -26,13 +26,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateMoneyAccount } from "@/http/organisations/organisationsAPI";
 import { editMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -44,7 +37,7 @@ const formSchema = z.object({
     .max(50, {
       message: "Название счета не должно превышать 50 символов.",
     }),
-  organisationId: z.string({ required_error: "Выберите организацию." }),
+  organisationId: z.string({ required_error: "Выберите орган изацию." }),
   balance: z.coerce
     .number({
       invalid_type_error: "Введите числовое значение.",

@@ -27,8 +27,8 @@ export const DeleteWorksGroupsModal = () => {
   const onClick = async () => {
     setIsLoading(true);
     try {
-      await deleteWorksGroup(data.works_group_id!);
-      dispatch(removeWorksGroup({works_group_id: data.works_group_id!}))
+      await deleteWorksGroup(data.worksGroup!.worksGroupId);
+      dispatch(removeWorksGroup({works_group_id: data.worksGroup!.worksGroupId}))
       onClose()
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ export const DeleteWorksGroupsModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Вы уверены, что хотите сделать это? <br />
-            Группа работ <span className="text-red-500">{data?.worksGroupName}</span> будет удалена без возможности восстановления.
+            Группа работ <span className="text-red-500">{data.worksGroup?.worksGroupName}</span> будет удалена без возможности восстановления.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="px-6 py-4">

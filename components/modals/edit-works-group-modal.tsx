@@ -24,8 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createWorkGroup } from "@/http/works-groups/worksGroupsAPI";
-import { addWorkGroup } from "@/lib/features/works-groups/worksGroupsSlice";
 import { updateWorksGroup } from "@/http/works-groups/worksGroupsAPI";
 import { editWorksGroup } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useEffect } from "react";
@@ -57,17 +55,19 @@ export const EditWorkGroupModal = () => {
   });
 
   useEffect(() => {
-    if (data.organisationName) {
-      form.setValue("name", data.organisationName);
+    if (data.worksGroup?.worksGroupName) {
+      form.setValue("name", data.worksGroup.worksGroupName);
     }
-  }, [form, data.organisationId, data.organisationName, isOpen]);
+  }, [form, data.organisationId, data.worksGroup?.worksGroupName, isOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await updateWorksGroup({
-      works_group_id: data.works_group_id!,
+      worksGroupId: data.worksGroup!.worksGroupId!,
       worksGroupName: values.name,
+      worksGroupNumber: data.worksGroup!.worksGroupNumber!,
+      projectId: +data.projectId!
     });
 
     const dataForEditWorksGroup = {
@@ -89,8 +89,8 @@ export const EditWorkGroupModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Создайте группу работ</DialogTitle>
-          <DialogDescription>Введите данные новой группы работ.</DialogDescription>
+          <DialogTitle>Редактирование группы работ</DialogTitle>
+          <DialogDescription>Введите новые данные.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

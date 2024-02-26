@@ -92,14 +92,14 @@ export const organisationsSlice = createSlice({
       }>
     ) => {
 
-      state.organisations.forEach((moneyAccount) => {
-        const foundMoneyAccount = moneyAccount.moneyAccountList.find((moneyAccount) => moneyAccount.id === action.payload.moneyAccountId && moneyAccount.id === action.payload.organisationId);
-    
-        if (foundMoneyAccount) {
-          foundMoneyAccount.name = action.payload.moneyAccountName;
-          foundMoneyAccount.balance = action.payload.balance;
-          foundMoneyAccount.numberOfAccount = action.payload.numberOfAccount;
-        }
+      state.organisations.forEach((organisation) => {
+        organisation.moneyAccountList.forEach((moneyAccount) => {
+          if (moneyAccount.id === action.payload.moneyAccountId) {
+            moneyAccount.name = action.payload.moneyAccountName;
+            moneyAccount.balance = action.payload.balance;
+            moneyAccount.numberOfAccount = action.payload.numberOfAccount;
+          }
+        })
       });
     },
 

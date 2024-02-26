@@ -7,7 +7,7 @@ export const getWorksGroups = async (projectId: string) => {
 };
 
 export const createWorkGroup = async (projectId: number, name: string, number: number) => {
-  const response = await $authHost.post("/api/v1/worksGroup", {projectId, name, number});
+  const response = await $authHost.post("/api/v1/worksGroup", { projectId, name, number });
 
   return response;
 };
@@ -16,11 +16,13 @@ export const deleteWorksGroup = async (works_group_id: number) => {
   await $authHost.delete(`/api/v1/worksGroup/${works_group_id}`);
 };
 
-export const updateWorksGroup = async ({works_group_id, worksGroupName}: {
-  works_group_id: number,
+export const updateWorksGroup = async ({ worksGroupId, worksGroupName, worksGroupNumber, projectId }: {
+  worksGroupId: number
   worksGroupName: string
+  worksGroupNumber: number
+  projectId: number
 }) => {
-  const response = await $authHost.put(`/api/v1/worksGroup/${works_group_id}`, {name: worksGroupName});
-  
+  const response = await $authHost.put(`/api/v1/worksGroup/${worksGroupId}`, { name: worksGroupName, number: worksGroupNumber, projectId: projectId });
+
   return response;
 };
