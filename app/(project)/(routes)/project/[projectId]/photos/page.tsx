@@ -59,9 +59,11 @@ const Page = () => {
         let currentWork: IWorkEntity | undefined;
 
         worksGroups.forEach((worksGroup) => {
-          currentWork = worksGroup.workEntityList.find(
-            (workEntity) => workEntity.id === workProgress.workId
-          );
+          worksGroup.workEntityList.forEach((workEntity) => {
+            if (workEntity.id === workProgress.workId) {
+              currentWork = workEntity;
+            }
+          });
         });
 
         return (
@@ -82,7 +84,7 @@ const Page = () => {
                   {workProgress.imageIdsList.map((imageId) => (
                     <PhotoView
                       key={`${currentWork?.id}-${imageId}`}
-                      src={`http://localhost:8080/api/v1/photos/static/${imageId}`}
+                      src={`http://178.154.222.147:8000/api/v1/photos/static/${imageId}`}
                     >
                       <div className="relative w-64 h-64 cursor-pointer">
                         <X
@@ -96,7 +98,7 @@ const Page = () => {
                         <Image
                           fill
                           className="rounded-lg"
-                          src={`http://localhost:8080/api/v1/photos/static/${imageId}`}
+                          src={`http://178.154.222.147:8000/api/v1/photos/static/${imageId}`}
                           alt={currentWork?.name || "work progress"}
                         />
                       </div>

@@ -75,7 +75,10 @@ const ResourcePatterns = () => {
     <div className="bg-white p-5 rounded-lg shadow-xl">
       <Table className="mb-2">
         <TableBody className="border-b">
-          <TableRow key="mainHeader" className="flex text-neutral-400 px-10 text-[16px]">
+          <TableRow
+            key="mainHeader"
+            className="flex text-neutral-400 px-10 text-[16px]"
+          >
             <TableCell className="flex-1">Ресурсы</TableCell>
             <TableCell className="flex-2 w-[165px] text-center px-1">
               Цена, ед.
@@ -86,11 +89,9 @@ const ResourcePatterns = () => {
             <TableCell className="flex-2 w-[167px] text-center px-1">
               Цена для заказчика
             </TableCell>
-            <TableCell className="flex w-[80px] text-center px-1">
-              
-            </TableCell>
+            <TableCell className="flex w-[80px] text-center px-1"></TableCell>
           </TableRow>
-        </TableBody >
+        </TableBody>
       </Table>
       {resourcesPatterns.map((resourcesPattern) => (
         <Fragment key={resourcesPattern.type}>
@@ -127,7 +128,7 @@ const ResourcePatterns = () => {
                       {resource.orderPricePerUnit} ₽
                     </div>
                     <div className="flex w-[70px] text-center px-1">
-                    <Pencil
+                      {/* <Pencil
                       onClick={() =>
                         onOpen("editResource", {
                           resourcePatternId: resource.id,
@@ -151,7 +152,7 @@ const ResourcePatterns = () => {
                       }
                       className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                     p-1 text-red-400 transition"
-                    />
+                    /> */}
                     </div>
                   </div>
                 ))}

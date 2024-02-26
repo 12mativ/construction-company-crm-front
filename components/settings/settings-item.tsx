@@ -40,10 +40,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
       <Table>
         <TableBody>
           {moneyAccountList.map((moneyAccount) => (
-            <div
-            key={moneyAccount.id}
-            className="group transition"
-            >
+            <div key={moneyAccount.id} className="group transition">
               <TableRow
                 key={moneyAccount.id}
                 className="flex items-center text-[16px]"
@@ -58,7 +55,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                   {moneyAccount.balance} ₽
                 </TableCell>
                 <TableCell className="flex w-[10%] ">
-                  <Pencil
+                  {/* <Pencil
                     onClick={() =>
                       onOpen("editMoneyAccount", {
                         moneyAccountId: moneyAccount.id,
@@ -70,7 +67,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                     }
                     className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                       p-1 text-neutral-500 transition"
-                  />
+                  /> */}
                   <Trash2
                     onClick={() =>
                       onOpen("deleteMoneyAccount", {
@@ -81,7 +78,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                     className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                   p-1 text-red-400 transition"
                   />
-                </TableCell>                
+                </TableCell>
               </TableRow>
             </div>
           ))}

@@ -19,7 +19,7 @@ const Page = () => {
           <ProjectQueries />
         </TabsContent>
         <TabsContent value="orders">
-          <WorksChart />
+          <div>Раздел находится в разработке...</div>
         </TabsContent>
       </Tabs>
     </>

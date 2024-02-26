@@ -99,7 +99,7 @@ const ProjectEstimate = () => {
             <TableHead className="w-[140px]">Наценка</TableHead>
             <TableHead className="w-[140px]">Цена для заказчика</TableHead>
             <TableHead className="w-[140px]">Стоим. для заказчика</TableHead>
-            <TableHead className="w-[10px]"></TableHead>
+            {/* <TableHead className="w-[10px]"></TableHead> */}
           </TableRow>
         </TableHeader>
       </Table>
@@ -122,7 +122,7 @@ const ProjectEstimate = () => {
                       worksGroupName: worksGroup.name,
                       worksGroupNumber: worksGroup.number,
                     },
-                    projectId: projectId
+                    projectId: projectId,
                   })
                 }
                 className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -136,7 +136,7 @@ const ProjectEstimate = () => {
                       worksGroupName: worksGroup.name,
                       worksGroupNumber: worksGroup.number,
                     },
-                    projectId: projectId
+                    projectId: projectId,
                   })
                 }
                 className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -184,7 +184,7 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[140px]">
                           {workEntity.orderPrice} ₽
                         </TableCell>
-                        <TableCell className="px-1 w-[10px] group transition">
+                        {/* <TableCell className="px-1 w-[10px] group transition">
                           <div className="flex items-center gap-x-2">
                             <Pencil
                               onClick={() =>
@@ -207,7 +207,7 @@ const ProjectEstimate = () => {
                             p-1 text-red-400 transition"
                             />
                           </div>
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -218,7 +218,7 @@ const ProjectEstimate = () => {
                     <Table key={resourceEntity.id}>
                       <TableBody>
                         <TableRow key={resourceEntity.id}>
-                          <TableCell className="w-[22%] px-4">
+                          <TableCell className="w-[16%] px-4">
                             <div className="flex gap-x-1 items-center">
                               {iconMap[resourceEntity.resourceType]}
                               {resourceEntity.name}

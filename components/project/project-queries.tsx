@@ -57,8 +57,7 @@ const ProjectQueries = () => {
     const dateB = new Date(b.needDate);
 
     return dateB.getTime() - dateA.getTime();
-  }
-);
+  });
 
   const dispatch = useAppDispatch();
 
@@ -122,7 +121,7 @@ const ProjectQueries = () => {
         </TableBody>
       </Table>
 
-      <AddButton buttonText="Заказ" modalName="createWorkGroup" />
+      {/* <AddButton buttonText="Заказ" modalName="createWorkGroup" /> */}
     </div>
   );
 };

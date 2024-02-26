@@ -74,9 +74,11 @@ const WorksJournal = () => {
           let currentWork: IWorkEntity | undefined;
 
           worksGroups.forEach((worksGroup) => {
-            currentWork = worksGroup.workEntityList.find(
-              (workEntity) => workEntity.id === workProgress.workId
-            );
+            worksGroup.workEntityList.forEach((workEntity) => {
+              if (workEntity.id === workProgress.workId) {
+                currentWork = workEntity;
+              }
+            })
           });
 
           return (
