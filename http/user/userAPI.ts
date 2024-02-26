@@ -8,7 +8,7 @@ export const register = async (
   password: string,
   role: RoleType
 ) => {
-  const response = await $host.post("/api/v1/auth/register", {
+  await $host.post("/api/v1/auth/register", {
     username,
     password,
     userType: role,
@@ -16,9 +16,10 @@ export const register = async (
 
   const responseWithJwt = await login(username, password);
 
+  //@ts-ignore
   localStorage.setItem("token", responseWithJwt.data.jwt);
-  // return jwtDecode(response.data.jwt)
-  return response;
+  //@ts-ignore
+  return jwtDecode(responseWithJwt.data.jwt);
 };
 
 export const login = async (username: string, password: string) => {
@@ -26,16 +27,16 @@ export const login = async (username: string, password: string) => {
     username,
     password,
   });
-  
+
   localStorage.setItem("token", response.data.jwt);
 
-  return response;
+  return jwtDecode(response.data.jwt);
 };
 
 export const check = async () => {
-  const response = await $authHost.post("/api/v1/auth/register");
-  
-  localStorage.setItem("token", response.data.jwt);
-  
-  return response;
+  const response = await $authHost.get("/api/v1/auth");
+
+  const token = localStorage.getItem("token");
+
+  return jwtDecode(token!);
 };

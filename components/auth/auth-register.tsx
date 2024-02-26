@@ -58,20 +58,17 @@ const AuthRegister = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const registerResponse = await register(
+      const response = await register(
         values.username,
         values.password,
         values.role as RoleType
       );
 
-      const username = registerResponse.data.username;
+      //@ts-ignore
+      const role = response.roles;
+      const username = response.sub!;
 
-      const loginResponse = await login(values.username, values.password);
-
-      const role = loginResponse.data.authority;
-      const token = loginResponse.data.jwt;
-
-      dispatch(makeAuth({ username: username, role: role, token: token }));
+      dispatch(makeAuth({ username: username, role: role, isAuth: true}));
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
         setRegisterError(err.response?.data.message);

@@ -49,11 +49,12 @@ const AuthLogin = () => {
     try {
       const response = await login(values.username, values.password);
 
-      const role = response.data.authority;
-      const token = response.data.jwt;
+      //@ts-ignore
+      const role = response.roles;
+      const username = response.sub!;
 
       dispatch(
-        makeAuth({ username: values.username, role: role, token: token })
+        makeAuth({ username: username, role: role, isAuth: true })
       );
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {

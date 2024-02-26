@@ -7,8 +7,8 @@ import { redirect } from "next/navigation";
 const Register = () => {
   const user = useAppSelector((state) => state.userReducer.user);
 
-  if (user) {
-    return redirect("/");
+  if (user.isAuth) {
+    return redirect("/projects");
   }
 
   return (
