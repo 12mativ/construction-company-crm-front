@@ -40,22 +40,21 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
       <Table>
         <TableBody>
           {moneyAccountList.map((moneyAccount) => (
-            <div key={moneyAccount.id} className="group transition">
-              <TableRow
-                key={moneyAccount.id}
-                className="flex items-center text-[16px]"
-              >
-                <TableCell className="w-[30%] px-10">
-                  {moneyAccount.name}
-                </TableCell>
-                <TableCell className="w-[30%] text-center px-10">
-                  {moneyAccount.numberOfAccount}
-                </TableCell>
-                <TableCell className="w-[30%] text-right px-10">
-                  {moneyAccount.balance} ₽
-                </TableCell>
-                <TableCell className="flex w-[10%] ">
-                  {/* <Pencil
+            <TableRow
+              key={moneyAccount.id}
+              className="group flex items-center text-[16px] transition"
+            >
+              <TableCell className="w-[30%] px-10 group transition">
+                {moneyAccount.name}
+              </TableCell>
+              <TableCell className="w-[30%] text-center px-10">
+                {moneyAccount.numberOfAccount}
+              </TableCell>
+              <TableCell className="w-[30%] text-right px-10">
+                {moneyAccount.balance} ₽
+              </TableCell>
+              <TableCell className="flex w-[10%] ">
+                {/* <Pencil
                     onClick={() =>
                       onOpen("editMoneyAccount", {
                         moneyAccountId: moneyAccount.id,
@@ -68,19 +67,18 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                     className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                       p-1 text-neutral-500 transition"
                   /> */}
-                  <Trash2
-                    onClick={() =>
-                      onOpen("deleteMoneyAccount", {
-                        moneyAccountId: moneyAccount.id,
-                        moneyAccountName: moneyAccount.name,
-                      })
-                    }
-                    className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                <Trash2
+                  onClick={() =>
+                    onOpen("deleteMoneyAccount", {
+                      moneyAccountId: moneyAccount.id,
+                      moneyAccountName: moneyAccount.name,
+                    })
+                  }
+                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                   p-1 text-red-400 transition"
-                  />
-                </TableCell>
-              </TableRow>
-            </div>
+                />
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

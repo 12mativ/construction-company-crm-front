@@ -59,7 +59,7 @@ const Page = () => {
         <p className="text-center">В команде нет ни одного сотрудника.</p>
       )}
 
-      <AddButton buttonText="Добваить сотрудника" modalName="addUserToProject" data={{projectId: projectId}} />
+      <AddButton buttonText="Добавить сотрудника" modalName="addUserToProject" data={{projectId: projectId}} />
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import Header from "@/components/header";
 import { ChevronLeft } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import ProjectMenu from "@/components/project-menu/project-menu";
 import { formateComplexDate } from "@/lib/utils";
 import {
@@ -18,17 +18,48 @@ import {
   ProjectStatusType,
   updateProject,
 } from "@/lib/features/projects/projectsSlice";
+import { useEffect, useState } from "react";
+import { check } from "@/http/user/userAPI";
+import { makeAuth } from "@/lib/features/user/userSlice";
+import LoaderIndicator from "@/components/loader";
+import { AxiosError } from "axios";
 
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isLoading, setIsLoading] = useState(true);
   const { projects } = useAppSelector((state) => state.projectsReducer);
   const { projectId } = useParams<{ projectId: string }>();
   const currentProject = projects.find((project) => project.id === +projectId);
-  const dispatch = useAppDispatch();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector(state => state.userReducer.user);
+
+  useEffect(() => {
+    setIsLoading(true);
+    check()
+      .then((res) => {
+        //@ts-ignore
+        dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  if (!user.isAuth) {
+    return redirect('/login');
+  }
+
+	if (isLoading) {
+		return <LoaderIndicator />
+	}
+
+
 
   const handleUpdateProjectStatus = async (projectStatus: string) => {
     const response = await updateProjectStatus({

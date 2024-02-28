@@ -20,6 +20,7 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { makeAuth } from "@/lib/features/user/userSlice";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
+import { Checkbox } from "../ui/checkbox";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -40,6 +41,7 @@ const AuthLogin = () => {
   });
 
   const [loginError, setLoginError] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -53,9 +55,7 @@ const AuthLogin = () => {
       const role = response.roles;
       const username = response.sub!;
 
-      dispatch(
-        makeAuth({ username: username, role: role, isAuth: true })
-      );
+      dispatch(makeAuth({ username: username, role: role, isAuth: true }));
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
         setLoginError(err.response?.data.message);
@@ -66,73 +66,89 @@ const AuthLogin = () => {
   };
 
   return (
-    <div className="flex bg-white p-5 rounded-lg shadow-lg"> 
-      <div> 
-        <img src="/soyuz.png" alt="" width={380} height={100}/> 
-      </div> 
-      <div className=" w-80 flex flex-col justify-between"> 
-        <p className="text-center font-bold text-lg pt-8">Войдите в аккаунт</p> 
-        <Form {...form}> 
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> 
-            <FormField 
-              control={form.control} 
-              name="username" 
-              render={({ field }) => ( 
-                <FormItem> 
-                  <FormLabel>Логин (email)</FormLabel> 
-                  <FormControl> 
-                    <Input 
-                      placeholder="Логин (email)..." 
-                      disabled={isLoading} 
-                      {...field} 
-                    /> 
-                  </FormControl> 
-                  <FormMessage /> 
-                </FormItem> 
-              )} 
-            /> 
- 
-            <FormField 
-              control={form.control} 
-              name="password" 
-              render={({ field }) => ( 
-                <FormItem> 
-                  <FormLabel>Пароль</FormLabel> 
-                  <FormControl> 
-                    <Input 
-                      placeholder="Пароль..." 
-                      type="password" 
-                      disabled={isLoading} 
-                      {...field} 
-                    /> 
-                  </FormControl> 
-                  <FormMessage /> 
-                </FormItem> 
-              )} 
-            /> 
- 
-            <div className="flex flex-col w-full"> 
-              <Button 
-                disabled={isLoading} 
-                type="submit" 
-                className="hover:bg-red-600" 
-              > 
-                Войти 
-              </Button> 
-            </div> 
-          </form> 
-        </Form> 
- 
-        {loginError && <p className="text-red-500 py-2">{loginError}</p>} 
- 
-        <p className="pt-5 text-center text-sm"> 
-          Нет аккаунта? <br /> 
-          <Link href={"/register"} className="text-red-500"> 
-            Зарегистрируйтесь! 
-          </Link> 
-        </p> 
-      </div> 
-       
+    <div className="flex bg-white p-5 rounded-lg shadow-lg">
+      <div>
+        <img src="/soyuz.png" alt="" width={380} height={100} />
+      </div>
+      <div className=" w-80 flex flex-col justify-between">
+        <p className="text-center font-bold text-lg pt-8">Войдите в аккаунт</p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Логин (email)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Логин (email)..."
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex flex-col gap-y-3">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Пароль</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Пароль..."
+                        type={isPasswordVisible ? "text" : "password"}
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="self-end flex items-center gap-x-2">
+                <Checkbox
+                  id="isPasswordVisible"
+                  checked={isPasswordVisible}
+                  onClick={() =>
+                    setIsPasswordVisible((prevState) => !prevState)
+                  }
+                />
+                <label
+                  htmlFor="isPasswordVisible"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Показать пароль
+                </label>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="hover:bg-red-600"
+              >
+                Войти
+              </Button>
+            </div>
+          </form>
+        </Form>
+
+        {loginError && <p className="text-red-500 py-2">{loginError}</p>}
+
+        <p className="pt-5 text-center text-sm">
+          Нет аккаунта? <br />
+          <Link href={"/register"} className="text-red-500">
+            Зарегистрируйтесь!
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

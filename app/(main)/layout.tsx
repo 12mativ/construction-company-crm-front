@@ -1,31 +1,45 @@
 "use client";
 
 import Header from "@/components/header";
+import LoaderIndicator from "@/components/loader";
 import MainMenu from "@/components/main-menu/main-menu";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { check } from "@/http/user/userAPI";
 import { makeAuth } from "@/lib/features/user/userSlice";
+import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = useAppSelector((state) => state.userReducer.user);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector(state => state.userReducer.user);
+
   useEffect(() => {
-    check().then((res) => {
-      //@ts-ignore
-      dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
-    });
+    setIsLoading(true);
+    check()
+      .then((res) => {
+        //@ts-ignore
+        dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   if (!user.isAuth) {
-    return redirect("/login");
+    return redirect('/login');
   }
+
+	if (isLoading) {
+		return <LoaderIndicator />
+	}
 
   return (
     <div>

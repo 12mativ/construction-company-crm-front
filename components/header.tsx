@@ -1,16 +1,24 @@
 "use client";
 
-import { useAppSelector } from "@/hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import UserAvatar from "./user-avatar";
 import logo from "/assets/1.png";
+import { CircleUserRound, LogOut } from "lucide-react";
+import { makeAuth } from "@/lib/features/user/userSlice";
 
 const Header = () => {
   const user = useAppSelector((state) => state.userReducer.user);
+  const dispatch = useAppDispatch();
 
-  if (!user) {
-    return redirect('/')
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(makeAuth({role: "", username: "", isAuth: false}));
+  }
+
+  if (!user.isAuth) {
+    return redirect('/login');
   }
 
   return (
@@ -19,9 +27,10 @@ const Header = () => {
         <Image src={logo} alt="Logo" fill className="rounded-full" />
       </div>
 
-      <div className="flex items-center gap-x-2">
-        <p>{user.username}</p>
-        <UserAvatar src="https://freesvg.org/img/FaceWoman.png" />
+      <div className="flex items-center gap-x-4">
+        <p className="font-bold">{user.username}</p>
+        <CircleUserRound size={40} className="text-neutral-600" />
+        <LogOut onClick={handleLogout} className="hover:text-red-500 cursor-pointer transition" size={30} />
       </div>
     </div>
   );
