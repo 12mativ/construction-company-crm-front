@@ -184,13 +184,19 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[140px]">
                           {workEntity.orderPrice} ₽
                         </TableCell>
-                        {/* <TableCell className="px-1 w-[10px] group transition">
+                        <TableCell className="px-1 w-[10px] group transition">
                           <div className="flex items-center gap-x-2">
                             <Pencil
                               onClick={() =>
-                                onOpen("editOrganisation", {
-                                  organisationId: workEntity.id,
-                                  organisationName: workEntity.name,
+                                onOpen("editWork", {
+                                  work_id: workEntity.id,
+                                  workName: workEntity.name,
+                                  workNumber: workEntity.number,
+                                  quantity: workEntity.quantity,
+                                  measureUnit: workEntity.measureUnit,
+                                  startDate: workEntity.startDate,
+                                  endDate: workEntity.endDate,
+                                  worksGroupId: workEntity.worksGroupId,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -198,16 +204,16 @@ const ProjectEstimate = () => {
                             />
                             <Trash2
                               onClick={() =>
-                                onOpen("deleteOrganisation", {
-                                  organisationId: workEntity.id,
-                                  organisationName: workEntity.name,
+                                onOpen("deleteWork", {
+                                  work_id: workEntity.id,
+                                  workName: workEntity.name,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
                             />
                           </div>
-                        </TableCell> */}
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>

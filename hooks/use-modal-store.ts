@@ -33,7 +33,9 @@ export type ModalType =
   | "deleteResource"
   | "editResource"
   | "deleteWorksGroup"
-  | "editWorksGroup";
+  | "editWorksGroup"
+  | "deleteWork"
+  | "editWork";
 
 interface IWorksGroupForModal {
   worksGroupId: number;
@@ -66,6 +68,13 @@ export interface ModalData {
   extraCharge?: number;
   measureUnit?: string;
   resourceType?: ResourceType;
+  work_id?: number;
+  workName?: string;
+  workNumber?: number;
+  quantity?: number;
+  startDate?: string;
+  endDate?: string;
+  worksGroupId?: number;
 }
 
 interface ModalStore {

@@ -103,10 +103,47 @@ export const worksGroupsSlice = createSlice({
           }
         })        
       })
+    }, 
+
+    removeWork: (
+      state,
+      action: PayloadAction<{ work_id: number }>
+    ) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList = workGroup.workEntityList.filter((work) => work.id !== action.payload.work_id);
+      });
+    },
+
+    editWork: (
+      state,
+      action: PayloadAction<{
+        work_id: number,
+        workName: string,
+        workNumber: number,
+        quantity: number,
+        measureUnit: string,
+        startDate: string,
+        endDate: string,
+        worksGroupId: number,
+      }>
+    ) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList.forEach((work) => {
+          if (work.id === action.payload.work_id) {
+            work.name = action.payload.workName;
+            work.number = action.payload.workNumber;
+            work.quantity = action.payload.quantity;
+            work.measureUnit = action.payload.measureUnit;
+            work.startDate = action.payload.startDate;
+            work.endDate = action.payload.endDate;
+            work.worksGroupId = action.payload.worksGroupId;
+          }
+        });
+      });
     },
   },
 });
 
 export default worksGroupsSlice.reducer;
 
-export const { addWorksGroups, addWorkGroup, removeWorksGroup, editWorksGroup, addWork, addResourceToWork } = worksGroupsSlice.actions;
+export const { addWorksGroups, addWorkGroup, removeWorksGroup, editWorksGroup, addWork, addResourceToWork, removeWork, editWork } = worksGroupsSlice.actions;
