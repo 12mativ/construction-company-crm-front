@@ -127,33 +127,25 @@ export const resourcesPatternsSlice = createSlice({
       action: PayloadAction<{ resourcePatternId: number }>
     ) => {
       state.resourcesPatterns.forEach((pattern) => {
-        pattern.resources = pattern.resources.filter((resource) => resource.id !== action.payload.resourcePatternId);
+        pattern.resources = pattern.resources.filter(
+          (resource) => resource.id !== action.payload.resourcePatternId
+        );
       });
     },
 
-    editResource: (
-      state,
-      action: PayloadAction<{ 
-        resourcePatternId: number,
-        resourcePatternName: string,
-        costPricePerUnit: number,
-        orderPricePerUnit: number,
-        extraCharge: number,
-        measureUnit: string,
-        resourceType: ResourceType
-      }>
-    ) => {
-      state.resourcesPatterns.forEach((pattern) => {
-        pattern.resources.forEach((resource) => {
-          if (resource.id === action.payload.resourcePatternId) {
-            resource.name = action.payload.resourcePatternName;
-            resource.costPricePerUnit = action.payload.costPricePerUnit;
-            resource.orderPricePerUnit = action.payload.orderPricePerUnit;
-            resource.extraCharge = action.payload.extraCharge;
-            resource.measureUnit = action.payload.measureUnit;
-            resource.resourceType = action.payload.resourceType;
-          }
-        });
+    editResource: (state, action: PayloadAction<IResourcePattern>) => {
+      state.resourcesPatterns.forEach((resourcePattern) => {
+        if (resourcePattern.type === action.payload.resourceType) {
+          resourcePattern.resources.forEach((resource) => {
+            if (resource.id === action.payload.id) {
+              resource.name = action.payload.name;
+              resource.costPricePerUnit = action.payload.costPricePerUnit;
+              resource.orderPricePerUnit = action.payload.orderPricePerUnit;
+              resource.extraCharge = action.payload.extraCharge;
+              resource.measureUnit = action.payload.measureUnit;
+            }
+          });
+        }
       });
     },
   },
@@ -161,5 +153,9 @@ export const resourcesPatternsSlice = createSlice({
 
 export default resourcesPatternsSlice.reducer;
 
-export const { addResourcesPatterns, addResource, removeResource, editResource } =
-  resourcesPatternsSlice.actions;
+export const {
+  addResourcesPatterns,
+  addResource,
+  removeResource,
+  editResource,
+} = resourcesPatternsSlice.actions;

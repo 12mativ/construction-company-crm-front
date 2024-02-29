@@ -13,23 +13,27 @@ import {
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { deleteResource } from "@/http/resources/resourcesAPI";
+import { deleteResourcePattern } from "@/http/resources/resourcesAPI";
 import { removeResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 
-export const DeleteResourcesModal = () => {
+export const DeleteResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === "deleteResource";
-  const dispatch = useAppDispatch()
+  const isModalOpen = isOpen && type === "deleteResourcePattern";
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
     setIsLoading(true);
     try {
-      await deleteResource(data.resourcePatternId!);
-      dispatch(removeResource({resourcePatternId: data.resourcePatternId!}))
-      onClose()
+      await deleteResourcePattern(data.resourcePattern?.resourcePatternId!);
+      dispatch(
+        removeResource({
+          resourcePatternId: data.resourcePattern?.resourcePatternId!,
+        })
+      );
+      onClose();
     } catch (error) {
       console.log(error);
     } finally {
@@ -46,7 +50,11 @@ export const DeleteResourcesModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Вы уверены, что хотите сделать это? <br />
-            Ресурс <span className="text-red-500">{data?.resourcePatternName}</span> будет удален без возможности восстановления.
+            Ресурс{" "}
+            <span className="text-red-500">
+              {data?.resourcePattern?.resourcePatternName}
+            </span>{" "}
+            будет удален без возможности восстановления.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="px-6 py-4">

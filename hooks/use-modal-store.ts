@@ -30,8 +30,8 @@ export type ModalType =
   | "editMoneyAccount"
   | "deleteCounterparty"
   | "editCounterparty"
-  | "deleteResource"
-  | "editResource"
+  | "deleteResourcePattern"
+  | "editResourcePattern"
   | "deleteWorksGroup"
   | "editWorksGroup";
 
@@ -41,11 +41,20 @@ interface IWorksGroupForModal {
   worksGroupNumber: number;
 }
 
+interface IResourcePatternForModal {
+  resourcePatternId: number
+  resourcePatternName: string;
+  resourcePatternCostPricePerUnit: number;
+  resourcePatternOrderPricePerUnit: number;
+  resourcePatternMeasureUnit: string;
+}
+
 export interface ModalData {
   organisationsNames?: string[];
   organisationName?: string;
   organisationId?: number;
   worksGroup?: IWorksGroupForModal;
+  resourcePattern?: IResourcePatternForModal;
   moneyAccountId?: number;
   moneyAccountName?: string;
   balance?: number;
@@ -59,12 +68,12 @@ export interface ModalData {
   phoneNumber?: string;
   email?: string;
   partnerType?: PartnerType;
-  resourcePatternId?: number;
-  resourcePatternName?: string;
-  costPricePerUnit?: number;
-  orderPricePerUnit?: number;
-  extraCharge?: number;
-  measureUnit?: string;
+  // resourcePatternId?: number;
+  // resourcePatternName?: string;
+  // costPricePerUnit?: number;
+  // orderPricePerUnit?: number;
+  // extraCharge?: number;
+  // measureUnit?: string;
   resourceType?: ResourceType;
 }
 

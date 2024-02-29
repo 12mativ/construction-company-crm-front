@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { CreateProjectModal } from "../modals/create-project-modal";
 import { CreateResourcePatternModal } from "../modals/create-resource-pattern-modal";
 import { CreateCounterpartyModal } from "../modals/create-counterparty-modal";
@@ -21,19 +21,19 @@ import { EditMoneyAccountModal } from "../modals/edit-money-account-modal";
 import { AddUserToProjectModal } from "../modals/add-user-to-project-modal";
 import { DeleteCounterpartyModal } from "../modals/delete-counterparty-modal";
 import { EditCounterpartyModal } from "../modals/edit-counterparty-modal";
-import { DeleteResourcesModal } from "../modals/delete-resource-modal";
-import { EditResourceModal } from "../modals/edit-resource-modal";
+import { DeleteResourcePatternModal } from "../modals/delete-resource-pattern-modal";
+import { EditResourcePatternModal } from "../modals/edit-resource-pattern-modal";
 import { DeleteWorksGroupsModal } from "../modals/delete-works-groups-modal";
 import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
 export function ModalProvider() {
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -58,10 +58,10 @@ export function ModalProvider() {
       <AddUserToProjectModal />
       <DeleteCounterpartyModal />
       <EditCounterpartyModal />
-      <DeleteResourcesModal />
-      <EditResourceModal />
+      <DeleteResourcePatternModal />
+      <EditResourcePatternModal />
       <DeleteWorksGroupsModal />
       <EditWorkGroupModal />
     </>
-  )
+  );
 }

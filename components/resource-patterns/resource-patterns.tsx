@@ -128,16 +128,17 @@ const ResourcePatterns = () => {
                       {resource.orderPricePerUnit} ₽
                     </div>
                     <div className="flex w-[70px] text-center px-1">
-                      {/* <Pencil
+                      <Pencil
                       onClick={() =>
-                        onOpen("editResource", {
-                          resourcePatternId: resource.id,
-                          resourcePatternName: resource.name,
-                          costPricePerUnit: resource.costPricePerUnit,
-                          orderPricePerUnit: resource.orderPricePerUnit,
-                          extraCharge: resource.extraCharge,
-                          measureUnit: resource.measureUnit,
-                          resourceType: resource.resourceType,
+                        onOpen("editResourcePattern", {
+                          resourcePattern: {
+                            resourcePatternId: resource.id,
+                            resourcePatternName: resource.name,
+                            resourcePatternCostPricePerUnit: resource.costPricePerUnit,
+                            resourcePatternOrderPricePerUnit: resource.orderPricePerUnit,
+                            resourcePatternMeasureUnit: resource.measureUnit
+                          },
+                          resourceType: resource.resourceType
                         })
                       }
                       className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -145,14 +146,19 @@ const ResourcePatterns = () => {
                     />
                     <Trash2
                       onClick={() =>
-                        onOpen("deleteResource", {
-                          resourcePatternId: resource.id,
-                          resourcePatternName: resource.name,
+                        onOpen("deleteResourcePattern", {
+                          resourcePattern: {
+                            resourcePatternId: resource.id,
+                            resourcePatternName: resource.name,
+                            resourcePatternCostPricePerUnit: resource.costPricePerUnit,
+                            resourcePatternOrderPricePerUnit: resource.orderPricePerUnit,
+                            resourcePatternMeasureUnit: resource.measureUnit
+                          }
                         })
                       }
                       className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                     p-1 text-red-400 transition"
-                    /> */}
+                    />
                     </div>
                   </div>
                 ))}
