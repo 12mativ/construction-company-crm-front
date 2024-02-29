@@ -5,7 +5,7 @@ const $host = axios.create({
 })
 
 const $authHost = axios.create({
-  baseURL: "http://localhost:8080"
+  baseURL: 'http://178.154.222.147:8000'
   // baseURL: 'http://178.154.222.147:8000'
 })
 

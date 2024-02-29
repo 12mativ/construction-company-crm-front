@@ -25,6 +25,9 @@ import { DeleteResourcePatternModal } from "../modals/delete-resource-pattern-mo
 import { EditResourcePatternModal } from "../modals/edit-resource-pattern-modal";
 import { DeleteWorksGroupsModal } from "../modals/delete-works-groups-modal";
 import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
+import { DeleteWorkModal } from "../modals/delete-work-modal";
+import { EditWorkModal } from "../modals/edit-work-modal ";
+
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -62,6 +65,8 @@ export function ModalProvider() {
       <EditResourcePatternModal />
       <DeleteWorksGroupsModal />
       <EditWorkGroupModal />
+      <DeleteWorkModal />
+      <EditWorkModal />
     </>
   );
 }

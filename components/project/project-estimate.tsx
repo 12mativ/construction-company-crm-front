@@ -188,9 +188,15 @@ const ProjectEstimate = () => {
                           <div className="flex items-center gap-x-2">
                             <Pencil
                               onClick={() =>
-                                onOpen("editOrganisation", {
-                                  organisationId: workEntity.id,
-                                  organisationName: workEntity.name,
+                                onOpen("editWork", {
+                                  work_id: workEntity.id,
+                                  workName: workEntity.name,
+                                  workNumber: workEntity.number,
+                                  quantity: workEntity.quantity,
+                                  measureUnit: workEntity.measureUnit,
+                                  startDate: workEntity.startDate,
+                                  endDate: workEntity.endDate,
+                                  worksGroupId: workEntity.worksGroupId,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
@@ -198,9 +204,9 @@ const ProjectEstimate = () => {
                             />
                             <Trash2
                               onClick={() =>
-                                onOpen("deleteOrganisation", {
-                                  organisationId: workEntity.id,
-                                  organisationName: workEntity.name,
+                                onOpen("deleteWork", {
+                                  work_id: workEntity.id,
+                                  workName: workEntity.name,
                                 })
                               }
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
