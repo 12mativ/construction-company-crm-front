@@ -14,8 +14,7 @@ export const register = async (
     userType: role,
   });
 
-  const responseWithJwt = await login(username, password);
-
+  const responseWithJwt = await loginJWT(username, password);
   //@ts-ignore
   localStorage.setItem("token", responseWithJwt.data.jwt);
   //@ts-ignore
@@ -33,10 +32,21 @@ export const login = async (username: string, password: string) => {
   return jwtDecode(response.data.jwt);
 };
 
+export const loginJWT = async (username: string, password: string) => {
+  const response = await $host.post("/api/v1/auth/login", {
+    username,
+    password,
+  });
+
+  localStorage.setItem("token", response.data.jwt);
+
+  return response;
+};
+
 export const check = async () => {
-  const response = await $authHost.get("/api/v1/auth");
-
   const token = localStorage.getItem("token");
-
-  return jwtDecode(token!);
+  if (token) {
+    await $authHost.get("/api/v1/auth");
+    return jwtDecode(token!);
+  }
 };

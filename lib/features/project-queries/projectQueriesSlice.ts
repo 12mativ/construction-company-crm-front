@@ -16,6 +16,7 @@ interface IResource {
 }
 
 type ProjectQueryType = {
+  id: number;
   factQuantity: number;
   factCostPerUnit: number;
   factCostPrice: number;

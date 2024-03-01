@@ -42,8 +42,10 @@ export default function MainLayout({
     setIsLoading(true);
     check()
       .then((res) => {
-        //@ts-ignore
-        dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+        if (res) {
+          //@ts-ignore
+          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+        }
       })
       .catch((error: AxiosError) => {
         console.log(error);
@@ -58,8 +60,6 @@ export default function MainLayout({
 	if (isLoading) {
 		return <LoaderIndicator />
 	}
-
-
 
   const handleUpdateProjectStatus = async (projectStatus: string) => {
     const response = await updateProjectStatus({
