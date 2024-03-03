@@ -54,6 +54,7 @@ interface IResourcePatternForModal {
 
 interface IOrderForModal {
   id: number;
+  name: string;
   factQuantity: number;
   factCostPerUnit: number;
 }

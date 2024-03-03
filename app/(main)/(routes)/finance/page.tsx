@@ -9,12 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NeedPayment from "@/components/finance/need-payment";
 
 const Page = () => {
-  const user = useAppSelector((state) => state.userReducer.user);
-
-  if (!user) {
-    return redirect("/login");
-  }
-
   return (
     <div className="flex flex-col gap-y-5">
       <TotalBalance />

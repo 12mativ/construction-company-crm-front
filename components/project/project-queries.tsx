@@ -27,7 +27,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
-import AddButton from "../addButton";
+import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
+import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 
 const formSchema = z.object({
   items: z
@@ -112,8 +113,9 @@ const ProjectQueries = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const dataForOrder = values.items.map((item) => ({
       id: item.id,
+      name: item.resourceEntity.name,
       factQuantity: item.factQuantity,
-      factCostPerUnit: item.factCostPerUnit
+      factCostPerUnit: item.factCostPerUnit,
     }))
 
     onOpen("createOrder", {orders: dataForOrder})
@@ -121,6 +123,10 @@ const ProjectQueries = () => {
 
   useEffect(() => {
     setIsLoading(true);
+    getCounterparties()
+      .then((res) => {
+        dispatch(addCounterparties(res.data));
+      })
     getProjectQueries(+projectId)
       .then((res) => {
         dispatch(addProjectQueries(res.data));
@@ -216,7 +222,7 @@ const ProjectQueries = () => {
                                 {formateComplexDate(projectQuery.needDate)}
                               </div>
                               <div className="px-1 w-[140px] text-center">
-                                {projectQuery.resourceEntity.quantity}{" "}
+                                {projectQuery.factQuantity}{" "}
                                 {projectQuery.resourceEntity.measureUnit}
                               </div>
                               <div className="px-1 w-[140px] text-center">
@@ -244,8 +250,6 @@ const ProjectQueries = () => {
           </Button>
         </form>
       </Form>
-
-      {/* <AddButton buttonText="Заказ" modalName="createWorkGroup" /> */}
     </div>
   );
 };
