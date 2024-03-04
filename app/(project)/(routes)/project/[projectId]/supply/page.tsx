@@ -1,4 +1,5 @@
 import ProjectEstimate from "@/components/project/project-estimate";
+import ProjectOrders from "@/components/project/project-orders";
 import ProjectQueries from "@/components/project/project-queries";
 import WorksChart from "@/components/project/works-chart/works-chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,7 +20,7 @@ const Page = () => {
           <ProjectQueries />
         </TabsContent>
         <TabsContent value="orders">
-          <div>Раздел находится в разработке...</div>
+          <ProjectOrders />
         </TabsContent>
       </Tabs>
     </>

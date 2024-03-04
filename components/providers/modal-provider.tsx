@@ -27,6 +27,7 @@ import { DeleteWorksGroupsModal } from "../modals/delete-works-groups-modal";
 import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
 import { DeleteWorkModal } from "../modals/delete-work-modal";
 import { EditWorkModal } from "../modals/edit-work-modal ";
+import { CreateOrderModal } from "../modals/create-order-modal";
 import { DeleteResourceModal } from "../modals/delete-resource-modal ";
 
 export function ModalProvider() {
@@ -68,6 +69,7 @@ export function ModalProvider() {
       <EditWorkGroupModal />
       <DeleteWorkModal />
       <EditWorkModal />
+      <CreateOrderModal />
       <DeleteResourceModal />
     </>
   );

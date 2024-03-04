@@ -15,6 +15,8 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteWork } from "@/http/works-groups/worksAPI";
 import { removeWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { getProjects } from "@/http/projects/projectsAPI";
+import { addProjects } from "@/lib/features/projects/projectsSlice";
 
 export const DeleteWorkModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -29,6 +31,8 @@ export const DeleteWorkModal = () => {
     try {
       await deleteWork(data.work_id!);
       dispatch(removeWork({work_id: data.work_id!}))
+      const newProjects = await getProjects()
+      dispatch(addProjects(newProjects.data))
       onClose()
     } catch (error) {
       console.log(error);

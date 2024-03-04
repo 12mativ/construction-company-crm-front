@@ -16,6 +16,7 @@ interface IResource {
 }
 
 type ProjectQueryType = {
+  id: number;
   factQuantity: number;
   factCostPerUnit: number;
   factCostPrice: number;
@@ -39,9 +40,12 @@ export const projectQueriesSlice = createSlice({
     addProjectQueries: (state, action: PayloadAction<ProjectQueryType[]>) => {
       state.projectQueries = action.payload;
     },
+    removeProjectQueries: (state, action: PayloadAction<number[]>) => {
+      state.projectQueries = state.projectQueries.filter((projectQuery) => !action.payload.includes(projectQuery.id));
+    },
   },
 });
 
 export default projectQueriesSlice.reducer;
 
-export const { addProjectQueries } = projectQueriesSlice.actions;
+export const { addProjectQueries, removeProjectQueries } = projectQueriesSlice.actions;

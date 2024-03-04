@@ -2,7 +2,7 @@ import { findEqualItemsById } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ResourceType } from "../resources-patterns/resourcesPatternsSlice";
 
-interface IResourceEntity {
+export interface IResourceEntity {
   id: number;
   name: string;
   measureUnit: string;
