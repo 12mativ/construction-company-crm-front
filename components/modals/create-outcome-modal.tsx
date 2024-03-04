@@ -212,7 +212,7 @@ export const CreateOutcomeModal = () => {
                   <FormControl>
                     <Input
                       className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="Сумма перевода..."
+                      placeholder="Сумма операции..."
                       disabled={isLoading}
                       {...field}
                     />
@@ -269,10 +269,6 @@ export const CreateOutcomeModal = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
-                        // disabled={(date) =>
-                        //   date > new Date("2100-01-01") || date < new Date("1900-01-01")
-                        // }
                         initialFocus
                       />
                     </PopoverContent>

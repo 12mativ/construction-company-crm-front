@@ -15,9 +15,3 @@ export const formateComplexDate = (_date: string) => {
 
   return `${day}.${month}.${year}`;
 }
-
-export const formateSimpleDate = (_date: string) => {
-  const [year, month, day] = _date.split("-");
-
-  return `${day}.${month}.${year}`;
-}

@@ -2,16 +2,16 @@
 
 import PhotoUploader from "@/components/photo-uploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { useModal } from "@/hooks/use-modal-store";
 import { getWorksProgress } from "@/http/works-progress/worksProgressAPI";
 import { IWorkEntity } from "@/lib/features/works-groups/worksGroupsSlice";
 import { addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
-import { formateSimpleDate } from "@/lib/utils";
+import { formateComplexDate } from "@/lib/utils";
+import { X } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PhotoView, PhotoProvider } from "react-photo-view";
-import { X } from "lucide-react";
-import { useModal } from "@/hooks/use-modal-store";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +74,7 @@ const Page = () => {
             <div>
               <p className="text-2xl font-semibold">{currentWork?.name}</p>
               <p className="text-sm text-neutral-400">
-                ({formateSimpleDate(workProgress.timestamp)})
+                ({formateComplexDate(workProgress.timestamp)})
               </p>
             </div>
 

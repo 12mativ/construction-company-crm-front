@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getWorksProgress } from "@/http/works-progress/worksProgressAPI";
 import { IWorkEntity } from "@/lib/features/works-groups/worksGroupsSlice";
 import { addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
-import { formateSimpleDate } from "@/lib/utils";
+import { formateComplexDate } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -22,14 +22,12 @@ const WorksJournal = () => {
     (state) => state.worksProgressReducer.worksProgress
   );
 
-  const sortedWorksProgress = worksProgress
-    .slice()
-    .sort((a, b) => {
-      const dateA = new Date(a.timestamp);
-      const dateB = new Date(b.timestamp);
+  const sortedWorksProgress = worksProgress.slice().sort((a, b) => {
+    const dateA = new Date(a.timestamp);
+    const dateB = new Date(b.timestamp);
 
-      return dateB.getTime() - dateA.getTime();
-    });
+    return dateB.getTime() - dateA.getTime();
+  });
 
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
@@ -78,7 +76,7 @@ const WorksJournal = () => {
               if (workEntity.id === workProgress.workId) {
                 currentWork = workEntity;
               }
-            })
+            });
           });
 
           return (
@@ -88,7 +86,7 @@ const WorksJournal = () => {
                   {currentWork?.name}
                 </TableCell>
                 <TableCell className="w-[180px] text-center px-1">
-                  {formateSimpleDate(workProgress.timestamp)}
+                  {formateComplexDate(workProgress.timestamp)}
                 </TableCell>
                 <TableCell className="w-[180px] text-center px-1">
                   {workProgress.quantityAfter - workProgress.quantityBefore}{" "}

@@ -137,8 +137,8 @@ export const CreateIncomeModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Расход</DialogTitle>
-          <DialogDescription>Введите данные расхода.</DialogDescription>
+          <DialogTitle>Доход</DialogTitle>
+          <DialogDescription>Введите данные дохода.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -214,7 +214,7 @@ export const CreateIncomeModal = () => {
                   <FormControl>
                     <Input
                       className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                      placeholder="Сумма перевода..."
+                      placeholder="Сумма операции..."
                       disabled={isLoading}
                       {...field}
                     />
@@ -271,7 +271,6 @@ export const CreateIncomeModal = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
                         initialFocus
                       />
                     </PopoverContent>
