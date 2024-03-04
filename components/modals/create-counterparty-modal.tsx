@@ -103,6 +103,7 @@ export const CreateCounterpartyModal = () => {
                   <FormLabel>Название/имя контрагента</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название/имя контрагента..."
                       disabled={isLoading}
                       {...field}
@@ -120,6 +121,7 @@ export const CreateCounterpartyModal = () => {
                   <FormLabel>Номер телефона</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Номер телефона..."
                       disabled={isLoading}
                       {...field}
@@ -137,6 +139,7 @@ export const CreateCounterpartyModal = () => {
                   <FormLabel>Введите электронную почту</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Электронная почта..."
                       disabled={isLoading}
                       {...field}

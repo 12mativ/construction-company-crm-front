@@ -94,6 +94,7 @@ export const CreateWorkGroupModal = () => {
                   <FormLabel>Название группы</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название группы..."
                       disabled={isLoading}
                       {...field}

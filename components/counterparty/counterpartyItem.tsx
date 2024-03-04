@@ -33,30 +33,32 @@ const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounte
       <TableCell className="flex-2 w-[167px] text-center px-1">
         {partnerType === "LEGAL" ? "Юр. лицо" : "Физ. лицо"}
       </TableCell>
-      <TableCell className="flex ">
-        <Pencil
-          onClick={() =>
-            onOpen("editCounterparty", {
-              partnerId: id,
-              counterpartyName: name,
-              phoneNumber: phoneNumber,
-              email: email,
-              partnerType: partnerType,
-            })
-          }
-          className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
-            p-1 text-neutral-500 transition"
-        />
-        <Trash2
-          onClick={() =>
-            onOpen("deleteCounterparty", {
-              partnerId: id,
-              counterpartyName: name,
-            })
-          }
-          className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
-        p-1 text-red-400 transition"
-        />
+      <TableCell className="flex-3 w-[10px]">
+        <div className="flex">
+          <Pencil
+            onClick={() =>
+              onOpen("editCounterparty", {
+                partnerId: id,
+                counterpartyName: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                partnerType: partnerType,
+              })
+            }
+            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+              p-1 text-neutral-500 transition"
+          />
+          <Trash2
+            onClick={() =>
+              onOpen("deleteCounterparty", {
+                partnerId: id,
+                counterpartyName: name,
+              })
+            }
+            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+          p-1 text-red-400 transition"
+          />
+        </div>
       </TableCell>      
     </TableRow>
   );

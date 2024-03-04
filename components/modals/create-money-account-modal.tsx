@@ -105,6 +105,7 @@ export const CreateMoneyAccountModal = () => {
                   <FormLabel>Название счета</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название счета..."
                       disabled={isLoading}
                       {...field}
@@ -149,6 +150,7 @@ export const CreateMoneyAccountModal = () => {
                   <FormLabel>Баланс счета</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Баланс счета..."
                       disabled={isLoading}
                       {...field}
@@ -166,6 +168,7 @@ export const CreateMoneyAccountModal = () => {
                   <FormLabel>Введите номер счета</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Номер счета..."
                       disabled={isLoading}
                       {...field}

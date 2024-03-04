@@ -165,6 +165,7 @@ export const UpdateWorkProgressModal = () => {
                   <FormLabel>Выполненное количество</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Количество..."
                       disabled={isLoading}
                       {...field}

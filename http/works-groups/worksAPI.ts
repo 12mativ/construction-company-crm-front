@@ -37,16 +37,16 @@ export const deleteWork = async (work_id: number) => {
 };
 
 export const updateWork = async ({work_id, workName, workNumber, quantity, measureUnit, startDate, endDate, worksGroupId }: {
-  work_id: number,  
-  workNumber: number,
+  work_id: number,
   workName: string,
+  workNumber: number,
   quantity: number,
   measureUnit: string,
   startDate: string,
   endDate: string,
   worksGroupId: number,
 }) => {
-  const response = await $authHost.put(`/api/v1/work/${work_id}`, {name: workName, number: workNumber, quantity: quantity, measureUnit: measureUnit, startDate:startDate, endDate:endDate, worksGroupId:worksGroupId});
+  const response = await $authHost.put(`/api/v1/work/${work_id}`, {name: workName, number: workNumber, quantity: quantity, measureUnit: measureUnit, startDate: startDate, endDate: endDate, worksGroupId: worksGroupId});
   
   return response;
 };

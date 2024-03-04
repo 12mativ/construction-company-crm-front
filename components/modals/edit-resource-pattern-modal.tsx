@@ -153,6 +153,7 @@ export const EditResourcePatternModal = () => {
                   <FormLabel>Название ресурса</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название ресурса..."
                       disabled={isLoading}
                       {...field}
@@ -170,6 +171,7 @@ export const EditResourcePatternModal = () => {
                   <FormLabel>Себестоимость за единицу</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Себестоимость за единицу..."
                       disabled={isLoading}
                       {...field}
@@ -187,6 +189,7 @@ export const EditResourcePatternModal = () => {
                   <FormLabel>Стоимость для заказчика за единицу</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Стоимость для заказчика за единицу..."
                       disabled={isLoading}
                       {...field}
@@ -204,6 +207,7 @@ export const EditResourcePatternModal = () => {
                   <FormLabel>Единица измерения</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Единица измерения..."
                       disabled={isLoading}
                       {...field}

@@ -218,6 +218,7 @@ export const CreateTransferModal = () => {
                   <FormLabel>Сумма</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Сумма перевода..."
                       disabled={isLoading}
                       {...field}
@@ -235,6 +236,7 @@ export const CreateTransferModal = () => {
                   <FormLabel>Описание операции</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Описание операции..."
                       disabled={isLoading}
                       {...field}

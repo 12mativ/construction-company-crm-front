@@ -52,30 +52,6 @@ export const createResourcePattern = async ({
   return response;
 };
 
-export const createResource = async ({
-  name,
-  measureUnit,
-  quantity,
-  costPricePerUnit,
-  orderPricePerUnit,
-  extraCharge,
-  resourceType,
-  workId,
-}: IResourceEntityForCreatingWork & { workId: number }) => {
-  const response = await $authHost.post(`/api/v1/resource`, {
-    name,
-    measureUnit,
-    quantity,
-    costPricePerUnit,
-    orderPricePerUnit,
-    extraCharge,
-    resourceType,
-    workId,
-  });
-
-  return response;
-};
-
 export const deleteResourcePattern = async (resourcePatternId: number) => {
   await $authHost.delete(`/api/v1/resource/pattern/${resourcePatternId}`);
 };
@@ -106,6 +82,73 @@ export const updateResourcePattern = async ({
       extraCharge: extraCharge,
       measureUnit: measureUnit,
       resourceType: resourceType,
+    }
+  );
+
+  return response;
+};
+
+
+export const createResource = async ({
+  name,
+  measureUnit,
+  quantity,
+  costPricePerUnit,
+  orderPricePerUnit,
+  extraCharge,
+  resourceType,
+  workId,
+}: IResourceEntityForCreatingWork & { workId: number }) => {
+  const response = await $authHost.post(`/api/v1/resource`, {
+    name,
+    measureUnit,
+    quantity,
+    costPricePerUnit,
+    orderPricePerUnit,
+    extraCharge,
+    resourceType,
+    workId,
+  });
+
+  return response;
+};
+
+
+export const deleteResource = async (resource_id: number) => {
+  await $authHost.delete(`/api/v1/resource/${resource_id}`);
+};
+
+export const updateResource = async ({
+  resource_id,
+  resourceName,
+  measureUnit,
+  quantity,
+  costPricePerUnit,
+  orderPricePerUnit,
+  extraCharge,
+  resourceType,
+  // workId,
+}: {
+  resource_id: number;
+  resourceName: string;
+  measureUnit: string;
+  quantity: number;
+  costPricePerUnit: number;
+  orderPricePerUnit: number;
+  extraCharge: number;
+  resourceType: ResourceType;
+}) => {
+  const response = await $authHost.put(
+    `/api/v1/resource/${resource_id}`,
+    {
+      name: resourceName,
+      measureUnit: measureUnit,
+      quantity: quantity,
+      costPricePerUnit: costPricePerUnit,
+      orderPricePerUnit: orderPricePerUnit,
+      extraCharge: extraCharge,
+      resourceType: resourceType,
+      // workId: workId,
     }
   );
 

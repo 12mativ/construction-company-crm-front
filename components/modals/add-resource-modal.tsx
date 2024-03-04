@@ -178,6 +178,7 @@ export const AddResourceModal = () => {
                         <FormLabel>Название ресурса</FormLabel>
                         <FormControl>
                           <Input
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Название ресурса..."
                             disabled={isLoading}
                             {...field}
@@ -231,6 +232,7 @@ export const AddResourceModal = () => {
                         <FormLabel>Количество</FormLabel>
                         <FormControl>
                           <Input
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Количество..."
                             disabled={isLoading}
                             {...field}
@@ -248,6 +250,7 @@ export const AddResourceModal = () => {
                         <FormLabel>Себестоимость за единицу</FormLabel>
                         <FormControl>
                           <Input
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Себестоимость за единицу..."
                             disabled={isLoading}
                             {...field}
@@ -267,6 +270,7 @@ export const AddResourceModal = () => {
                         </FormLabel>
                         <FormControl>
                           <Input
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Стоимость для заказчика за единицу..."
                             disabled={isLoading}
                             {...field}
@@ -284,6 +288,7 @@ export const AddResourceModal = () => {
                         <FormLabel>Единица измерения</FormLabel>
                         <FormControl>
                           <Input
+                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Единица измерения..."
                             disabled={isLoading}
                             {...field}

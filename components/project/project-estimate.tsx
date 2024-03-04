@@ -223,7 +223,7 @@ const ProjectEstimate = () => {
                   {workEntity.resourceEntityList.map((resourceEntity) => (
                     <Table key={resourceEntity.id}>
                       <TableBody>
-                        <TableRow key={resourceEntity.id}>
+                        <TableRow key={resourceEntity.id} className="group transition">
                           <TableCell className="w-[16%] px-4">
                             <div className="flex gap-x-1 items-center">
                               {iconMap[resourceEntity.resourceType]}
@@ -251,16 +251,46 @@ const ProjectEstimate = () => {
                           <TableCell className="px-1 w-[140px] text-center">
                             {resourceEntity.orderPrice} ₽
                           </TableCell>
+                          <TableCell className="px-1 w-[10px] group transition">
+                          <div className="flex items-center gap-x-2">
+                            <Pencil
+                              onClick={() =>
+                                onOpen("editResourceToWork", {
+                                  resource_id: resourceEntity.id,
+                                  resourceName: resourceEntity.name,
+                                  measureUnit: resourceEntity.measureUnit,
+                                  quantity: resourceEntity.quantity,
+                                  costPricePerUnit: resourceEntity.costPricePerUnit,
+                                  orderPricePerUnit: resourceEntity.orderPricePerUnit,
+                                  extraCharge: resourceEntity.extraCharge,
+                                  resourceType: resourceEntity.resourceType,
+                                })
+                              }
+                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                p-1 text-neutral-500 transition"
+                            />
+                            <Trash2
+                              onClick={() =>
+                                onOpen("deleteResource", {
+                                  resource_id: resourceEntity.id,
+                                  resourceName: resourceEntity.name,
+                                })
+                              }
+                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                            p-1 text-red-400 transition"
+                            />
+                          </div>
+                        </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
                   ))}
 
                   <button
-                    className="flex items-center gap-x-3 p-3"
+                    className="flex items-center gap-x-3 p-3 group hover:text-red-600"
                     onClick={() => onOpen("addResource", { work: workEntity })}
                   >
-                    <PlusSquare />
+                    <PlusSquare className="hover:text-red-600 transition"/>
                     Добавить ресурс
                   </button>
                 </AccordionContent>

@@ -84,6 +84,7 @@ export const CreateProjectModal = () => {
                   <FormLabel>Название проекта</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название проекта..."
                       disabled={isLoading}
                       {...field}

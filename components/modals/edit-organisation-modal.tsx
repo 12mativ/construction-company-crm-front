@@ -104,6 +104,7 @@ export const EditOrganisationModal = () => {
                   <FormLabel>Название организации</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название организации..."
                       disabled={isLoading}
                       {...field}

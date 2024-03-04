@@ -92,6 +92,7 @@ export const AddUserToProjectModal = () => {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Введите email..."
                       disabled={isLoading}
                       {...field}

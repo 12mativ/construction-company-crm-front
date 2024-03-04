@@ -122,6 +122,7 @@ export const CreateWorkModal = () => {
                   <FormLabel>Название работы</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Название работы..."
                       disabled={isLoading}
                       {...field}
@@ -139,6 +140,7 @@ export const CreateWorkModal = () => {
                   <FormLabel>Количество</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Количество..."
                       disabled={isLoading}
                       {...field}
@@ -156,6 +158,7 @@ export const CreateWorkModal = () => {
                   <FormLabel>Единица измерения</FormLabel>
                   <FormControl>
                     <Input
+                      className="focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Единица измерения..."
                       disabled={isLoading}
                       {...field}

@@ -35,7 +35,9 @@ export type ModalType =
   | "deleteWorksGroup"
   | "editWorksGroup"
   | "deleteWork"
-  | "editWork";
+  | "editWork"
+  | "deleteResource"
+  | "editResourceToWork";
 
 interface IWorksGroupForModal {
   worksGroupId: number;
@@ -49,6 +51,15 @@ interface IResourcePatternForModal {
   resourcePatternCostPricePerUnit: number;
   resourcePatternOrderPricePerUnit: number;
   resourcePatternMeasureUnit: string;
+}
+
+interface IResourceForModal {
+  resourceId: number
+  resourceName: string;
+  resourceMeasureUnit: string;
+  resourceCostPricePerUnit: number;
+  resourceOrderPricePerUnit: number;
+  resourceExtraCharge: number;
 }
 
 export interface ModalData {
@@ -70,12 +81,12 @@ export interface ModalData {
   phoneNumber?: string;
   email?: string;
   partnerType?: PartnerType;
-  // resourcePatternId?: number;
-  // resourcePatternName?: string;
-  // costPricePerUnit?: number;
-  // orderPricePerUnit?: number;
-  // extraCharge?: number;
-  // measureUnit?: string;
+  resourcePatternId?: number;
+  resourcePatternName?: string;
+  costPricePerUnit?: number;
+  orderPricePerUnit?: number;
+  extraCharge?: number;
+  measureUnit?: string;
   resourceType?: ResourceType;
   work_id?: number;
   workName?: string;
@@ -84,6 +95,9 @@ export interface ModalData {
   startDate?: string;
   endDate?: string;
   worksGroupId?: number;
+  resource?: IResourceForModal;
+  resource_id?: number;
+  resourceName?: string;
 }
 
 interface ModalStore {
