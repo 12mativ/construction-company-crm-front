@@ -57,7 +57,10 @@ const ProjectEstimate = () => {
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
   );
-  const sortedWorkGroups = worksGroups.map((workGroup) => {
+
+  const sortedWorksGroupsByNumber = worksGroups.slice().sort((a, b) => a.number - b.number)
+
+  const sortedWorkGroups = sortedWorksGroupsByNumber.map((workGroup) => {
     const sortedWorkEntityList = workGroup.workEntityList
       .slice()
       .sort((a, b) => a.number - b.number);

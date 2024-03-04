@@ -42,6 +42,7 @@ import {
 import { createOrder } from "@/http/orders/ordersAPI";
 import { addOrder } from "@/lib/features/orders/ordersSlice";
 import axios, { AxiosError } from "axios";
+import { removeProjectQueries } from "@/lib/features/project-queries/projectQueriesSlice";
 
 export const CreateOrderModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -79,7 +80,7 @@ export const CreateOrderModal = () => {
   };
 
   const handleCostPerUnitChange = (orderId: number, value: string) => {
-    const costPerUnit = parseFloat(value.replace(",", ".")); // Заменяем запятую на точку
+    const costPerUnit = parseFloat(value.replace(",", "."));
     const newTotalCosts = { ...totalCosts };
     newTotalCosts[orderId] =
       costPerUnit * getValues(`orders.${orderId}.factQuantity`) || 0;
@@ -115,7 +116,9 @@ export const CreateOrderModal = () => {
       };
 
       const response = await createOrder({ ...dataForCreateOrder });
+      const idsForRemoveQueries = response.data.queryEntityList.map((queryEntity) => queryEntity.id);
       dispatch(addOrder(response.data));
+      dispatch(removeProjectQueries(idsForRemoveQueries));
       handleClose();
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
@@ -125,8 +128,6 @@ export const CreateOrderModal = () => {
       }
     }
   };
-
-  
 
   useEffect(() => {
     if (orders) {

@@ -17,8 +17,10 @@ export default function Home() {
     setIsLoading(true);
     check()
       .then((res) => {
-        //@ts-ignore
-        dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+        if (res) {
+          //@ts-ignore
+          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+        }
       })
       .finally(() => setIsLoading(false));
   }, []);

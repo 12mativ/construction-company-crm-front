@@ -152,7 +152,10 @@ const ProjectQueries = () => {
           </TableRow>
         </TableHeader>
       </Table>
-      <Form {...form}>
+      {sortedProjectQueries.length === 0 ? (
+        <p className="text-center text-neutral-500 p-2">Заявки не найдены.</p>
+      ) : (
+        <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <>
             <FormField
@@ -250,6 +253,8 @@ const ProjectQueries = () => {
           </Button>
         </form>
       </Form>
+      )}
+      
     </div>
   );
 };
