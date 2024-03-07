@@ -10,7 +10,7 @@ import NeedPayment from "@/components/finance/need-payment";
 
 const Page = () => {
   return (
-    <div className="flex flex-col gap-y-5">
+    <div className="flex w-[400px] sm:w-full flex-col gap-y-5 lg:w-full">
       <TotalBalance />
 
       <Tabs defaultValue="transactionLog">

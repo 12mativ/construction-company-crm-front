@@ -16,6 +16,18 @@ export interface IResourceEntity {
   workId: number;
 }
 
+interface IResourceEntityForEdit {
+  id: number;
+  name: string;
+  measureUnit: string;
+  quantity: number;
+  costPricePerUnit: number;
+  orderPricePerUnit: number;
+  extraCharge: number;
+  resourceType: ResourceType;
+  workId: number;
+}
+
 export interface IWorkEntity {
   id: number;
   name: string;
@@ -33,6 +45,7 @@ export interface IWorkEntity {
   resourceEntityList: IResourceEntity[];
   done: boolean;
   worksGroupId: number;
+  resourceType: ResourceType;
 }
 
 export interface IWorkGroup {
@@ -139,32 +152,19 @@ export const worksGroupsSlice = createSlice({
       })
     }, 
 
-    removeResourceToWork: (
-      state,
-      action: PayloadAction<{ resource_id: number }>
-    ) => {
-      state.worksGroups.forEach((worksGroup) => {
-        worksGroup.workEntityList.forEach((workEntity) => {
-          workEntity.resourceEntityList = workEntity.resourceEntityList.filter((resource) => resource.id !== action.payload.resource_id
-          );
+    removeResourceToWork: (state, action: PayloadAction<{ resource_id: number }>) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList.forEach((workEntity) => {
+          workEntity.resourceEntityList = workEntity.resourceEntityList.filter((resource) => resource.id !== action.payload.resource_id);
         });
       });
     },
 
-    editResourceToWork: (state, action: PayloadAction<{
-      resource_id: number;
-      resourceName: string;
-      measureUnit: string;
-      quantity: number;
-      costPricePerUnit: number;
-      orderPricePerUnit: number;
-      extraCharge: number;
-      resourceType: ResourceType;
-    }>) => {
+    editResourceToWork: (state, action: PayloadAction<IResourceEntityForEdit>) => {
       state.worksGroups.forEach((group) => {
         group.workEntityList.forEach((work) => {
-          if (work.id === action.payload.resource_id) {
-            work.name = action.payload.resourceName;
+          if (work.id === action.payload.id) {
+            work.name = action.payload.name;
             work.measureUnit = action.payload.measureUnit;
             work.quantity = action.payload.quantity;
             work.costPricePerUnit = action.payload.costPricePerUnit;

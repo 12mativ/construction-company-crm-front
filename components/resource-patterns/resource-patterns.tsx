@@ -114,7 +114,7 @@ const ResourcePatterns = () => {
                     key={resource.id}
                     className="flex group items-center transition last:border-b-0 border-b-2 bg-neutral-200 border-neutral-400 py-4"
                   >
-                    <div className="flex-1 flex items-center gap-x-2 px-1">
+                    <div className=" hidden lg:flex-1 lg:flex lg:items-center lg:gap-x-2 lg:px-1">
                       {iconMap[resource.resourceType]}
                       <p>{resource.name}</p>
                     </div>

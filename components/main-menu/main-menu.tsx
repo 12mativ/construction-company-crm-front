@@ -49,7 +49,7 @@ const MainMenu = () => {
   }, [params]);
 
   return (
-    <div className="w-[250px] flex flex-col gap-y-5 pr-4">
+    <div className=" flex flex-[4] p-4 lg:w-[250px] lg:flex-col lg:gap-y-5 lg:pr-4">
       {menuItems.map((menuItem) => {
         return (
           <MenuItem

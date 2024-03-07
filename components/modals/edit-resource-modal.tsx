@@ -36,6 +36,9 @@ import {
   SelectValue,
 } from "../ui/select";
 import { createResource } from "@/http/resources/resourcesAPI";
+import { updateResource } from "@/http/resources/resourcesAPI";
+import { editResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -73,12 +76,12 @@ const formSchema = z.object({
     }),
 });
 
-export const AddResourceModal = () => {
+export const EditResourceModal = () => {
   const [isChoosingFromCatalog, setIsChoosingFromCatalog] = useState(false);
 
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === "addResource";
+  const isModalOpen = isOpen && type === "editResourceToWork";
 
   const dispatch = useAppDispatch();
 
@@ -94,18 +97,17 @@ export const AddResourceModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const currentWork = data.work!;
-    const response = await createResource({
-      workId: currentWork.id,
-      name: values.name,
+    const response = await updateResource({
+      resource_id: data.resource!.resourceId,
+      resourceName: values.name,
       costPricePerUnit: values.costPricePerUnit,
       orderPricePerUnit: values.orderPricePerUnit,
       extraCharge: calculateExtraCharge(),
       measureUnit: values.measureUnit,
-      quantity: values.quantity,
-      resourceType: values.resourceType as ResourceType,
+      resourceType: data.resourceType!,
     })
 
-    dispatch(addResourceToWork(response.data));
+    dispatch(editResourceToWork(response.data));
     handleClose();
   };
 
@@ -129,6 +131,39 @@ export const AddResourceModal = () => {
     return 0;
   };
 
+  useEffect(() => {
+    const currentResource = data.resource;
+    if (currentResource) {
+      if (currentResource.resourceName) {
+        form.setValue("name", currentResource.resourceName);
+      }
+      if (currentResource.resourceQuantity) {
+        form.setValue(
+          "quantity",
+          currentResource.resourceQuantity
+        );
+      }
+      if (currentResource.costPricePerUnit) {
+        form.setValue(
+          "costPricePerUnit",
+          currentResource.resourceCostPricePerUnit
+        );
+      }
+      if (currentResource.resourceOrderPricePerUnit) {
+        form.setValue(
+          "orderPricePerUnit",
+          currentResource.resourceOrderPricePerUnit
+        );
+      }
+      if (currentResource.resourceMeasureUnit) {
+        form.setValue(
+          "measureUnit",
+          currentResource.resourceMeasureUnit
+        );
+      }
+    }
+  }, [form, data.resourcePattern, isOpen]);
+
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[820px]">
@@ -151,9 +186,9 @@ export const AddResourceModal = () => {
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Создайте ресурс</DialogTitle>
+              <DialogTitle>Измените ресурс</DialogTitle>
               <DialogDescription>
-                Введите данные нового ресурса. Или{" "}
+                Введите новые данные для ресурса. Или{" "}
                 <button
                   className="text-red-600 underline"
                   onClick={() => setIsChoosingFromCatalog(true)}
