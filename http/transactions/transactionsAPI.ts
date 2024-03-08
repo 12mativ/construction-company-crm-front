@@ -1,5 +1,12 @@
 import { $authHost } from "..";
 
+interface CreatePaymentRequest {
+  senderId: number;
+  orderId: number,
+  timestamp: string,
+  description: string
+}
+
 export const getTransactions = async () => {
   const response = await $authHost.get("/api/v1/transaction");
 
@@ -55,6 +62,22 @@ export const createIncome = async (
     partnerId,
     description,
     timestamp
+  });
+
+  return response;
+};
+
+export const createPayment = async ({
+  senderId,
+  orderId,
+  timestamp,
+  description,
+}: CreatePaymentRequest) => {
+  const response = await $authHost.post("/api/v1/transaction/orderPayment", {
+    senderId,
+    orderId,
+    timestamp,
+    description,
   });
 
   return response;

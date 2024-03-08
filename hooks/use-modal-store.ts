@@ -5,6 +5,7 @@ import {
   IWorkGroup,
 } from "@/lib/features/works-groups/worksGroupsSlice";
 import { create } from "zustand";
+import { IOrder } from "@/lib/features/orders/ordersSlice";
 
 export type ModalType =
   | "createProject"
@@ -37,6 +38,7 @@ export type ModalType =
   | "deleteWork"
   | "editWork"
   | "createOrder"
+  | "createOrderPayment"
   | "deleteResource"
   | "editResourceToWork";
 
@@ -104,6 +106,7 @@ export interface ModalData {
   endDate?: string;
   worksGroupId?: number;
   orders?: IOrderForModal[];
+  order?: IOrder;
   resource?: IResourceForModal;
   resource_id?: number;
   resourceName?: string;
