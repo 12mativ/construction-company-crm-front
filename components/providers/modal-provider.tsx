@@ -28,6 +28,7 @@ import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
 import { DeleteWorkModal } from "../modals/delete-work-modal";
 import { EditWorkModal } from "../modals/edit-work-modal ";
 import { CreateOrderModal } from "../modals/create-order-modal";
+import { CreateOrderPaymentModal } from "../modals/create-order-payment-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -69,6 +70,7 @@ export function ModalProvider() {
       <DeleteWorkModal />
       <EditWorkModal />
       <CreateOrderModal />
+      <CreateOrderPaymentModal />
     </>
   );
 }

@@ -2,11 +2,9 @@
 
 import TotalBalance from "@/components/finance/total-balance";
 import TransactionLog from "@/components/finance/transaction-log";
-import { useAppSelector } from "@/hooks/redux-hooks";
-import { redirect } from "next/navigation";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NeedPayment from "@/components/finance/need-payment";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Page = () => {
   return (

@@ -47,6 +47,9 @@ export const ordersSlice = createSlice({
         state.orders.push(action.payload);
       }
     },
+    removeOrder: (state, action: PayloadAction<{orderId: number}>) => {
+      state.orders = state.orders.filter((order) => order.id !== action.payload.orderId);
+    },
   },
 });
 
@@ -54,5 +57,6 @@ export default ordersSlice.reducer;
 
 export const {
   addOrder,
-  addOrders
+  addOrders,
+  removeOrder
 } = ordersSlice.actions;
