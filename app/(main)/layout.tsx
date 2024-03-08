@@ -46,11 +46,11 @@ export default function MainLayout({
   return (
     <div>
       <Header />
-      <div className="flex bg-neutral-100 p-20 pt-32 gap-x-2">
-        <div className="flex justify-center flex-[1]">
+      <div className="bg-neutral-100 flex flex-col pt-24 gap-y-4 mx-auto lg:flex-row lg:p-10 lg:pt-32 lg:gap-x-2">
+        <div className="flex mx-auto justify-center flex-[1]">
           <MainMenu />
         </div>
-        <main className="flex-[4] ml-10">{children}</main>
+        <main className="flex-[1] mx-auto lg:flex-[4] lg:ml-10">{children}</main>
       </div>
     </div>
   );

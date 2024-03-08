@@ -29,14 +29,10 @@ import {
 } from "@/components/ui/popover";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { createWork } from "@/http/works-groups/worksAPI";
-import { addWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { getProjects } from "@/http/projects/projectsAPI";
-import { addProjects } from "@/lib/features/projects/projectsSlice";
 import { updateWork } from "@/http/works-groups/worksAPI";
 import { editWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useEffect } from "react";
@@ -136,8 +132,8 @@ export const EditWorkModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Создайте работу</DialogTitle>
-          <DialogDescription>Введите данные новой работы.</DialogDescription>
+          <DialogTitle>Измените работу</DialogTitle>
+          <DialogDescription>Введите новые данные для работы.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

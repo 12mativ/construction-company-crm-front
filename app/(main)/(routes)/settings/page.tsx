@@ -31,9 +31,8 @@ const Page = () => {
   }
 
   return (
-    <div className='flex flex-col gap-y-4 bg-white p-10 rounded-lg'>
+    <div className='flex flex-col w-[400px] sm:w-[493px] lg:w-full gap-y-4 bg-white p-10 rounded-lg'>
       <p className="text-2xl font-semibold pb-2">Счета</p>
-
       <Table>
         <TableHeader>
           <TableRow key="settingsHeader" className="text-neutral-400 px-10 text-[16px]">

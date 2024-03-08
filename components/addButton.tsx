@@ -15,7 +15,8 @@ const AddButton = ({ buttonText, modalName, data }: AddButtonProps) => {
 
   return (
     <div className="flex items-center" onClick={() => onOpen(modalName, data)}>
-      <Button variant="ghost" className="flex items-center group gap-x-2 p-6">
+      <Button variant="ghost" className="flex items-center group gap-x-2 p-2
+       lg:p-6">
         <p>{buttonText}</p>
         <Plus
           className="bg-neutral-300 text-base text-neutral-500 group-hover:bg-red-600

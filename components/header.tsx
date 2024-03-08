@@ -22,13 +22,13 @@ const Header = () => {
   }
 
   return (
-    <div className="fixed flex items-center justify-between bg-white shadow-lg w-full h-[72px] px-20 z-50">
-      <div className="relative h-[48px] w-[48px]">
+    <div className="fixed flex lg:items-center lg:justify-between bg-white shadow-lg w-full h-[72px] px-10 lg:px-20 z-50">
+      <div className="hidden lg:block lg:relative lg:h-[48px] lg:w-[48px]">
         <Image src={logo} alt="Logo" fill className="rounded-full" />
       </div>
 
-      <div className="flex items-center gap-x-4">
-        <p className="font-bold">{user.username}</p>
+      <div className="ml-auto flex items-center gap-x-4">
+        <p className="hidden lg:block lg:font-bold">{user.username}</p>
         <CircleUserRound size={40} className="text-neutral-600" />
         <LogOut onClick={handleLogout} className="hover:text-red-500 cursor-pointer transition" size={30} />
       </div>

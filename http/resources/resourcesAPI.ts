@@ -24,6 +24,18 @@ interface IResourceEntityForCreatingWork {
   resourceType: ResourceType;
 }
 
+interface IResourceEntityForEdit {
+  name: string;
+  measureUnit: string;
+  quantity: number;
+  costPricePerUnit: number;
+  orderPricePerUnit: number;
+  extraCharge: number;
+  resourceType: ResourceType;
+  workId: number;
+}
+
+
 export const getResourcePatterns = async (): Promise<
   AxiosResponse<IResourcePattern[]>
 > => {
@@ -120,35 +132,26 @@ export const deleteResource = async (resource_id: number) => {
 
 export const updateResource = async ({
   resource_id,
-  resourceName,
+  name,
   measureUnit,
   quantity,
   costPricePerUnit,
   orderPricePerUnit,
   extraCharge,
   resourceType,
-  // workId,
-}: {
-  resource_id: number;
-  resourceName: string;
-  measureUnit: string;
-  quantity: number;
-  costPricePerUnit: number;
-  orderPricePerUnit: number;
-  extraCharge: number;
-  resourceType: ResourceType;
-}) => {
+  workId,
+}: IResourceEntityForEdit& { resource_id: number }) => {
   const response = await $authHost.put(
     `/api/v1/resource/${resource_id}`,
     {
-      name: resourceName,
-      measureUnit: measureUnit,
-      quantity: quantity,
-      costPricePerUnit: costPricePerUnit,
-      orderPricePerUnit: orderPricePerUnit,
-      extraCharge: extraCharge,
-      resourceType: resourceType,
-      // workId: workId,
+      name,
+      measureUnit,
+      quantity,
+      costPricePerUnit,
+      orderPricePerUnit,
+      extraCharge,
+      resourceType,
+      workId,
     }
   );
 

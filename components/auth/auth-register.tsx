@@ -80,7 +80,7 @@ const AuthRegister = () => {
 
   return (
     <div className="flex bg-white p-5 rounded-lg shadow-lg"> 
-       <div> 
+       <div className="hidden sm:block"> 
         <img src="/soyuz.png" alt="" width={380} height={100}/> 
       </div> 
       <div className=" w-80 flex flex-col justify-between"> 

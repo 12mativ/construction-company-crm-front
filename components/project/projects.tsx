@@ -30,7 +30,7 @@ const Projects = () => {
   }
 
   return (
-    <div className="flex gap-x-20 gap-y-10 flex-wrap">
+    <div className="flex flex-col gap-x-20 gap-y-10 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-normal lg:flex-row lg:flex-wrap">
       {projects.map((project) => {
         return <ProjectItem key={project.id} {...project} />;
       })}

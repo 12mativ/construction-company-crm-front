@@ -49,7 +49,7 @@ const TransactionLog = () => {
           ))}
         </TableBody>
       </Table>
-      <div className="flex justify-end gap-x-2 mt-8">
+      <div className="flex flex-col gap-y-4 items-end justify-end lg:gap-x-2 lg:flex-row mt-8">
         <AddButton buttonText="Доход" modalName="createIncome" />
         <AddButton buttonText="Расход" modalName="createOutcome" />
         <AddButton buttonText="Перевод" modalName="createTransfer" />
