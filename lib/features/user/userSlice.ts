@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IUser {
   username: string;
-  role: string;
+  roles: string[];
   isAuth: boolean;
 }
 
@@ -13,7 +13,7 @@ interface UserState {
 const initialState: UserState = {
   user: {
     username: "",
-    role: "",
+    roles: [],
     isAuth: false,
   }
 };

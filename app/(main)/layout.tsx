@@ -25,8 +25,7 @@ export default function MainLayout({
     check()
       .then((res) => {
         if (res) {
-          //@ts-ignore
-          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+          dispatch(makeAuth({ username: res.data.username, roles: res.data.authorities, isAuth: true }));
         }
       })
       .catch((error: AxiosError) => {

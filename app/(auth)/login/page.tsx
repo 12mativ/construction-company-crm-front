@@ -1,11 +1,6 @@
-"use client";
-
 import AuthLogin from "@/components/auth/auth-login";
-import { useAppSelector } from "@/hooks/redux-hooks";
-import { redirect } from "next/navigation";
 
 const Login = () => {
-
   return (
     <div className="flex items-center justify-center w-full h-full">
       <AuthLogin />

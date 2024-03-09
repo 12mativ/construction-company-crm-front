@@ -15,15 +15,20 @@ export default function MainLayout({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.userReducer.user);
+  const user = useAppSelector((state) => state.userReducer.user);
 
   useEffect(() => {
     setIsLoading(true);
     check()
       .then((res) => {
         if (res) {
-          //@ts-ignore
-          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+          dispatch(
+            makeAuth({
+              username: res.data.username,
+              roles: res.data.authorities,
+              isAuth: true,
+            })
+          );
         }
       })
       .catch((error: AxiosError) => {
@@ -33,12 +38,12 @@ export default function MainLayout({
   }, []);
 
   if (user.isAuth) {
-    return redirect('/projects');
+    return redirect("/projects");
   }
 
-	if (isLoading) {
-		return <LoaderIndicator />
-	}
-	
+  if (isLoading) {
+    return <LoaderIndicator />;
+  }
+
   return <>{children}</>;
 }

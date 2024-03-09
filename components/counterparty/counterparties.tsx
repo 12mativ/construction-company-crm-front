@@ -21,8 +21,6 @@ const Counterparties = () => {
     (state) => state.counterpartiesReducer.counterparties
   );
 
-  const { onOpen } = useModal();
-
   useEffect(() => {
     getCounterparties().then((res) => {
       dispatch(addCounterparties(res.data));

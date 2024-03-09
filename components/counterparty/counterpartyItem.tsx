@@ -1,23 +1,7 @@
-import { Table, TableCell, TableRow, TableBody } from "../ui/table";
-import { Pencil, Trash2 } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import { ICounterparty } from "@/lib/features/counterparties/counterpartiesSlice";
-import { PartnerType } from "@/lib/features/counterparties/counterpartiesSlice";
-
-// interface CounterpartyItemProps {
-//   name: string;
-//   phoneNumber: string;
-//   email: string;
-//   partnerType: PartnerType;
-// }
-
-// const CounterpartyItem = ({
-//   name,
-//   phoneNumber,
-//   email,
-//   partnerType,
-// }: CounterpartyItemProps) => {
-
+import { Pencil, Trash2 } from "lucide-react";
+import { TableCell, TableRow } from "../ui/table";
 
 const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounterparty) => {
   const { onOpen } = useModal();

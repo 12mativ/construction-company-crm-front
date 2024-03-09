@@ -1,8 +1,8 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Form,
@@ -12,12 +12,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { RoleType, register } from "@/http/user/userAPI";
+import { makeAuth } from "@/lib/features/user/userSlice";
+import axios, { AxiosError } from "axios";
+import Link from "next/link";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Link from "next/link";
-import { RoleType, login, register } from "@/http/user/userAPI";
-import { makeAuth } from "@/lib/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
   Select,
   SelectContent,
@@ -25,8 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import axios, { AxiosError } from "axios";
-import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -64,11 +64,10 @@ const AuthRegister = () => {
         values.role as RoleType
       );
 
-      //@ts-ignore
-      const role = response.roles;
+      const roles = response.roles;
       const username = response.sub!;
 
-      dispatch(makeAuth({ username: username, role: role, isAuth: true}));
+      dispatch(makeAuth({ username: username, roles: roles, isAuth: true}));
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
         setRegisterError(err.response?.data.message);
@@ -140,10 +139,8 @@ const AuthRegister = () => {
                       </SelectTrigger> 
                     </FormControl> 
                     <SelectContent> 
-                      <SelectItem value="ADMIN">Застройщик</SelectItem> 
                       <SelectItem value="CUSTOMER">Заказчик</SelectItem> 
-                      <SelectItem value="ACCOUNTANT">Финансист</SelectItem> 
-                      <SelectItem value="EMPLOYEE">Прораб</SelectItem> 
+                      <SelectItem value="WORKER">Работник</SelectItem> 
                     </SelectContent> 
                   </Select> 
                   <FormMessage /> 

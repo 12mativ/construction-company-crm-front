@@ -18,8 +18,7 @@ export default function Home() {
     check()
       .then((res) => {
         if (res) {
-          //@ts-ignore
-          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+          dispatch(makeAuth({ username: res.data.username, roles: res.data.authorities, isAuth: true }));
         }
       })
       .finally(() => setIsLoading(false));

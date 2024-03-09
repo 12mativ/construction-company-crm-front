@@ -1,3 +1,5 @@
+"use client";
+
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";

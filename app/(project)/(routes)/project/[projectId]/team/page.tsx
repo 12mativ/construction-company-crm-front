@@ -43,14 +43,12 @@ const Page = () => {
         <TableHeader>
           <TableRow key="projectHeader">
             <TableHead className="px-4">Email</TableHead>
-            <TableHead className="w-[140px]">Тел.</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map((user) => (
             <TableRow key={user.id}>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phoneNumber}</TableCell>
             </TableRow>
           ))}
         </TableBody>
