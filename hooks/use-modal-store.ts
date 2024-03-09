@@ -1,6 +1,7 @@
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { PartnerType } from "@/lib/features/counterparties/counterpartiesSlice";
 import {
+  IResourceEntity,
   IWorkEntity,
   IWorkGroup,
 } from "@/lib/features/works-groups/worksGroupsSlice";
@@ -38,7 +39,9 @@ export type ModalType =
   | "deleteWork"
   | "editWork"
   | "createOrder"
-  | "createOrderPayment";
+  | "createOrderPayment"
+  | "editResource"
+  | "deleteResource";
 
 interface IWorksGroupForModal {
   worksGroupId: number;
@@ -80,22 +83,11 @@ export interface ModalData {
   phoneNumber?: string;
   email?: string;
   partnerType?: PartnerType;
-  // resourcePatternId?: number;
-  // resourcePatternName?: string;
-  // costPricePerUnit?: number;
-  // orderPricePerUnit?: number;
-  // extraCharge?: number;
-  // measureUnit?: string;
   resourceType?: ResourceType;
-  work_id?: number;
-  workName?: string;
-  workNumber?: number;
-  quantity?: number;
-  startDate?: string;
-  endDate?: string;
   worksGroupId?: number;
   orders?: IOrderForModal[];
   order?: IOrder;
+  resource?: IResourceEntity;
 }
 
 interface ModalStore {

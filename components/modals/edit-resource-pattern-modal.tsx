@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateResourcePattern } from "@/http/resources/resourcesAPI";
-import { editResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { editResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { useEffect } from "react";
 
 const formSchema = z.object({
@@ -85,7 +85,7 @@ export const EditResourcePatternModal = () => {
       resourceType: data.resourceType!,
     });
 
-    dispatch(editResource(response.data));
+    dispatch(editResourcePattern(response.data));
     handleClose();
   };
 

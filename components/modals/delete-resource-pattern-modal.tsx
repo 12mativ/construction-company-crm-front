@@ -14,7 +14,7 @@ import {
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteResourcePattern } from "@/http/resources/resourcesAPI";
-import { removeResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { removeResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 
 export const DeleteResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -29,7 +29,7 @@ export const DeleteResourcePatternModal = () => {
     try {
       await deleteResourcePattern(data.resourcePattern?.resourcePatternId!);
       dispatch(
-        removeResource({
+        removeResourcePattern({
           resourcePatternId: data.resourcePattern?.resourcePatternId!,
         })
       );

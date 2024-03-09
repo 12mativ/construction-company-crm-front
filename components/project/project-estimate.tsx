@@ -190,28 +190,18 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[10px] group transition">
                           <div className="flex items-center gap-x-2">
                             <Pencil
-                              onClick={() =>
-                                onOpen("editWork", {
-                                  work_id: workEntity.id,
-                                  workName: workEntity.name,
-                                  workNumber: workEntity.number,
-                                  quantity: workEntity.quantity,
-                                  measureUnit: workEntity.measureUnit,
-                                  startDate: workEntity.startDate,
-                                  endDate: workEntity.endDate,
-                                  worksGroupId: workEntity.worksGroupId,
-                                })
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("editWork", {work:workEntity})
+                              }}
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
                             />
                             <Trash2
-                              onClick={() =>
-                                onOpen("deleteWork", {
-                                  work_id: workEntity.id,
-                                  workName: workEntity.name,
-                                })
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("deleteWork", {work: workEntity})
+                              }}
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
                             />
@@ -254,6 +244,26 @@ const ProjectEstimate = () => {
                           <TableCell className="px-1 w-[140px] text-center">
                             {resourceEntity.orderPrice} ₽
                           </TableCell>
+                          <TableCell className="px-1 w-[10px] group transition">
+                          <div className="flex items-center gap-x-2">
+                            <Pencil
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("editResource", {resource: resourceEntity, work: workEntity})
+                              }}
+                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                p-1 text-neutral-500 transition"
+                            />
+                            <Trash2
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("deleteResource", {resource: resourceEntity})
+                              }}
+                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                            p-1 text-red-400 transition"
+                            />
+                          </div>
+                        </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>

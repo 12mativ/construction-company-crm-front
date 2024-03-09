@@ -13,27 +13,26 @@ import {
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { deleteWork } from "@/http/works-groups/worksAPI";
-import { removeWork } from "@/lib/features/works-groups/worksGroupsSlice";
-import { getProjects } from "@/http/projects/projectsAPI";
-import { addProjects } from "@/lib/features/projects/projectsSlice";
+import { deleteResource, deleteResourcePattern } from "@/http/resources/resourcesAPI";
+import { removeResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { removeResource } from "@/lib/features/works-groups/worksGroupsSlice";
 
-export const DeleteWorkModal = () => {
+export const DeleteResourceModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === "deleteWork";
-  const dispatch = useAppDispatch()
+  const isModalOpen = isOpen && type === "deleteResource";
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
     setIsLoading(true);
     try {
-      await deleteWork(data.work!.id);
-      dispatch(removeWork({work_id: data.work!.id}))
-      const newProjects = await getProjects()
-      dispatch(addProjects(newProjects.data))
-      onClose()
+      await deleteResource(data.resource!.id);
+      dispatch(
+        removeResource(data.resource!)
+      );
+      onClose();
     } catch (error) {
       console.log(error);
     } finally {
@@ -46,11 +45,15 @@ export const DeleteWorkModal = () => {
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold">
-            Удалить работу
+            Удалить ресурс
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Вы уверены, что хотите сделать это? <br />
-            Работа <span className="text-red-500">{data.work?.name}</span> будет удалена без возможности восстановления.
+            Ресурс{" "}
+            <span className="text-red-500">
+              {data.resource?.name}
+            </span>{" "}
+            будет удален без возможности восстановления.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="px-6 py-4">

@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { addResourceToWork, addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useState } from "react";
 import ResourcesTable from "../project/resources-table";
 import {
@@ -36,6 +36,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { createResource } from "@/http/resources/resourcesAPI";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -77,6 +79,7 @@ export const AddResourceModal = () => {
   const [isChoosingFromCatalog, setIsChoosingFromCatalog] = useState(false);
 
   const { isOpen, onClose, type, data } = useModal();
+  const { projectId } = useParams<{ projectId: string }>();
 
   const isModalOpen = isOpen && type === "addResource";
 
@@ -106,6 +109,10 @@ export const AddResourceModal = () => {
     })
 
     dispatch(addResourceToWork(response.data));
+    getWorksGroups(projectId)
+      .then((res) => {
+        dispatch(addWorksGroups(res.data));
+      })
     handleClose();
   };
 
