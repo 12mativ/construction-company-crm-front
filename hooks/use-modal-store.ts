@@ -7,6 +7,7 @@ import {
 } from "@/lib/features/works-groups/worksGroupsSlice";
 import { create } from "zustand";
 import { IOrder } from "@/lib/features/orders/ordersSlice";
+import { IUser } from "@/lib/features/users/usersSlice";
 
 export type ModalType =
   | "createProject"
@@ -41,7 +42,8 @@ export type ModalType =
   | "createOrder"
   | "createOrderPayment"
   | "editResource"
-  | "deleteResource";
+  | "deleteResource"
+  | "editUserRoles";
 
 interface IWorksGroupForModal {
   worksGroupId: number;
@@ -88,6 +90,7 @@ export interface ModalData {
   orders?: IOrderForModal[];
   order?: IOrder;
   resource?: IResourceEntity;
+  user?: IUser;
 }
 
 interface ModalStore {

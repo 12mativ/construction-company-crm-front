@@ -23,3 +23,7 @@ export const addUserToProject = async ({
 
   return response;
 };
+
+export const getAllUsers = async (): Promise<AxiosResponse<IUser[]>> => {
+  return await $authHost.get(`api/v1/user`);
+};

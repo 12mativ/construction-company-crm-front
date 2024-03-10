@@ -25,7 +25,8 @@ export default function MainLayout({
           dispatch(
             makeAuth({
               username: res.data.username,
-              roles: res.data.authorities,
+              authorities: res.data.authorities,
+              roles: res.data.roles,
               isAuth: true,
             })
           );

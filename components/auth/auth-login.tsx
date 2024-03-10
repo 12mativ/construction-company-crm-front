@@ -52,10 +52,11 @@ const AuthLogin = () => {
       const response = await login(values.username, values.password);
 
       //@ts-ignore
+      const authorities = response.authorities;
       const roles = response.roles;
       const username = response.sub!;
 
-      dispatch(makeAuth({ username: username, roles: roles, isAuth: true }));
+      dispatch(makeAuth({ username: username, authorities: authorities, roles: roles, isAuth: true }));
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
         setLoginError(err.response?.data.message);

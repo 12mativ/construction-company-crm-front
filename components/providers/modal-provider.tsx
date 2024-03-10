@@ -31,6 +31,7 @@ import { CreateOrderModal } from "../modals/create-order-modal";
 import { CreateOrderPaymentModal } from "../modals/create-order-payment-modal";
 import { EditResourceModal } from "../modals/edit-resource-modal";
 import { DeleteResourceModal } from "../modals/delete-resource-modal";
+import { EditUserRolesModal } from "../modals/edit-user-roles-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -75,6 +76,7 @@ export function ModalProvider() {
       <CreateOrderPaymentModal />
       <EditResourceModal />
       <DeleteResourceModal />
+      <EditUserRolesModal />
     </>
   );
 }

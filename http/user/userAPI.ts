@@ -1,24 +1,24 @@
 import { $authHost, $host } from "..";
 import { jwtDecode } from "jwt-decode";
 
-export type RoleType = "CUSTOMER" | "WORKER";
+export type AuthorityType = "CUSTOMER" | "WORKER";
 
 export const register = async (
   username: string,
   password: string,
-  role: RoleType
+  authority: AuthorityType
 ) => {
   await $host.post("/api/v1/auth/register", {
     username,
     password,
-    userType: role,
+    authorityType: authority,
   });
 
   const responseWithJwt = await loginJWT(username, password);
   //@ts-ignore
   localStorage.setItem("token", responseWithJwt.data.jwt);
   //@ts-ignore
-  return {roles: responseWithJwt.data.authorityList, ...jwtDecode(responseWithJwt.data.jwt)};
+  return {authorities: responseWithJwt.data.authorities, roles: responseWithJwt.data.roles, ...jwtDecode(responseWithJwt.data.jwt)};
 };
 
 export const login = async (username: string, password: string) => {
@@ -29,7 +29,7 @@ export const login = async (username: string, password: string) => {
 
   localStorage.setItem("token", response.data.jwt);
 
-  return {roles: response.data.authorityList, ...jwtDecode(response.data.jwt)};
+  return {authorities: response.data.authorities, roles: response.data.roles, ...jwtDecode(response.data.jwt)};
 };
 
 export const loginJWT = async (username: string, password: string) => {
