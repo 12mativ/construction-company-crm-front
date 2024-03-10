@@ -106,8 +106,8 @@ export const EditWorkModal = () => {
       });
 
       const dataForEditWork = {
-        work_id: response.data.work_id!,
-        workNumber: response.data.workNumber!,
+        work_id: response.data.id!,
+        workNumber: response.data.number!,
         workName: response.data.name!,
         quantity: response.data.quantity!,
         measureUnit: response.data.measureUnit,

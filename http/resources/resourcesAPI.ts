@@ -69,6 +69,30 @@ export const deleteResourcePattern = async (resourcePatternId: number) => {
   await $authHost.delete(`/api/v1/resource/pattern/${resourcePatternId}`);
 };
 
+export const createResource = async ({
+  name,
+  measureUnit,
+  quantity,
+  costPricePerUnit,
+  orderPricePerUnit,
+  extraCharge,
+  resourceType,
+  workId,
+}: IResourceEntityForCreatingWork & { workId: number }) => {
+  const response = await $authHost.post(`/api/v1/resource`, {
+    name,
+    measureUnit,
+    quantity,
+    costPricePerUnit,
+    orderPricePerUnit,
+    extraCharge,
+    resourceType,
+    workId,
+  });
+
+  return response;
+};
+
 export const updateResourcePattern = async ({
   resourcePatternId,
   resourcePatternName,
