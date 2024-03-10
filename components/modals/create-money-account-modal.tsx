@@ -33,6 +33,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -55,6 +58,7 @@ const formSchema = z.object({
 
 export const CreateMoneyAccountModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createMoneyAccount";
 
@@ -71,16 +75,20 @@ export const CreateMoneyAccountModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createMoneyAccount(
-      values.name,
-      +values.organisationId,
-      values.balance,
-      values.numberOfAccount
-    );
+    try {
+      const response = await createMoneyAccount(
+        values.name,
+        +values.organisationId,
+        values.balance,
+        values.numberOfAccount
+      );
 
-    dispatch(addMoneyAccount(response.data));
+      dispatch(addMoneyAccount(response.data));
 
-    handleClose();
+      handleClose();
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при создании счета.");
+    }
   };
 
   const handleClose = () => {
@@ -94,6 +102,7 @@ export const CreateMoneyAccountModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Добавьте счет</DialogTitle>
           <DialogDescription>Введите данные нового счета.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

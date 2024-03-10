@@ -1,18 +1,16 @@
 "use client";
 
 import {
-  BookOpen,
   FileCheck2,
   FolderDot,
   HardHat,
   Image,
-  Settings,
   UsersRound,
-  Wallet,
+  Wallet
 } from "lucide-react";
-import MenuItem from "../menu-item";
-import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import MenuItem from "../menu-item";
 
 const ProjectMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();

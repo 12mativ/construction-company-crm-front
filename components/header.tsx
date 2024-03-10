@@ -1,12 +1,11 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { makeAuth } from "@/lib/features/user/userSlice";
+import { CircleUserRound, LogOut } from "lucide-react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import UserAvatar from "./user-avatar";
 import logo from "/assets/1.png";
-import { CircleUserRound, LogOut } from "lucide-react";
-import { makeAuth } from "@/lib/features/user/userSlice";
 
 const Header = () => {
   const user = useAppSelector((state) => state.userReducer.user);
@@ -14,7 +13,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    dispatch(makeAuth({role: "", username: "", isAuth: false}));
+    dispatch(makeAuth({roles: [], authorities: [], username: "", isAuth: false}));
   }
 
   if (!user.isAuth) {

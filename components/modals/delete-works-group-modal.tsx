@@ -15,12 +15,15 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteWorksGroup } from "@/http/works-groups/worksGroupsAPI";
 import { removeWorksGroup } from "@/lib/features/works-groups/worksGroupsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
-export const DeleteWorksGroupsModal = () => {
+export const DeleteWorksGroupModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteWorksGroup";
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,10 +31,12 @@ export const DeleteWorksGroupsModal = () => {
     setIsLoading(true);
     try {
       await deleteWorksGroup(data.worksGroup!.worksGroupId);
-      dispatch(removeWorksGroup({works_group_id: data.worksGroup!.worksGroupId}))
-      onClose()
-    } catch (error) {
-      console.log(error);
+      dispatch(
+        removeWorksGroup({ works_group_id: data.worksGroup!.worksGroupId })
+      );
+      onClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при удалении группы работ.");
     } finally {
       setIsLoading(false);
     }
@@ -46,8 +51,13 @@ export const DeleteWorksGroupsModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Вы уверены, что хотите сделать это? <br />
-            Группа работ <span className="text-red-500">{data.worksGroup?.worksGroupName}</span> будет удалена без возможности восстановления.
+            Группа работ{" "}
+            <span className="text-red-500">
+              {data.worksGroup?.worksGroupName}
+            </span>{" "}
+            будет удалена без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

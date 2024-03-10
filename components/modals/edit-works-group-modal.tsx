@@ -26,12 +26,13 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateWorksGroup } from "@/http/works-groups/worksGroupsAPI";
 import { editWorksGroup } from "@/lib/features/works-groups/worksGroupsSlice";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
-    .string({required_error: "Обязательно для заполнения."})
+    .string({ required_error: "Обязательно для заполнения." })
     .min(1, {
       message: "Название ресурса обязательно.",
     })
@@ -42,6 +43,7 @@ const formSchema = z.object({
 
 export const EditWorkGroupModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editWorksGroup";
 
@@ -51,7 +53,7 @@ export const EditWorkGroupModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-    }
+    },
   });
 
   useEffect(() => {
@@ -63,21 +65,25 @@ export const EditWorkGroupModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateWorksGroup({
-      worksGroupId: data.worksGroup!.worksGroupId!,
-      worksGroupName: values.name,
-      worksGroupNumber: data.worksGroup!.worksGroupNumber!,
-      projectId: +data.projectId!
-    });
+    try {
+      const response = await updateWorksGroup({
+        worksGroupId: data.worksGroup!.worksGroupId!,
+        worksGroupName: values.name,
+        worksGroupNumber: data.worksGroup!.worksGroupNumber!,
+        projectId: +data.projectId!,
+      });
 
-    const dataForEditWorksGroup = {
-      works_group_id: response.data.id,
-      worksGroupName: response.data.name,
-    };
-    dispatch(editWorksGroup(dataForEditWorksGroup));
-    
-    form.reset();
-    handleClose();
+      const dataForEditWorksGroup = {
+        works_group_id: response.data.id,
+        worksGroupName: response.data.name,
+      };
+      dispatch(editWorksGroup(dataForEditWorksGroup));
+
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании группы работ.");
+    }
   };
 
   const handleClose = () => {
@@ -91,6 +97,7 @@ export const EditWorkGroupModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Редактирование группы работ</DialogTitle>
           <DialogDescription>Введите новые данные.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

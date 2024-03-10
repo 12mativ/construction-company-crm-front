@@ -17,9 +17,12 @@ import { deleteWork } from "@/http/works-groups/worksAPI";
 import { removeWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { getProjects } from "@/http/projects/projectsAPI";
 import { addProjects } from "@/lib/features/projects/projectsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteWorkModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteWork";
   const dispatch = useAppDispatch()
@@ -34,8 +37,8 @@ export const DeleteWorkModal = () => {
       const newProjects = await getProjects()
       dispatch(addProjects(newProjects.data))
       onClose()
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении работы.");
     } finally {
       setIsLoading(false);
     }
@@ -52,6 +55,7 @@ export const DeleteWorkModal = () => {
             Вы уверены, что хотите сделать это? <br />
             Работа <span className="text-red-500">{data.work?.name}</span> будет удалена без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

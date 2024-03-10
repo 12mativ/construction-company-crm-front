@@ -23,6 +23,8 @@ import { Bolt, BrickWall, PlusSquare, Shield, UserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const ProjectEstimate = () => {
   const iconMap = {
@@ -53,6 +55,7 @@ const ProjectEstimate = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
@@ -83,6 +86,9 @@ const ProjectEstimate = () => {
       .then((res) => {
         dispatch(addWorksGroups(res.data));
       })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке работ.")
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -91,6 +97,7 @@ const ProjectEstimate = () => {
   }
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {error && <ErrorAlert error={error} />}
       <Table>
         <TableHeader>
           <TableRow key="projectHeader">

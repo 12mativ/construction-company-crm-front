@@ -26,6 +26,9 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { createResourcePattern } from "@/http/resources/resourcesAPI";
 import { addResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -58,6 +61,7 @@ const formSchema = z.object({
 
 export const CreateResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createResourcePattern";
 
@@ -74,18 +78,22 @@ export const CreateResourcePatternModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createResourcePattern({
-      name: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      resourceType: data.resourceType!,
-    });
+    try {
+      const response = await createResourcePattern({
+        name: values.name,
+        costPricePerUnit: values.costPricePerUnit,
+        orderPricePerUnit: values.orderPricePerUnit,
+        extraCharge: calculateExtraCharge(),
+        measureUnit: values.measureUnit,
+        resourceType: data.resourceType!,
+      });
 
-    response.data.resourceType = data.resourceType;
-    dispatch(addResourcePattern(response.data));
-    handleClose();
+      response.data.resourceType = data.resourceType;
+      dispatch(addResourcePattern(response.data));
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании ресурса.");
+    }
   };
 
   const handleClose = () => {
@@ -114,6 +122,7 @@ export const CreateResourcePatternModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте ресурс</DialogTitle>
           <DialogDescription>Введите данные нового ресурса.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

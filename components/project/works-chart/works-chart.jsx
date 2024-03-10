@@ -10,8 +10,11 @@ import Settings from './settings';
 import Tasks from './tasks';
 import TimeRange from './time-range';
 import TimeTable from './time-table';
+import { AxiosError } from "axios";
+import { ErrorAlert } from "@/components/errorAlert";
 
 export default function WorksChart() {
+  const [error, setError] = useState("");
   const tasks = [];
   const taskDurations = [];
 
@@ -66,6 +69,8 @@ export default function WorksChart() {
     getWorksGroups(projectId)
       .then((res) => {
         dispatch(addWorksGroups(res.data));
+      }).catch((error) => {
+        setError("Произошла ошибка при загрузке работ.")
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -76,6 +81,7 @@ export default function WorksChart() {
 
   return (
     <div id="gantt-container">
+      {error && <ErrorAlert error={error} />}
       <Settings>
         <TimeRange timeRange={timeRange} setTimeRange={setTimeRange} />
       </Settings>

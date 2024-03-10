@@ -8,11 +8,14 @@ import { getOrders } from "@/http/orders/ordersAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 import { OrderType, addOrders } from "@/lib/features/orders/ordersSlice";
 import { cn } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const ProjectOrders = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const orders = useAppSelector((state) => state.ordersReducer.orders);
   const [orderType, setOrderType] = useState<OrderType>("NOT_PAID");
   const counterparties = useAppSelector(
@@ -25,10 +28,14 @@ const ProjectOrders = () => {
     setIsLoading(true);
     getOrders(+projectId, orderType).then((res) => {
       dispatch(addOrders(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors(prevState => [...prevState, "Произошла ошибка при загрузке заказов."])
     });
     getCounterparties()
       .then((res) => {
         dispatch(addCounterparties(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors(prevState => [...prevState, "Произошла ошибка при загрузке поставщиков."])
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -39,6 +46,7 @@ const ProjectOrders = () => {
 
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {errors.length !== 0 && errors.map((error, index) => <ErrorAlert key={index} error={error} />)}
       <Table>
         <TableHeader>
           <TableRow key="orderHeader">

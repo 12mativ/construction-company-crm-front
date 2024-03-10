@@ -15,9 +15,12 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteMoneyAccount } from "@/http/organisations/organisationsAPI";
 import { removeMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteMoneyAccountModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteMoneyAccount";
   const dispatch = useAppDispatch()
@@ -30,8 +33,8 @@ export const DeleteMoneyAccountModal = () => {
       await deleteMoneyAccount(data.moneyAccountId!);
       dispatch(removeMoneyAccount({moneyAccountId: data.moneyAccountId!}))
       onClose()
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении счета.");
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +51,7 @@ export const DeleteMoneyAccountModal = () => {
             Вы уверены, что хотите сделать это? <br />
             Счет <span className="text-red-500">{data?.moneyAccountName}</span> будет удален без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

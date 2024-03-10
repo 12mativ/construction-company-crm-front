@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { deleteResource, deleteResourcePattern } from "@/http/resources/resourcesAPI";
-import { removeResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { deleteResource } from "@/http/resources/resourcesAPI";
 import { removeResource } from "@/lib/features/works-groups/worksGroupsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteResourceModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteResource";
   const dispatch = useAppDispatch();
@@ -33,8 +35,8 @@ export const DeleteResourceModal = () => {
         removeResource(data.resource!)
       );
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении ресурса.");
     } finally {
       setIsLoading(false);
     }
@@ -55,6 +57,7 @@ export const DeleteResourceModal = () => {
             </span>{" "}
             будет удален без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

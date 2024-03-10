@@ -26,7 +26,16 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateMoneyAccount } from "@/http/organisations/organisationsAPI";
 import { editMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -37,7 +46,7 @@ const formSchema = z.object({
     .max(50, {
       message: "Название счета не должно превышать 50 символов.",
     }),
-  organisationId: z.string({ required_error: "Выберите орган изацию." }),
+  organisationId: z.string({ required_error: "Выберите организацию." }),
   balance: z.coerce
     .number({
       invalid_type_error: "Введите числовое значение.",
@@ -49,7 +58,9 @@ const formSchema = z.object({
 
 export const EditMoneyAccountModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const {moneyAccountId, moneyAccountName, organisationId, balance, numberOfAccount} = data;
+  const [error, setError] = useState("");
+
+  const { moneyAccountName, organisationId, balance, numberOfAccount } = data;
 
   const isModalOpen = isOpen && type === "editMoneyAccount";
 
@@ -61,60 +72,58 @@ export const EditMoneyAccountModal = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-    },
   });
 
-  useEffect(() => { 
-    if (moneyAccountName) { 
-      form.setValue('name', moneyAccountName) 
-    }
-    
-    if (typeof organisationId === 'number') {   
-      form.setValue('organisationId', organisationId.toString())  
-      
-      // {organisations.map((organisation) => (
-        
-      //     form.setValue('organisationId', organisation.name) 
-        
-      // ))}
+  useEffect(() => {
+    if (moneyAccountName) {
+      form.setValue("name", moneyAccountName);
     }
 
-    //   const selectedOrg = organisations.find(org => org.id === organisationId);
-      
-    //   if (selectedOrg) {
-    //     form.setValue('organisationId', selectedOrg.id.toString());
-    //   }
-    // 
+    if (organisationId) {
+      form.setValue("organisationId", organisationId.toString());
+    }
 
-    if (balance) { 
-      form.setValue('balance', balance) 
-    } 
+    if (balance) {
+      form.setValue("balance", balance);
+    }
     if (numberOfAccount) {
-      form.setValue('numberOfAccount', numberOfAccount) 
-    } 
-  }, [form, moneyAccountName, organisationId, balance, numberOfAccount]);
+      form.setValue("numberOfAccount", numberOfAccount);
+    }
+  }, [
+    form,
+    moneyAccountName,
+    organisationId,
+    balance,
+    numberOfAccount,
+    isOpen,
+  ]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateMoneyAccount({
-      moneyAccountId: data.moneyAccountId!, 
-      moneyAccountName: values.name, 
-      organisationId: data.organisationId!, 
-      balance: values.balance, 
-      numberOfAccount: values.numberOfAccount});
+    try {
+      const response = await updateMoneyAccount({
+        moneyAccountId: data.moneyAccountId!,
+        moneyAccountName: values.name,
+        organisationId: data.organisationId!,
+        balance: values.balance,
+        numberOfAccount: values.numberOfAccount,
+      });
 
-    const dataForEditMoneyAccount = {
-      moneyAccountId: response.data.id,
-      moneyAccountName: response.data.name, 
-      organisationId: response.data.organisationId, 
-      balance: response.data.balance, 
-      numberOfAccount: response.data.numberOfAccount}
-    dispatch(editMoneyAccount(dataForEditMoneyAccount));
+      const dataForEditMoneyAccount = {
+        moneyAccountId: response.data.id,
+        moneyAccountName: response.data.name,
+        organisationId: response.data.organisationId,
+        balance: response.data.balance,
+        numberOfAccount: response.data.numberOfAccount,
+      };
+      dispatch(editMoneyAccount(dataForEditMoneyAccount));
 
-    form.reset();
-    handleClose();
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании счета.");
+    }
   };
 
   const handleClose = () => {
@@ -128,6 +137,7 @@ export const EditMoneyAccountModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Редактрирование счета</DialogTitle>
           <DialogDescription>Введите новые данные счета.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -148,13 +158,16 @@ export const EditMoneyAccountModal = () => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="organisationId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Организация</FormLabel>
-                  <Select onValueChange={field.onChange}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Выберите оргазнизацию" />
@@ -174,7 +187,7 @@ export const EditMoneyAccountModal = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="balance"

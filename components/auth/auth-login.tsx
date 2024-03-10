@@ -21,6 +21,7 @@ import { makeAuth } from "@/lib/features/user/userSlice";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Checkbox } from "../ui/checkbox";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -51,7 +52,6 @@ const AuthLogin = () => {
     try {
       const response = await login(values.username, values.password);
 
-      //@ts-ignore
       const authorities = response.authorities;
       const roles = response.roles;
       const username = response.sub!;
@@ -61,7 +61,7 @@ const AuthLogin = () => {
       if (axios.isAxiosError(err)) {
         setLoginError(err.response?.data.message);
       } else {
-        console.log(err);
+        setLoginError(err);
       }
     }
   };
@@ -141,7 +141,7 @@ const AuthLogin = () => {
           </form>
         </Form>
 
-        {loginError && <p className="text-red-500 py-2">{loginError}</p>}
+        {loginError && <ErrorAlert error={loginError} />}
 
         <p className="pt-5 text-center text-sm">
           Нет аккаунта? <br />

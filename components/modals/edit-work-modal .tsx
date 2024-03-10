@@ -34,10 +34,12 @@ import { editWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Calendar } from "../ui/calendar";
 import { getProjects } from "@/http/projects/projectsAPI";
 import { addProjects } from "@/lib/features/projects/projectsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -66,6 +68,7 @@ const formSchema = z.object({
 
 export const EditWorkModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editWork";
 
@@ -90,34 +93,38 @@ export const EditWorkModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateWork({
-      work_id: data.work!.id,
-      workNumber: data.work!.number,
-      workName: values.name!,
-      quantity: values.quantity,
-      measureUnit: values.measureUnit,
-      startDate: values.startDate.toISOString(),
-      endDate: values.endDate.toISOString(),
-      worksGroupId: data.worksGroupId!,
-    });
+    try {
+      const response = await updateWork({
+        work_id: data.work!.id,
+        workNumber: data.work!.number,
+        workName: values.name!,
+        quantity: values.quantity,
+        measureUnit: values.measureUnit,
+        startDate: values.startDate.toISOString(),
+        endDate: values.endDate.toISOString(),
+        worksGroupId: data.worksGroupId!,
+      });
 
-    const dataForEditWork = {
-      work_id: response.data.work_id!,
-      workNumber: response.data.workNumber!,
-      workName: response.data.name!,
-      quantity: response.data.quantity!,
-      measureUnit: response.data.measureUnit,
-      startDate: response.data.startDate,
-      endDate: response.data.endDate,
-      worksGroupId: response.data.worksGroupId,
-    };
-    dispatch(editWork(dataForEditWork));
+      const dataForEditWork = {
+        work_id: response.data.work_id!,
+        workNumber: response.data.workNumber!,
+        workName: response.data.name!,
+        quantity: response.data.quantity!,
+        measureUnit: response.data.measureUnit,
+        startDate: response.data.startDate,
+        endDate: response.data.endDate,
+        worksGroupId: response.data.worksGroupId,
+      };
+      dispatch(editWork(dataForEditWork));
 
-    const newProjects = await getProjects();
-    dispatch(addProjects(newProjects.data));
+      const newProjects = await getProjects();
+      dispatch(addProjects(newProjects.data));
 
-    form.reset();
-    handleClose();
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании работы.");
+    }
   };
 
   const handleClose = () => {
@@ -131,6 +138,7 @@ export const EditWorkModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Изменение работы</DialogTitle>
           <DialogDescription>Введите данные работы.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

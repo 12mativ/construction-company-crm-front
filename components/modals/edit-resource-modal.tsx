@@ -10,7 +10,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -25,8 +25,11 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateResource } from "@/http/resources/resourcesAPI";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { addWorksGroups, editResource } from "@/lib/features/works-groups/worksGroupsSlice";
-import { useEffect } from "react";
+import {
+  addWorksGroups,
+  editResource,
+} from "@/lib/features/works-groups/worksGroupsSlice";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -36,6 +39,8 @@ import {
 } from "../ui/select";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 import { useParams } from "next/navigation";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -75,6 +80,7 @@ const formSchema = z.object({
 
 export const EditResourceModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editResource";
   const { projectId } = useParams<{ projectId: string }>();
@@ -88,25 +94,28 @@ export const EditResourceModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const currentWork = data.work!;
-    const response = await updateResource({
-      resourceId: data.resource!.id,
-      workId: currentWork.id,
-      name: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      quantity: values.quantity,
-      resourceType: values.resourceType as ResourceType,
-    });
+    try {
+      const currentWork = data.work!;
+      const response = await updateResource({
+        resourceId: data.resource!.id,
+        workId: currentWork.id,
+        name: values.name,
+        costPricePerUnit: values.costPricePerUnit,
+        orderPricePerUnit: values.orderPricePerUnit,
+        extraCharge: calculateExtraCharge(),
+        measureUnit: values.measureUnit,
+        quantity: values.quantity,
+        resourceType: values.resourceType as ResourceType,
+      });
 
-    dispatch(editResource(response.data));
-    getWorksGroups(projectId)
-      .then((res) => {
+      dispatch(editResource(response.data));
+      getWorksGroups(projectId).then((res) => {
         dispatch(addWorksGroups(res.data));
-      })
-    handleClose();
+      });
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании ресурса.");
+    }
   };
 
   const handleClose = () => {
@@ -145,6 +154,7 @@ export const EditResourceModal = () => {
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Изменение ресурса</DialogTitle>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -73,7 +74,7 @@ const AuthRegister = () => {
       if (axios.isAxiosError(err)) {
         setRegisterError(err.response?.data.message);
       } else {
-        console.log(err);
+        setRegisterError(err);
       }
     }
   };
@@ -161,7 +162,7 @@ const AuthRegister = () => {
           </form> 
         </Form> 
  
-        {registerError && <p className="text-red-500 py-2">{registerError}</p>} 
+        {registerError && <ErrorAlert error={registerError} />}
  
         <p className="pt-5 text-center text-sm"> 
           Есть аккаунт? <br /> 

@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorAlert } from "@/components/errorAlert";
 import PhotoUploader from "@/components/photo-uploader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
@@ -7,6 +8,7 @@ import { getWorksProgress } from "@/http/works-progress/worksProgressAPI";
 import { IWorkEntity } from "@/lib/features/works-groups/worksGroupsSlice";
 import { addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
 import { formateComplexDate } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -15,6 +17,7 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const { worksGroups } = useAppSelector((state) => state.worksGroupsReducer);
   const { worksProgress } = useAppSelector(
     (state) => state.worksProgressReducer
@@ -30,6 +33,9 @@ const Page = () => {
     getWorksProgress(projectId)
       .then((res) => {
         dispatch(addWorksProgress(res.data));
+      })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке фото.")
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -55,6 +61,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col gap-y-4 p-4 bg-white rounded-lg">
+      {error && <ErrorAlert error={error} />}
       {sortedWorksProgress.map((workProgress) => {
         let currentWork: IWorkEntity | undefined;
 

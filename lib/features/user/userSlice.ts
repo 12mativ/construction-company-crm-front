@@ -1,3 +1,4 @@
+import { RoleType } from "@/http/roles-manage/rolesManageAPI";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IUser {
@@ -27,10 +28,15 @@ export const userSlice = createSlice({
     makeAuth: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
+    editCurrentUserRoles: (state, action: PayloadAction<{
+      roles: RoleType[]
+    }>) => {
+      state.user.roles = action.payload.roles
+    },
   },
 });
 
 
 export default userSlice.reducer;
 
-export const { makeAuth } = userSlice.actions;
+export const { makeAuth, editCurrentUserRoles } = userSlice.actions;

@@ -36,6 +36,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -55,6 +58,7 @@ const formSchema = z.object({
 
 export const CreateCounterpartyModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createCounterparty";
 
@@ -67,16 +71,20 @@ export const CreateCounterpartyModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createCounterparty(
-      values.name,
-      values.phoneNumber,
-      values.email,
-      values.partnerType as PartnerType
-    );
-
-    dispatch(addCounterparty(response.data));
-
-    handleClose();
+    try {
+      const response = await createCounterparty(
+        values.name,
+        values.phoneNumber,
+        values.email,
+        values.partnerType as PartnerType
+      );
+  
+      dispatch(addCounterparty(response.data));
+  
+      handleClose();
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при создании контрагента.");
+    }
   };
 
   const handleClose = () => {
@@ -92,6 +100,7 @@ export const CreateCounterpartyModal = () => {
           <DialogDescription>
             Введите данные нового контрагента.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -26,6 +26,9 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { createProject } from "@/http/projects/projectsAPI";
 import { addProject } from "@/lib/features/projects/projectsSlice";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   projectName: z
@@ -40,6 +43,7 @@ const formSchema = z.object({
 
 export const CreateProjectModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createProject";
 
@@ -55,11 +59,15 @@ export const CreateProjectModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createProject(values.projectName);
+    try {
+      const response = await createProject(values.projectName);
 
-    dispatch(addProject(response.data));
+      dispatch(addProject(response.data));
 
-    handleClose();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании проекта.");
+    }
   };
 
   const handleClose = () => {
@@ -73,6 +81,7 @@ export const CreateProjectModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте проект</DialogTitle>
           <DialogDescription>Введите данные нового проекта.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -94,7 +103,11 @@ export const CreateProjectModal = () => {
               )}
             />
             <DialogFooter>
-              <Button disabled={isLoading} type="submit" className="hover:bg-red-600">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="hover:bg-red-600"
+              >
                 Создать
               </Button>
             </DialogFooter>

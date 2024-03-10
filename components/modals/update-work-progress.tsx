@@ -29,17 +29,27 @@ import {
 } from "@/components/ui/popover";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { getWorksProgress, updateWorkProgress } from "@/http/works-progress/worksProgressAPI";
-import { addWorkProgress, addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
+import {
+  getWorksProgress,
+  updateWorkProgress,
+} from "@/http/works-progress/worksProgressAPI";
+import {
+  addWorkProgress,
+  addWorksProgress,
+} from "@/lib/features/works-progress/worksProgressSlice";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { Progress } from "../ui/progress";
 import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const UpdateWorkProgressModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const formSchema = z.object({
     quantity: z.coerce
@@ -67,18 +77,22 @@ export const UpdateWorkProgressModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const updatedWorkProgress = await updateWorkProgress({
-      quantityBefore: data.work!.doneQuantity,
-      quantityAfter: data.work!.doneQuantity + values.quantity,
-      timestamp: format(values.timestamp, "yyyy-MM-dd"),
-      workId: data.work!.id,
-    });
+    try {
+      const updatedWorkProgress = await updateWorkProgress({
+        quantityBefore: data.work!.doneQuantity,
+        quantityAfter: data.work!.doneQuantity + values.quantity,
+        timestamp: format(values.timestamp, "yyyy-MM-dd"),
+        workId: data.work!.id,
+      });
 
-    const newWorksGroups = await getWorksGroups(data.projectId!);
-    dispatch(addWorksGroups(newWorksGroups.data));
-      
-    dispatch(addWorkProgress(updatedWorkProgress.data));
-    handleClose();
+      const newWorksGroups = await getWorksGroups(data.projectId!);
+      dispatch(addWorksGroups(newWorksGroups.data));
+
+      dispatch(addWorkProgress(updatedWorkProgress.data));
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при обновлении прогресса работы.");
+    }
   };
 
   const handleClose = () => {
@@ -91,7 +105,9 @@ export const UpdateWorkProgressModal = () => {
   const calculateProgress = () => {
     if (data.work) {
       const progress =
-        (data.work.doneQuantity + (watchFields[0] ? +watchFields[0] : 0)) / data.work.quantity * 100;
+        ((data.work.doneQuantity + (watchFields[0] ? +watchFields[0] : 0)) /
+          data.work.quantity) *
+        100;
       if (progress < 100) {
         return progress;
       } else {
@@ -106,13 +122,16 @@ export const UpdateWorkProgressModal = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>{data.work?.name}</DialogTitle>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
 
         <div className="flex flex-col gap-y-2">
           <p className="text-neutral-400 text-sm">Прогресс работ</p>
           <div className="flex gap-x-2 items-center">
             <Progress value={calculateProgress()} />
-            <span className="text-neutral-400">{calculateProgress().toFixed(2)}%</span>
+            <span className="text-neutral-400">
+              {calculateProgress().toFixed(2)}%
+            </span>
           </div>
         </div>
 
@@ -179,7 +198,12 @@ export const UpdateWorkProgressModal = () => {
               <Button disabled={isLoading} type="submit">
                 Создать
               </Button>
-              <Button onClick={handleClose} className="bg-red-500 hover:bg-red-400" disabled={isLoading} type="button">
+              <Button
+                onClick={handleClose}
+                className="bg-red-500 hover:bg-red-400"
+                disabled={isLoading}
+                type="button"
+              >
                 Отмена
               </Button>
             </DialogFooter>

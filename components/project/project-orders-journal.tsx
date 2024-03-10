@@ -8,11 +8,14 @@ import { getOrders } from "@/http/orders/ordersAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 import { OrderType, addOrders } from "@/lib/features/orders/ordersSlice";
 import { formateComplexDate } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const ProjectOrdersJournal = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([])
   const [orderType, setOrderType] = useState<OrderType>("PAID");
   const orders = useAppSelector((state) => state.ordersReducer.orders);
 	const sortedOrders = orders.slice().sort((a, b) => {
@@ -31,10 +34,14 @@ const ProjectOrdersJournal = () => {
     setIsLoading(true);
     getOrders(+projectId, orderType).then((res) => {
       dispatch(addOrders(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors(prevState => [...prevState, "Произошла ошибка при загрузке заказов."])
     });
     getCounterparties()
       .then((res) => {
         dispatch(addCounterparties(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors(prevState => [...prevState, "Произошла ошибка при загрузке контрагентов."])
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -45,6 +52,7 @@ const ProjectOrdersJournal = () => {
 
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {errors.length !== 0 && errors.map((error, index) => <ErrorAlert key={index} error={error} />)}
       <Table>
         <TableHeader>
           <TableRow key="orderHeader">
