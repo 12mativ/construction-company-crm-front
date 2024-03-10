@@ -37,6 +37,9 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { getProjects } from "@/http/projects/projectsAPI";
 import { addProjects } from "@/lib/features/projects/projectsSlice";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -65,6 +68,7 @@ const formSchema = z.object({
 
 export const CreateWorkModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createWork";
 
@@ -77,27 +81,36 @@ export const CreateWorkModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    let nextNumber = 1;
-    const currentWorksGroup = data.workGroups!.find((worksGroup) => worksGroup.id === data.worksGroup!.worksGroupId)
-    if (currentWorksGroup!.workEntityList.length > 0) {
-      nextNumber = currentWorksGroup!.workEntityList[currentWorksGroup!.workEntityList.length - 1].number + 1
+    try {
+      let nextNumber = 1;
+      const currentWorksGroup = data.workGroups!.find(
+        (worksGroup) => worksGroup.id === data.worksGroup!.worksGroupId
+      );
+      if (currentWorksGroup!.workEntityList.length > 0) {
+        nextNumber =
+          currentWorksGroup!.workEntityList[
+            currentWorksGroup!.workEntityList.length - 1
+          ].number + 1;
+      }
+
+      const response = await createWork({
+        name: values.name,
+        number: nextNumber,
+        quantity: values.quantity,
+        measureUnit: values.measureUnit,
+        startDate: format(values.startDate, "yyyy-MM-dd"),
+        endDate: format(values.endDate, "yyyy-MM-dd"),
+        worksGroupId: data.worksGroup!.worksGroupId,
+      });
+      dispatch(addWork(response.data));
+
+      const newProjects = await getProjects();
+      dispatch(addProjects(newProjects.data));
+
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании работы.");
     }
-
-    const response = await createWork({
-      name: values.name,
-      number: nextNumber,
-      quantity: values.quantity,
-      measureUnit: values.measureUnit,
-      startDate: format(values.startDate, "yyyy-MM-dd"),
-      endDate: format(values.endDate, "yyyy-MM-dd"),
-      worksGroupId: data.worksGroup!.worksGroupId,
-    });
-    dispatch(addWork(response.data));
-
-    const newProjects = await getProjects()
-    dispatch(addProjects(newProjects.data))
-    
-    handleClose();
   };
 
   const handleClose = () => {
@@ -111,6 +124,7 @@ export const CreateWorkModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте работу</DialogTitle>
           <DialogDescription>Введите данные новой работы.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -194,11 +208,11 @@ export const CreateWorkModal = () => {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
+                      <Calendar
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
+                        disabled={() => false}
                         initialFocus
                       />
                     </PopoverContent>
@@ -237,7 +251,7 @@ export const CreateWorkModal = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
+                        disabled={() => false}
                         initialFocus
                       />
                     </PopoverContent>

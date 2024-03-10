@@ -23,6 +23,8 @@ import { Bolt, BrickWall, PlusSquare, Shield, UserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const ProjectEstimate = () => {
   const iconMap = {
@@ -53,12 +55,15 @@ const ProjectEstimate = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
   );
 
-  const sortedWorksGroupsByNumber = worksGroups.slice().sort((a, b) => a.number - b.number)
+  const sortedWorksGroupsByNumber = worksGroups
+    .slice()
+    .sort((a, b) => a.number - b.number);
 
   const sortedWorkGroups = sortedWorksGroupsByNumber.map((workGroup) => {
     const sortedWorkEntityList = workGroup.workEntityList
@@ -83,6 +88,9 @@ const ProjectEstimate = () => {
       .then((res) => {
         dispatch(addWorksGroups(res.data));
       })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке работ.");
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -90,13 +98,9 @@ const ProjectEstimate = () => {
     return <div>Загрузка...</div>;
   }
 
-  // function stopAccordion(event: MouseEvent<SVGSVGElement, MouseEvent>) {
-  //   event.stopPropagation();
-  //   event.preventDefault();
-  // }
-
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {error && <ErrorAlert error={error} />}
       <Table>
         <TableHeader>
           <TableRow key="projectHeader">
@@ -196,28 +200,18 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[10px] group transition">
                           <div className="flex items-center gap-x-2">
                             <Pencil
-                              onClick={() =>
-                                onOpen("editWork", {
-                                  work_id: workEntity.id,
-                                  workName: workEntity.name,
-                                  workNumber: workEntity.number,
-                                  quantity: workEntity.quantity,
-                                  measureUnit: workEntity.measureUnit,
-                                  startDate: workEntity.startDate,
-                                  endDate: workEntity.endDate,
-                                  worksGroupId: workEntity.worksGroupId,
-                                })
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("editWork", { work: workEntity });
+                              }}
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
                             />
                             <Trash2
-                              onClick={() =>
-                                onOpen("deleteWork", {
-                                  work_id: workEntity.id,
-                                  workName: workEntity.name,
-                                })
-                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onOpen("deleteWork", { work: workEntity });
+                              }}
                               className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
                             />
@@ -232,7 +226,10 @@ const ProjectEstimate = () => {
                   {workEntity.resourceEntityList.map((resourceEntity) => (
                     <Table key={resourceEntity.id}>
                       <TableBody>
-                        <TableRow key={resourceEntity.id} className="group transition">
+                        <TableRow
+                          key={resourceEntity.id}
+                          className="group transition"
+                        >
                           <TableCell className="w-[16%] px-4">
                             <div className="flex gap-x-1 items-center">
                               {iconMap[resourceEntity.resourceType]}
@@ -261,36 +258,30 @@ const ProjectEstimate = () => {
                             {resourceEntity.orderPrice} ₽
                           </TableCell>
                           <TableCell className="px-1 w-[10px] group transition">
-                          <div className="flex items-center gap-x-2">
-                            <Pencil
-                              onClick={() =>
-                                onOpen("editResourceToWork", {
-                                  resource_id: resourceEntity.id,
-                                  resourceName: resourceEntity.name,
-                                  measureUnit: resourceEntity.measureUnit,
-                                  quantity: resourceEntity.quantity,
-                                  costPricePerUnit: resourceEntity.costPricePerUnit,
-                                  orderPricePerUnit: resourceEntity.orderPricePerUnit,
-                                  extraCharge: resourceEntity.extraCharge,
-                                  resourceType: resourceEntity.resourceType,
-                                })
-                              }
-                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                            <div className="flex items-center gap-x-2">
+                              <Pencil
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onOpen("editResource", {
+                                    resource: resourceEntity,
+                                    work: workEntity,
+                                  });
+                                }}
+                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
-                            />
-                           
-                            <Trash2
-                              onClick={() =>
-                                onOpen("deleteResource", {
-                                  resource_id: resourceEntity.id,
-                                  resourceName: resourceEntity.name,
-                                })
-                              }
-                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                              />
+                              <Trash2
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onOpen("deleteResource", {
+                                    resource: resourceEntity,
+                                  });
+                                }}
+                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
-                            />
-                          </div>
-                        </TableCell>
+                              />
+                            </div>
+                          </TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
@@ -300,7 +291,7 @@ const ProjectEstimate = () => {
                     className="flex items-center gap-x-3 p-3 group hover:text-red-600"
                     onClick={() => onOpen("addResource", { work: workEntity })}
                   >
-                    <PlusSquare className="hover:text-red-600 transition"/>
+                    <PlusSquare className="hover:text-red-600 transition" />
                     Добавить ресурс
                   </button>
                 </AccordionContent>

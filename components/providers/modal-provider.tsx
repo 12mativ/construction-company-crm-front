@@ -23,14 +23,15 @@ import { DeleteCounterpartyModal } from "../modals/delete-counterparty-modal";
 import { EditCounterpartyModal } from "../modals/edit-counterparty-modal";
 import { DeleteResourcePatternModal } from "../modals/delete-resource-pattern-modal";
 import { EditResourcePatternModal } from "../modals/edit-resource-pattern-modal";
-import { DeleteWorksGroupsModal } from "../modals/delete-works-groups-modal";
+import { DeleteWorksGroupModal } from "../modals/delete-works-group-modal";
 import { EditWorkGroupModal } from "../modals/edit-works-group-modal";
 import { DeleteWorkModal } from "../modals/delete-work-modal";
 import { EditWorkModal } from "../modals/edit-work-modal ";
 import { CreateOrderModal } from "../modals/create-order-modal";
 import { CreateOrderPaymentModal } from "../modals/create-order-payment-modal";
-import { DeleteResourceModal } from "../modals/delete-resource-modal ";
-
+import { EditResourceModal } from "../modals/edit-resource-modal";
+import { DeleteResourceModal } from "../modals/delete-resource-modal";
+import { EditUserRolesModal } from "../modals/edit-user-roles-modal";
 
 export function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -67,13 +68,15 @@ export function ModalProvider() {
       <EditCounterpartyModal />
       <DeleteResourcePatternModal />
       <EditResourcePatternModal />
-      <DeleteWorksGroupsModal />
+      <DeleteWorksGroupModal />
       <EditWorkGroupModal />
       <DeleteWorkModal />
       <EditWorkModal />
       <CreateOrderModal />
       <CreateOrderPaymentModal />
+      <EditResourceModal />
       <DeleteResourceModal />
+      <EditUserRolesModal />
     </>
   );
 }

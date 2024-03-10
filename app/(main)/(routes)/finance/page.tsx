@@ -1,5 +1,3 @@
-"use client";
-
 import TotalBalance from "@/components/finance/total-balance";
 import TransactionLog from "@/components/finance/transaction-log";
 

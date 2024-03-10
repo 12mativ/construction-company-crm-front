@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, FolderDot, Settings, Wallet } from "lucide-react";
+import { BookOpen, FolderDot, Settings, User, Wallet } from "lucide-react";
 import MenuItem from "../menu-item";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -38,6 +38,13 @@ const MainMenu = () => {
       icon: <Settings className="stroke-1" size={25} />,
       href: "/settings",
       isActive: activeId === 4,
+    },
+    {
+      id: 5,
+      projectMenuItemName: "Пользователи",
+      icon: <User className="stroke-1" size={25} />,
+      href: "/users",
+      isActive: activeId === 5,
     },
   ];
 

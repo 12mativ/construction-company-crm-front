@@ -105,7 +105,7 @@ export const resourcesPatternsSlice = createSlice({
       });
     },
 
-    addResource: (state, action: PayloadAction<IResourcePattern>) => {
+    addResourcePattern: (state, action: PayloadAction<IResourcePattern>) => {
       switch (action.payload.resourceType) {
         case "HUMAN":
           state.resourcesPatterns[0].resources.push({ ...action.payload });
@@ -122,7 +122,7 @@ export const resourcesPatternsSlice = createSlice({
       }
     },
 
-    removeResource: (
+    removeResourcePattern: (
       state,
       action: PayloadAction<{ resourcePatternId: number }>
     ) => {
@@ -133,7 +133,7 @@ export const resourcesPatternsSlice = createSlice({
       });
     },
 
-    editResource: (state, action: PayloadAction<IResourcePattern>) => {
+    editResourcePattern: (state, action: PayloadAction<IResourcePattern>) => {
       state.resourcesPatterns.forEach((resourcePattern) => {
         if (resourcePattern.type === action.payload.resourceType) {
           resourcePattern.resources.forEach((resource) => {
@@ -155,7 +155,7 @@ export default resourcesPatternsSlice.reducer;
 
 export const {
   addResourcesPatterns,
-  addResource,
-  removeResource,
-  editResource,
+  addResourcePattern,
+  removeResourcePattern,
+  editResourcePattern,
 } = resourcesPatternsSlice.actions;

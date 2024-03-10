@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -24,10 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
+import { updateResource } from "@/http/resources/resourcesAPI";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
-import { useState } from "react";
-import ResourcesTable from "../project/resources-table";
+import {
+  addWorksGroups,
+  editResource,
+} from "@/lib/features/works-groups/worksGroupsSlice";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -35,10 +37,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { createResource } from "@/http/resources/resourcesAPI";
-import { updateResource } from "@/http/resources/resourcesAPI";
-import { editResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
-import { useEffect } from "react";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { useParams } from "next/navigation";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -77,38 +79,43 @@ const formSchema = z.object({
 });
 
 export const EditResourceModal = () => {
-  const [isChoosingFromCatalog, setIsChoosingFromCatalog] = useState(false);
-
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
-  const isModalOpen = isOpen && type === "editResourceToWork";
+  const isModalOpen = isOpen && type === "editResource";
+  const { projectId } = useParams<{ projectId: string }>();
 
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      measureUnit: "",
-    },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const currentWork = data.work!;
-    const response = await updateResource({
-      resource_id: data.resource!.resourceId,
-      resourceName: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      resourceType: data.resourceType!,
-    })
+    try {
+      const currentWork = data.work!;
+      const response = await updateResource({
+        resourceId: data.resource!.id,
+        workId: currentWork.id,
+        name: values.name,
+        costPricePerUnit: values.costPricePerUnit,
+        orderPricePerUnit: values.orderPricePerUnit,
+        extraCharge: calculateExtraCharge(),
+        measureUnit: values.measureUnit,
+        quantity: values.quantity,
+        resourceType: values.resourceType as ResourceType,
+      });
 
-    dispatch(editResourceToWork(response.data));
-    handleClose();
+      dispatch(editResource(response.data));
+      getWorksGroups(projectId).then((res) => {
+        dispatch(addWorksGroups(res.data));
+      });
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании ресурса.");
+    }
   };
 
   const handleClose = () => {
@@ -132,232 +139,161 @@ export const EditResourceModal = () => {
   };
 
   useEffect(() => {
-    const currentResource = data.resource;
-    if (currentResource) {
-      if (currentResource.resourceName) {
-        form.setValue("name", currentResource.resourceName);
-      }
-      if (currentResource.resourceQuantity) {
-        form.setValue(
-          "quantity",
-          currentResource.resourceQuantity
-        );
-      }
-      if (currentResource.costPricePerUnit) {
-        form.setValue(
-          "costPricePerUnit",
-          currentResource.resourceCostPricePerUnit
-        );
-      }
-      if (currentResource.resourceOrderPricePerUnit) {
-        form.setValue(
-          "orderPricePerUnit",
-          currentResource.resourceOrderPricePerUnit
-        );
-      }
-      if (currentResource.resourceMeasureUnit) {
-        form.setValue(
-          "measureUnit",
-          currentResource.resourceMeasureUnit
-        );
-      }
+    if (data.resource) {
+      form.setValue("name", data.resource.name);
+      form.setValue("resourceType", data.resource.resourceType);
+      form.setValue("quantity", data.resource.quantity);
+      form.setValue("costPricePerUnit", data.resource.costPricePerUnit);
+      form.setValue("orderPricePerUnit", data.resource.orderPricePerUnit);
+      form.setValue("measureUnit", data.resource.measureUnit);
     }
-  }, [form, data.resourcePattern, isOpen]);
+  }, [form, data.resource, isOpen]);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[820px]">
-        {isChoosingFromCatalog ? (
-          <>
-            <DialogHeader>
-              <DialogTitle>Выберите необходимые ресурсы</DialogTitle>
-              <DialogDescription>
-                Или{" "}
-                <button
-                  className="text-red-600"
-                  onClick={() => setIsChoosingFromCatalog(false)}
-                >
-                  введите данные ресурса вручную
-                </button>
-              </DialogDescription>
-            </DialogHeader>
-            <ResourcesTable currentWork={data.work!} onClose={onClose} />
-          </>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>Измените ресурс</DialogTitle>
-              <DialogDescription>
-                Введите новые данные для ресурса. Или{" "}
-                <button
-                  className="text-red-600 underline"
-                  onClick={() => setIsChoosingFromCatalog(true)}
-                >
-                  выберите ресурсы из справочника
-                </button>
-              </DialogDescription>
-            </DialogHeader>
-            <Form {...form}>
-
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-
-                <div className="columns-2 pt-8" >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem className="mb-5 mr-5">
-                        <FormLabel>Название ресурса</FormLabel>
-                        <FormControl>
-                          <Input
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                            placeholder="Название ресурса..."
-                            disabled={isLoading}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="resourceType"
-                    render={({ field }) => (
-                      <FormItem className="mb-5 mr-5 ">
-                        <FormLabel>Тип ресурса</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Выберите тип ресурса" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem
-                              value="HUMAN"
-                            >
-                              <p>Рабочие</p>
-                            </SelectItem>
-                            <SelectItem value="MECHANICAL">
-                              Механизмы
-                            </SelectItem>
-                            <SelectItem value="MATERIAL">
-                              Материалы
-                            </SelectItem>
-                            <SelectItem value="INVOICES">
-                              Накладные
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="quantity"
-                    render={({ field }) => (
-                      <FormItem className="mb-5 mr-5">
-                        <FormLabel>Количество</FormLabel>
-                        <FormControl>
-                          <Input
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                            placeholder="Количество..."
-                            disabled={isLoading}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="costPricePerUnit"
-                    render={({ field }) => (
-                      <FormItem className="mb-5 mr-5">
-                        <FormLabel>Себестоимость за единицу</FormLabel>
-                        <FormControl>
-                          <Input
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                            placeholder="Себестоимость за единицу..."
-                            disabled={isLoading}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="orderPricePerUnit"
-                    render={({ field }) => (
-                      <FormItem className="mb-5 mr-5">
-                        <FormLabel>
-                          Стоимость для заказчика за единицу
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                            placeholder="Стоимость для заказчика за единицу..."
-                            disabled={isLoading}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="measureUnit"
-                    render={({ field }) => (
-                      <FormItem className="mr-5">
-                        <FormLabel>Единица измерения</FormLabel>
-                        <FormControl>
-                          <Input
-                            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                            placeholder="Единица измерения..."
-                            disabled={isLoading}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="flex justify-between pt-8 ">
-                  <p className="text-neutral-400">
-                    Процент наценки составляет{" "}
-                    <span className="font-semibold">
-                      {calculateExtraCharge()} %
-                    </span>
-                  </p>
-
-                  <DialogFooter>
-                    <Button
-                      disabled={isLoading}
-                      type="submit"
-                      className="hover:bg-red-600"
+      <DialogContent className="sm:max-w-[800px]">
+        <DialogHeader>
+          <DialogTitle>Изменение ресурса</DialogTitle>
+          {error && <ErrorAlert error={error} />}
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="columns-2 pt-8">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="mb-5 mr-5">
+                    <FormLabel>Название ресурса</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Название ресурса..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="resourceType"
+                render={({ field }) => (
+                  <FormItem className="mb-5 mr-5 ">
+                    <FormLabel>Тип ресурса</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
                     >
-                      Создать
-                    </Button>
-                  </DialogFooter>
-                </div>                    
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Выберите тип ресурса" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="HUMAN">
+                          <p>Рабочие</p>
+                        </SelectItem>
+                        <SelectItem value="MECHANICAL">Механизмы</SelectItem>
+                        <SelectItem value="MATERIAL">Материалы</SelectItem>
+                        <SelectItem value="INVOICES">Накладные</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field }) => (
+                  <FormItem className="mb-5 mr-5">
+                    <FormLabel>Количество</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Количество..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="costPricePerUnit"
+                render={({ field }) => (
+                  <FormItem className="mb-5 mr-5">
+                    <FormLabel>Себестоимость за единицу</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Себестоимость за единицу..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="orderPricePerUnit"
+                render={({ field }) => (
+                  <FormItem className="mb-5 mr-5">
+                    <FormLabel>Стоимость для заказчика за единицу</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Стоимость для заказчика за единицу..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="measureUnit"
+                render={({ field }) => (
+                  <FormItem className="mr-5">
+                    <FormLabel>Единица измерения</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Единица измерения..."
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-              </form>
-            </Form>
-          </>
-        )}
+            <div className="flex justify-between pt-8 ">
+              <p className="text-neutral-400">
+                Процент наценки составляет{" "}
+                <span className="font-semibold">
+                  {calculateExtraCharge()} %
+                </span>
+              </p>
+
+              <DialogFooter>
+                <Button
+                  disabled={isLoading}
+                  type="submit"
+                  className="hover:bg-red-600"
+                >
+                  Обновить
+                </Button>
+              </DialogFooter>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

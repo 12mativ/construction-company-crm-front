@@ -26,6 +26,9 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { createOrganisation } from "@/http/organisations/organisationsAPI";
 import { addOrganisation } from "@/lib/features/organisations/organisationsSlice";
+import { ErrorAlert } from "../errorAlert";
+import { AxiosError } from "axios";
+import { useState } from "react";
 
 const formSchema = z.object({
   name: z
@@ -40,6 +43,7 @@ const formSchema = z.object({
 
 export const CreateOrganisationModal = () => {
   const { isOpen, onClose, type } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createOrganisation";
 
@@ -48,21 +52,23 @@ export const CreateOrganisationModal = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: ""
-    }
+      name: "",
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createOrganisation(
-      values.name,
-    );
+    try {
+      const response = await createOrganisation(values.name);
 
-    response.data.moneyAccountList = [];
-    dispatch(addOrganisation(response.data));
+      response.data.moneyAccountList = [];
+      dispatch(addOrganisation(response.data));
 
-    handleClose();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании организации.");
+    }
   };
 
   const handleClose = () => {
@@ -78,6 +84,7 @@ export const CreateOrganisationModal = () => {
           <DialogDescription>
             Введите данные новой организации.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -99,7 +106,7 @@ export const CreateOrganisationModal = () => {
                 </FormItem>
               )}
             />
-            
+
             <DialogFooter>
               <Button disabled={isLoading} type="submit">
                 Сохранить

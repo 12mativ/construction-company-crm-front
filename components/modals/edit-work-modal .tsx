@@ -29,13 +29,17 @@ import {
 } from "@/components/ui/popover";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
+import { updateWork } from "@/http/works-groups/worksAPI";
+import { editWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Calendar } from "../ui/calendar";
-import { updateWork } from "@/http/works-groups/worksAPI";
-import { editWork } from "@/lib/features/works-groups/worksGroupsSlice";
-import { useEffect } from "react";
+import { getProjects } from "@/http/projects/projectsAPI";
+import { addProjects } from "@/lib/features/projects/projectsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -64,6 +68,7 @@ const formSchema = z.object({
 
 export const EditWorkModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editWork";
 
@@ -74,53 +79,52 @@ export const EditWorkModal = () => {
   });
 
   useEffect(() => {
-    if (data.workName) {
-      form.setValue("name", data.workName);
-    }
-    if (data.quantity) {
-      form.setValue("quantity", data.quantity);
-    }
-    if (data.measureUnit) {
-      form.setValue("measureUnit", data.measureUnit);
-    }
-    if (data.startDate) {
-      const startDate = new Date(data.startDate); 
+    if (data.work) {
+      form.setValue("name", data.work.name);
+      form.setValue("quantity", data.work.quantity);
+      form.setValue("measureUnit", data.work.measureUnit);
+      const startDate = new Date(data.work.startDate);
       form.setValue("startDate", startDate);
-    }
-    if (data.endDate) {
-      const endDate = new Date(data.endDate); 
+      const endDate = new Date(data.work.endDate);
       form.setValue("endDate", endDate);
     }
-  }, [form, data.workName, data.quantity, data.measureUnit, data.startDate, data.endDate, isOpen]);
+  }, [form, data.work, isOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateWork({
-      work_id: data.work_id!,
-      workNumber: data.workNumber!,
-      workName: values.name!,
-      quantity: values.quantity,
-      measureUnit: values.measureUnit,
-      startDate: values.startDate.toISOString(),
-      endDate: values.endDate.toISOString(), 
-      worksGroupId: data.worksGroupId!,
-    });
-    
-    const dataForEditWork = {
-      work_id: response.data.work_id!,
-      workNumber: response.data.workNumber!,
-      workName: response.data.name!,
-      quantity: response.data.quantity!,
-      measureUnit: response.data.measureUnit,
-      startDate: response.data.startDate,
-      endDate: response.data.endDate,
-      worksGroupId: response.data.worksGroupId,
-    };
-    dispatch(editWork(dataForEditWork));
-    
-    form.reset();
-    handleClose();
+    try {
+      const response = await updateWork({
+        work_id: data.work!.id,
+        workNumber: data.work!.number,
+        workName: values.name!,
+        quantity: values.quantity,
+        measureUnit: values.measureUnit,
+        startDate: values.startDate.toISOString(),
+        endDate: values.endDate.toISOString(),
+        worksGroupId: data.worksGroupId!,
+      });
+
+      const dataForEditWork = {
+        work_id: response.data.work_id!,
+        workNumber: response.data.workNumber!,
+        workName: response.data.name!,
+        quantity: response.data.quantity!,
+        measureUnit: response.data.measureUnit,
+        startDate: response.data.startDate,
+        endDate: response.data.endDate,
+        worksGroupId: response.data.worksGroupId,
+      };
+      dispatch(editWork(dataForEditWork));
+
+      const newProjects = await getProjects();
+      dispatch(addProjects(newProjects.data));
+
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании работы.");
+    }
   };
 
   const handleClose = () => {
@@ -132,8 +136,9 @@ export const EditWorkModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
-          <DialogTitle>Измените работу</DialogTitle>
-          <DialogDescription>Введите новые данные для работы.</DialogDescription>
+          <DialogTitle>Изменение работы</DialogTitle>
+          <DialogDescription>Введите данные работы.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -217,11 +222,11 @@ export const EditWorkModal = () => {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
+                      <Calendar
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
+                        disabled={() => false}
                         initialFocus
                       />
                     </PopoverContent>
@@ -260,7 +265,7 @@ export const EditWorkModal = () => {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                          disabled={() => false}
+                        disabled={() => false}
                         initialFocus
                       />
                     </PopoverContent>

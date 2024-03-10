@@ -1,3 +1,5 @@
+"use client";
+
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
@@ -9,7 +11,9 @@ import {
   addOrganisations,
 } from "@/lib/features/organisations/organisationsSlice";
 import { addTransactions } from "@/lib/features/transactions/transactionsSlice";
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const calculateTotalBalance = (organisations: IOrganisation[]) => {
   let totalBalance = 0;
@@ -24,6 +28,7 @@ const calculateTotalBalance = (organisations: IOrganisation[]) => {
 
 const TotalBalance = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const organisations = useAppSelector(
     (state) => state.organisationsReducer.organisations
@@ -35,15 +40,21 @@ const TotalBalance = () => {
 
     getOrganisations().then((res) => {
       dispatch(addOrganisations(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors((prevState) => [...prevState, "Произошла ошибка при загрузке организаций."])
     });
 
     getTransactions().then((res) => {
       dispatch(addTransactions(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors((prevState) => [...prevState, "Произошла ошибка при загрузке транзакций."])
     });
 
     getCounterparties()
       .then((res) => {
         dispatch(addCounterparties(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors((prevState) => [...prevState, "Произошла ошибка при загрузке контрагентов."])
       })
       .finally(() => {
         setIsLoading(false);
@@ -56,6 +67,7 @@ const TotalBalance = () => {
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-lg">
+      {errors.length !== 0 && errors.map((error, index) => <ErrorAlert key={index} error={error} />)}
       <Table>
         <TableBody>
           <TableRow key="totalAmount">

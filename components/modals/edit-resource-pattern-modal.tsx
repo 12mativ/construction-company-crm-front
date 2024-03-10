@@ -25,8 +25,10 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateResourcePattern } from "@/http/resources/resourcesAPI";
-import { editResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { useEffect } from "react";
+import { editResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -59,6 +61,7 @@ const formSchema = z.object({
 
 export const EditResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editResourcePattern";
 
@@ -75,18 +78,22 @@ export const EditResourcePatternModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateResourcePattern({
-      resourcePatternId: data.resourcePattern!.resourcePatternId,
-      resourcePatternName: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      resourceType: data.resourceType!,
-    });
+    try {
+      const response = await updateResourcePattern({
+        resourcePatternId: data.resourcePattern!.resourcePatternId,
+        resourcePatternName: values.name,
+        costPricePerUnit: values.costPricePerUnit,
+        orderPricePerUnit: values.orderPricePerUnit,
+        extraCharge: calculateExtraCharge(),
+        measureUnit: values.measureUnit,
+        resourceType: data.resourceType!,
+      });
 
-    dispatch(editResource(response.data));
-    handleClose();
+      dispatch(editResourcePattern(response.data));
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании ресурса.");
+    }
   };
 
   const handleClose = () => {
@@ -142,6 +149,7 @@ export const EditResourcePatternModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Измените ресурс</DialogTitle>
           <DialogDescription>Введите данные ресурса.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

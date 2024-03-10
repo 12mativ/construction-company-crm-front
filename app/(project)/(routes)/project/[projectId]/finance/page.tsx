@@ -1,7 +1,5 @@
-import ProjectEstimate from "@/components/project/project-estimate";
 import ProjectOrdersJournal from "@/components/project/project-orders-journal";
 import ProjectOrdersNeedToPay from "@/components/project/project-orders-need-to-pay";
-import WorksChart from "@/components/project/works-chart/works-chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Page = () => {

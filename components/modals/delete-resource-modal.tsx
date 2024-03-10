@@ -13,28 +13,30 @@ import {
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
-import { deleteMoneyAccount } from "@/http/organisations/organisationsAPI";
-import { removeMoneyAccount } from "@/lib/features/organisations/organisationsSlice";
+import { deleteResource } from "@/http/resources/resourcesAPI";
+import { removeResource } from "@/lib/features/works-groups/worksGroupsSlice";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../errorAlert";
 
-export const DeleteMoneyAccountModal = () => {
+export const DeleteResourceModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [error, setError] = useState("");
 
-  const isModalOpen = isOpen && type === "deleteMoneyAccount";
-  const dispatch = useAppDispatch()
+  const isModalOpen = isOpen && type === "deleteResource";
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
     setIsLoading(true);
     try {
-      await deleteMoneyAccount(data.moneyAccountId!);
-      dispatch(removeMoneyAccount({moneyAccountId: data.moneyAccountId!}))
-      onClose()
+      await deleteResource(data.resource!.id);
+      dispatch(
+        removeResource(data.resource!)
+      );
+      onClose();
     } catch(error: AxiosError | any) {
-      setError("Произошла ошибка при удалении счета.");
+      setError("Произошла ошибка при удалении ресурса.");
     } finally {
       setIsLoading(false);
     }
@@ -45,11 +47,15 @@ export const DeleteMoneyAccountModal = () => {
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold">
-            Удалить счет
+            Удалить ресурс
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Вы уверены, что хотите сделать это? <br />
-            Счет <span className="text-red-500">{data?.moneyAccountName}</span> будет удален без возможности восстановления.
+            Ресурс{" "}
+            <span className="text-red-500">
+              {data.resource?.name}
+            </span>{" "}
+            будет удален без возможности восстановления.
           </DialogDescription>
           {error && <ErrorAlert error={error} />}
         </DialogHeader>

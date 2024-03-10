@@ -4,6 +4,7 @@ import {
 } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
 import { $authHost } from "..";
 import { AxiosResponse } from "axios";
+import { IResourceEntity } from "@/lib/features/works-groups/worksGroupsSlice";
 
 interface IResourcePatternForCreate {
   name: string;
@@ -99,39 +100,8 @@ export const updateResourcePattern = async ({
 
   return response;
 };
-
-
-export const createResource = async ({
-  name,
-  measureUnit,
-  quantity,
-  costPricePerUnit,
-  orderPricePerUnit,
-  extraCharge,
-  resourceType,
-  workId,
-}: IResourceEntityForCreatingWork & { workId: number }) => {
-  const response = await $authHost.post(`/api/v1/resource`, {
-    name,
-    measureUnit,
-    quantity,
-    costPricePerUnit,
-    orderPricePerUnit,
-    extraCharge,
-    resourceType,
-    workId,
-  });
-
-  return response;
-};
-
-
-export const deleteResource = async (resource_id: number) => {
-  await $authHost.delete(`/api/v1/resource/${resource_id}`);
-};
-
 export const updateResource = async ({
-  resource_id,
+  resourceId,
   name,
   measureUnit,
   quantity,
@@ -140,9 +110,21 @@ export const updateResource = async ({
   extraCharge,
   resourceType,
   workId,
-}: IResourceEntityForEdit& { resource_id: number }) => {
+}: {
+  resourceId: number,
+  name: string;
+  measureUnit: string;
+  quantity: number;
+  costPricePerUnit: number;
+  orderPricePerUnit: number;
+  extraCharge: number;
+  resourceType: ResourceType;
+  workId: number;
+}): Promise<
+AxiosResponse<IResourceEntity>
+> => {
   const response = await $authHost.put(
-    `/api/v1/resource/${resource_id}`,
+    `/api/v1/resource/${resourceId}`,
     {
       name,
       measureUnit,
@@ -156,4 +138,8 @@ export const updateResource = async ({
   );
 
   return response;
+};
+
+export const deleteResource = async (resourceId: number) => {
+  await $authHost.delete(`/api/v1/resource/${resourceId}`);
 };

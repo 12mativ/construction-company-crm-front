@@ -13,11 +13,14 @@ import { getWorksProgress } from "@/http/works-progress/worksProgressAPI";
 import { IWorkEntity } from "@/lib/features/works-groups/worksGroupsSlice";
 import { addWorksProgress } from "@/lib/features/works-progress/worksProgressSlice";
 import { formateComplexDate } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const WorksJournal = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const worksProgress = useAppSelector(
     (state) => state.worksProgressReducer.worksProgress
   );
@@ -42,14 +45,19 @@ const WorksJournal = () => {
       .then((res) => {
         dispatch(addWorksProgress(res.data));
       })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке прогресса работ.")
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) {
     return <div>Загрузка...</div>;
   }
+
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {error && <ErrorAlert error={error} />}
       <Table>
         <TableHeader>
           <TableRow key="worksHeader">

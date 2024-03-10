@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { ResourceType } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { addResourceToWork, addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import { useState } from "react";
 import ResourcesTable from "../project/resources-table";
 import {
@@ -36,6 +36,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { createResource } from "@/http/resources/resourcesAPI";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { useParams } from "next/navigation";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -75,8 +79,10 @@ const formSchema = z.object({
 
 export const AddResourceModal = () => {
   const [isChoosingFromCatalog, setIsChoosingFromCatalog] = useState(false);
+  const [error, setError] = useState("");
 
   const { isOpen, onClose, type, data } = useModal();
+  const { projectId } = useParams<{ projectId: string }>();
 
   const isModalOpen = isOpen && type === "addResource";
 
@@ -93,20 +99,29 @@ export const AddResourceModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const currentWork = data.work!;
-    const response = await createResource({
-      workId: currentWork.id,
-      name: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      quantity: values.quantity,
-      resourceType: values.resourceType as ResourceType,
-    })
+    try {
+        const currentWork = data.work!;
+        const response = await createResource({
+          workId: currentWork.id,
+          name: values.name,
+          costPricePerUnit: values.costPricePerUnit,
+          orderPricePerUnit: values.orderPricePerUnit,
+          extraCharge: calculateExtraCharge(),
+          measureUnit: values.measureUnit,
+          quantity: values.quantity,
+          resourceType: values.resourceType as ResourceType,
+      })
 
-    dispatch(addResourceToWork(response.data));
-    handleClose();
+      dispatch(addResourceToWork(response.data));
+      getWorksGroups(projectId)
+        .then((res) => {
+          dispatch(addWorksGroups(res.data));
+        })
+      handleClose();
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при создании ресурса.");
+    }
+    
   };
 
   const handleClose = () => {
@@ -145,6 +160,7 @@ export const AddResourceModal = () => {
                   введите данные ресурса вручную
                 </button>
               </DialogDescription>
+              {error && <ErrorAlert error={error} />}
             </DialogHeader>
             <ResourcesTable currentWork={data.work!} onClose={onClose} />
           </>
@@ -161,6 +177,7 @@ export const AddResourceModal = () => {
                   выберите ресурсы из справочника
                 </button>
               </DialogDescription>
+              {error && <ErrorAlert error={error} />}
             </DialogHeader>
             <Form {...form}>
 
@@ -168,7 +185,6 @@ export const AddResourceModal = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
-
                 <div className="columns-2 pt-8" >
                   <FormField
                     control={form.control}

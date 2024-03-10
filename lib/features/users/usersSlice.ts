@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProjectStatusType } from "../projects/projectsSlice";
 import { findEqualItemsById } from "@/lib/store";
+import { RoleType } from "@/http/roles-manage/rolesManageAPI";
+import { AuthorityType } from "@/http/user/userAPI";
 
 interface IProject {
   id: number;
@@ -18,6 +20,8 @@ export interface IUser {
   email: string;
   recipientMoneyAccountId: number;
   projectEntityList: IProject;
+  authorities: AuthorityType[];
+  roles: RoleType[];
 }
 
 interface IUsersState {
@@ -40,9 +44,19 @@ export const usersSlice = createSlice({
         state.users.push(action.payload);
       }
     },
+    editUserRoles: (state, action: PayloadAction<{
+      email: string,
+      roles: RoleType[]
+    }>) => {
+      state.users.forEach((user) => {
+        if (user.email == action.payload.email) {
+          user.roles = action.payload.roles;
+        }
+      })
+    },
   },
 });
 
 export default usersSlice.reducer;
 
-export const { addUsers, addUser } = usersSlice.actions;
+export const { addUsers, addUser, editUserRoles } = usersSlice.actions;

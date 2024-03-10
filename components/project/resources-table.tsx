@@ -30,6 +30,8 @@ import * as z from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IWorkEntity, addResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 interface ResourcesTableProps {
   currentWork: IWorkEntity;
@@ -58,6 +60,7 @@ const formSchema = z.object({
 });
 
 const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
+  const [error, setError] = useState("");
   const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -98,6 +101,9 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
       .then((res) => {
         dispatch(addResourcesPatterns(res.data));
       })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке ресурсов.")
+      })
       .finally(() => {
         setIsResourcePatternsLoading(false);
       });
@@ -136,6 +142,7 @@ const ResourcesTable = ({currentWork, onClose}: ResourcesTableProps) => {
 
   return (
     <>
+      {error && <ErrorAlert error={error} />}
       <Table className="mb-2 ">
         <TableBody className="border-b">
           <TableRow

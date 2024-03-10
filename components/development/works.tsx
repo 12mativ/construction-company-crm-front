@@ -13,12 +13,15 @@ import { useModal } from "@/hooks/use-modal-store";
 import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
 import { addWorksGroups } from "@/lib/features/works-groups/worksGroupsSlice";
 import { cn, formateComplexDate } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { CheckSquare2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const Works = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const worksGroups = useAppSelector(
     (state) => state.worksGroupsReducer.worksGroups
   );
@@ -59,6 +62,9 @@ const Works = () => {
       .then((res) => {
         dispatch(addWorksGroups(res.data));
       })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке работ.")
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -67,6 +73,7 @@ const Works = () => {
   }
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {error && <ErrorAlert error={error} />}
       <Table>
         <TableHeader>
           <TableRow key="worksHeader">

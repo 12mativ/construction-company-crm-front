@@ -15,8 +15,11 @@ import { Bolt, BrickWall, Plus, Shield, UserRound } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 
 import { Pencil, Trash2 } from "lucide-react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const ResourcePatterns = () => {
+  const [error, setError] = useState("");
   const [isResourcePatternsLoading, setIsResourcePatternsLoading] =
     useState(false);
 
@@ -34,6 +37,8 @@ const ResourcePatterns = () => {
     getResourcePatterns()
       .then((res) => {
         dispatch(addResourcesPatterns(res.data));
+      }).catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке ресурсов.")
       })
       .finally(() => {
         setIsResourcePatternsLoading(false);
@@ -73,6 +78,7 @@ const ResourcePatterns = () => {
 
   return (
     <div className="bg-white p-5 rounded-lg shadow-xl">
+      {error && <ErrorAlert error={error} />}
       <Table className="mb-2">
         <TableBody className="border-b">
           <TableRow

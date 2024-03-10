@@ -25,11 +25,14 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { createResourcePattern } from "@/http/resources/resourcesAPI";
-import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { addResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
-    .string({required_error: "Обязательно для заполнения."})
+    .string({ required_error: "Обязательно для заполнения." })
     .min(1, {
       message: "Название ресурса обязательно.",
     })
@@ -37,13 +40,19 @@ const formSchema = z.object({
       message: "Название ресурса не должно превышать 50 символов.",
     }),
   costPricePerUnit: z.coerce
-    .number({required_error: "Обязательно для заполнения.", invalid_type_error: "Введите числовое значение."})
+    .number({
+      required_error: "Обязательно для заполнения.",
+      invalid_type_error: "Введите числовое значение.",
+    })
     .nonnegative({ message: "Себестоимость не может быть отрицательной." }),
   orderPricePerUnit: z.coerce
-    .number({required_error: "Обязательно для заполнения.", invalid_type_error: "Введите числовое значение.",})
+    .number({
+      required_error: "Обязательно для заполнения.",
+      invalid_type_error: "Введите числовое значение.",
+    })
     .nonnegative({ message: "Стоимость не может быть отрицательной." }),
   measureUnit: z
-    .string({required_error: "Обязательно для заполнения."})
+    .string({ required_error: "Обязательно для заполнения." })
     .min(1, { message: "Название единицы измерения обязательно." })
     .max(50, {
       message: "Единица измерения не должна превышать 50 символов.",
@@ -52,6 +61,7 @@ const formSchema = z.object({
 
 export const CreateResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createResourcePattern";
 
@@ -61,25 +71,29 @@ export const CreateResourcePatternModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      measureUnit: ""
-    }
+      measureUnit: "",
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await createResourcePattern({
-      name: values.name,
-      costPricePerUnit: values.costPricePerUnit,
-      orderPricePerUnit: values.orderPricePerUnit,
-      extraCharge: calculateExtraCharge(),
-      measureUnit: values.measureUnit,
-      resourceType: data.resourceType!,
-    });
+    try {
+      const response = await createResourcePattern({
+        name: values.name,
+        costPricePerUnit: values.costPricePerUnit,
+        orderPricePerUnit: values.orderPricePerUnit,
+        extraCharge: calculateExtraCharge(),
+        measureUnit: values.measureUnit,
+        resourceType: data.resourceType!,
+      });
 
-    response.data.resourceType = data.resourceType;
-    dispatch(addResource(response.data));
-    handleClose();
+      response.data.resourceType = data.resourceType;
+      dispatch(addResourcePattern(response.data));
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании ресурса.");
+    }
   };
 
   const handleClose = () => {
@@ -108,6 +122,7 @@ export const CreateResourcePatternModal = () => {
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте ресурс</DialogTitle>
           <DialogDescription>Введите данные нового ресурса.</DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -185,7 +200,8 @@ export const CreateResourcePatternModal = () => {
             />
 
             <p className="text-neutral-400">
-              Процент наценки составляет <span className="font-semibold">{calculateExtraCharge()} %</span>
+              Процент наценки составляет{" "}
+              <span className="font-semibold">{calculateExtraCharge()} %</span>
             </p>
 
             <DialogFooter>

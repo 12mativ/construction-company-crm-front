@@ -1,39 +1,53 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { useModal } from "@/hooks/use-modal-store";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddButton from "../addButton";
 import {
   Table,
   TableBody,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "../ui/table";
 import CounterpartyItem from "./counterpartyItem";
+import LoaderIndicator from "../loader";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const Counterparties = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const counterparties = useAppSelector(
     (state) => state.counterpartiesReducer.counterparties
   );
 
-  const { onOpen } = useModal();
-
   useEffect(() => {
-    getCounterparties().then((res) => {
-      dispatch(addCounterparties(res.data));
-    });
+    getCounterparties()
+      .then((res) => {
+        dispatch(addCounterparties(res.data));
+      })
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке контрагентов.");
+      });
   }, []);
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-lg">
+      {error && <ErrorAlert error={error} />}
       <Table>
         <TableHeader>
-          <TableRow key="mainHeader" className="text-neutral-400 px-10 text-[16px]">
+          <TableRow
+            key="mainHeader"
+            className="text-neutral-400 px-10 text-[16px]"
+          >
             <TableHead className="flex-1">Компания</TableHead>
             <TableHead className="flex-2 w-[165px] text-center px-1">
               Телефон

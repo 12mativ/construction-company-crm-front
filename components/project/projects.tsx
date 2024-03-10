@@ -7,9 +7,12 @@ import { addProjects } from "@/lib/features/projects/projectsSlice";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProjectItem from "./project-item";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const Projects = () => {
   const [isProjectsLoading, setIsProjectsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const projects = useAppSelector((state) => state.projectsReducer.projects);
 
@@ -20,6 +23,9 @@ const Projects = () => {
     
     getProjects()
       .then((res) => dispatch(addProjects(res.data)))
+      .catch((error: AxiosError | any) => {
+        setError("Произошла ошибка при загрузке проектов.")
+      })
       .finally(() => setIsProjectsLoading(false));
   }, []);
 
@@ -31,6 +37,7 @@ const Projects = () => {
 
   return (
     <div className="flex flex-col gap-x-20 gap-y-10 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-normal lg:flex-row lg:flex-wrap">
+      {error && <ErrorAlert error={error} />}
       {projects.map((project) => {
         return <ProjectItem key={project.id} {...project} />;
       })}

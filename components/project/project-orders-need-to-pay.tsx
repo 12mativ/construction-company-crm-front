@@ -10,12 +10,14 @@ import { getOrganisations } from "@/http/organisations/organisationsAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 import { OrderType, addOrders } from "@/lib/features/orders/ordersSlice";
 import { addOrganisations } from "@/lib/features/organisations/organisationsSlice";
-import { cn } from "@/lib/utils";
+import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const ProjectOrdersNeedToPay = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const [orderType, setOrderType] = useState<OrderType>("NOT_PAID");
 	const {onOpen} = useModal();
   const orders = useAppSelector((state) => state.ordersReducer.orders);
@@ -29,13 +31,19 @@ const ProjectOrdersNeedToPay = () => {
     setIsLoading(true);
     getOrders(+projectId, orderType).then((res) => {
       dispatch(addOrders(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors(prevState => [...prevState, "Произошла ошибка при загрузке заказов."])
     });
     getOrganisations().then((res) => {
       dispatch(addOrganisations(res.data));
+    }).catch((error: AxiosError | any) => {
+      setErrors(prevState => [...prevState, "Произошла ошибка при загрузке организаций."])
     });
     getCounterparties()
       .then((res) => {
         dispatch(addCounterparties(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors(prevState => [...prevState, "Произошла ошибка при загрузке поставщиков."])
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -46,6 +54,7 @@ const ProjectOrdersNeedToPay = () => {
 
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {errors.length !== 0 && errors.map((error, index) => <ErrorAlert key={index} error={error} />)}
       <Table>
         <TableHeader>
           <TableRow key="orderHeader">

@@ -1,8 +1,8 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Form,
@@ -12,12 +12,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { AuthorityType, register } from "@/http/user/userAPI";
+import { makeAuth } from "@/lib/features/user/userSlice";
+import axios, { AxiosError } from "axios";
+import Link from "next/link";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import Link from "next/link";
-import { RoleType, login, register } from "@/http/user/userAPI";
-import { makeAuth } from "@/lib/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
   Select,
   SelectContent,
@@ -25,8 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import axios, { AxiosError } from "axios";
-import { useState } from "react";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -36,7 +37,7 @@ const formSchema = z.object({
     .min(5, { message: "Минимальная длина пароля 5 символов" })
     .max(50, { message: "Минимальная длина пароля 50 символов" }),
 
-  role: z.string({
+  authority: z.string({
     required_error: "Выберите роль.",
   }),
 });
@@ -61,19 +62,19 @@ const AuthRegister = () => {
       const response = await register(
         values.username,
         values.password,
-        values.role as RoleType
+        values.authority as AuthorityType
       );
-
-      //@ts-ignore
-      const role = response.roles;
+      
+      const authorities = response.authorities;
+      const roles = response.roles;
       const username = response.sub!;
 
-      dispatch(makeAuth({ username: username, role: role, isAuth: true}));
+      dispatch(makeAuth({ username: username, authorities: authorities, roles: roles, isAuth: true}));
     } catch (err: AxiosError | any) {
       if (axios.isAxiosError(err)) {
         setRegisterError(err.response?.data.message);
       } else {
-        console.log(err);
+        setRegisterError(err);
       }
     }
   };
@@ -126,7 +127,7 @@ const AuthRegister = () => {
  
             <FormField 
               control={form.control} 
-              name="role" 
+              name="authority" 
               render={({ field }) => ( 
                 <FormItem> 
                   <FormLabel>Роль</FormLabel> 
@@ -140,10 +141,8 @@ const AuthRegister = () => {
                       </SelectTrigger> 
                     </FormControl> 
                     <SelectContent> 
-                      <SelectItem value="ADMIN">Застройщик</SelectItem> 
                       <SelectItem value="CUSTOMER">Заказчик</SelectItem> 
-                      <SelectItem value="ACCOUNTANT">Финансист</SelectItem> 
-                      <SelectItem value="EMPLOYEE">Прораб</SelectItem> 
+                      <SelectItem value="WORKER">Работник</SelectItem> 
                     </SelectContent> 
                   </Select> 
                   <FormMessage /> 
@@ -163,7 +162,7 @@ const AuthRegister = () => {
           </form> 
         </Form> 
  
-        {registerError && <p className="text-red-500 py-2">{registerError}</p>} 
+        {registerError && <ErrorAlert error={registerError} />}
  
         <p className="pt-5 text-center text-sm"> 
           Есть аккаунт? <br /> 

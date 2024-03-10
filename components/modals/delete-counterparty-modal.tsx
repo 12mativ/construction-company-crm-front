@@ -15,9 +15,12 @@ import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteCounterparty } from "@/http/counterparties/counterpartiesAPI";
 import { removeCounterparty } from "@/lib/features/counterparties/counterpartiesSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteCounterpartyModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteCounterparty";
   const dispatch = useAppDispatch()
@@ -30,8 +33,8 @@ export const DeleteCounterpartyModal = () => {
       await deleteCounterparty(data.partnerId!);
       dispatch(removeCounterparty({partnerId: data.partnerId!}))
       onClose()
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении контрагента.");
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +51,7 @@ export const DeleteCounterpartyModal = () => {
             Вы уверены, что хотите сделать это? <br />
             Партнер <span className="text-red-500">{data?.counterpartyName}</span> будет удален без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

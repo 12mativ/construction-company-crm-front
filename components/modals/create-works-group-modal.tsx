@@ -25,12 +25,14 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { createWorkGroup } from "@/http/works-groups/worksGroupsAPI";
-import { addResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
-import { addWorkGroup } from "@/lib/features/works-groups/worksGroupsSlice";
+import { addWorksGroup } from "@/lib/features/works-groups/worksGroupsSlice";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
-    .string({required_error: "Обязательно для заполнения."})
+    .string({ required_error: "Обязательно для заполнения." })
     .min(1, {
       message: "Название ресурса обязательно.",
     })
@@ -41,6 +43,7 @@ const formSchema = z.object({
 
 export const CreateWorkGroupModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "createWorkGroup";
 
@@ -50,26 +53,36 @@ export const CreateWorkGroupModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-    }
+    },
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    let nextNumber = 1;
-    if (data.workGroups!.length > 0) {
-      nextNumber = data.workGroups![data.workGroups!.length - 1].number + 1
+    try {
+      let nextNumber = 1;
+      if (data.workGroups!.length > 0) {
+        nextNumber = data.workGroups![data.workGroups!.length - 1].number + 1;
+      }
+
+      const response = await createWorkGroup(
+        +data.projectId!,
+        values.name,
+        nextNumber
+      );
+
+      dispatch(
+        addWorksGroup({
+          id: response.data.id,
+          name: response.data.name,
+          number: response.data.number,
+          workEntityList: [],
+        })
+      );
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при создании группы работ.");
     }
-
-    const response = await createWorkGroup(+data.projectId!, values.name, nextNumber);
-
-    dispatch(addWorkGroup({
-      id: response.data.id,
-      name: response.data.name,
-      number: response.data.number,
-      workEntityList: []
-    }));
-    handleClose();
   };
 
   const handleClose = () => {
@@ -82,7 +95,10 @@ export const CreateWorkGroupModal = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col gap-y-2">
           <DialogTitle>Создайте группу работ</DialogTitle>
-          <DialogDescription>Введите данные новой группы работ.</DialogDescription>
+          <DialogDescription>
+            Введите данные новой группы работ.
+          </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

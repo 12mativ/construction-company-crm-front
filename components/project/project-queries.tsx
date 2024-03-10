@@ -29,6 +29,8 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   items: z
@@ -89,6 +91,7 @@ const ProjectQueries = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const { onOpen } = useModal();
   const dispatch = useAppDispatch();
   const projectQueries = useAppSelector(
@@ -126,10 +129,14 @@ const ProjectQueries = () => {
     getCounterparties()
       .then((res) => {
         dispatch(addCounterparties(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors(prevState => [...prevState, "Произошла ошибка при загрузке контрагентов."])
       })
     getProjectQueries(+projectId)
       .then((res) => {
         dispatch(addProjectQueries(res.data));
+      }).catch((error: AxiosError | any) => {
+        setErrors(prevState => [...prevState, "Произошла ошибка при загрузке заявок."])
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -140,6 +147,8 @@ const ProjectQueries = () => {
 
   return (
     <div className="flex flex-col gap-y-2 bg-white p-5 rounded-lg shadow-xl">
+      {errors.length !== 0 && errors.map((error, index) => <ErrorAlert key={index} error={error} />)}
+
       <Table>
         <TableHeader>
           <TableRow key="projectQueriesHeader">

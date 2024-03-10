@@ -15,9 +15,12 @@ import { useModal } from "@/hooks/use-modal-store";
 import { deleteWorkProgressPhoto } from "@/http/workProgressPhotos/workProgressPhotosAPI";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { removeWorkProgressPhoto } from "@/lib/features/works-progress/worksProgressSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteWorksProgressPhotoModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteWorkProgressPhoto";
   const dispatch = useAppDispatch()
@@ -30,9 +33,9 @@ export const DeleteWorksProgressPhotoModal = () => {
       await deleteWorkProgressPhoto(data.imageId!);
       dispatch(removeWorkProgressPhoto({imageId: data.imageId!}))
       onClose()
-    } catch (error) {
-      console.log(error);
-    } finally {
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении фото.");
+    }finally {
       setIsLoading(false);
     }
   };
@@ -48,6 +51,7 @@ export const DeleteWorksProgressPhotoModal = () => {
             Вы уверены, что хотите сделать это? <br />
             Фото будет удалено без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

@@ -4,6 +4,7 @@ import LoaderIndicator from "@/components/loader";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { check } from "@/http/user/userAPI";
 import { makeAuth } from "@/lib/features/user/userSlice";
+import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,9 +19,11 @@ export default function Home() {
     check()
       .then((res) => {
         if (res) {
-          //@ts-ignore
-          dispatch(makeAuth({ username: res.sub!, role: res.roles, isAuth: true }));
+          dispatch(makeAuth({ username: res.data.username, roles: res.data.authorities, authorities: res.data.authorities, isAuth: true }));
         }
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
       })
       .finally(() => setIsLoading(false));
   }, []);

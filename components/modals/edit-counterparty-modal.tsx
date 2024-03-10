@@ -37,8 +37,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 const formSchema = z.object({
   name: z
@@ -58,6 +59,7 @@ const formSchema = z.object({
 
 export const EditCounterpartyModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "editCounterparty";
 
@@ -80,30 +82,42 @@ export const EditCounterpartyModal = () => {
     if (data.partnerType) {
       form.setValue("partnerType", data.partnerType);
     }
-  }, [form, data.partnerId, data.counterpartyName, data.phoneNumber, data.email, data.partnerType, isOpen]);
+  }, [
+    form,
+    data.partnerId,
+    data.counterpartyName,
+    data.phoneNumber,
+    data.email,
+    data.partnerType,
+    isOpen,
+  ]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await updateCounterparty({
-      partnerId: data.partnerId!,
-      counterpartyName: values.name!,
-      phoneNumber: values.phoneNumber,
-      email: values.email,
-      partnerType: values.partnerType as PartnerType,
-    });
+    try {
+      const response = await updateCounterparty({
+        partnerId: data.partnerId!,
+        counterpartyName: values.name!,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        partnerType: values.partnerType as PartnerType,
+      });
 
-    const dataForEditCounterparty = {
-      partnerId: response.data.id!,
-      counterpartyName: response.data.name!,
-      phoneNumber: response.data.phoneNumber,
-      email: response.data.email,
-      partnerType: response.data.partnerType,
-    };
-    dispatch(editCounterparty(dataForEditCounterparty));
-    
-    form.reset();
-    handleClose();
+      const dataForEditCounterparty = {
+        partnerId: response.data.id!,
+        counterpartyName: response.data.name!,
+        phoneNumber: response.data.phoneNumber,
+        email: response.data.email,
+        partnerType: response.data.partnerType,
+      };
+      dispatch(editCounterparty(dataForEditCounterparty));
+
+      form.reset();
+      handleClose();
+    } catch (error: AxiosError | any) {
+      setError("Произошла ошибка при редактировании контрагента.");
+    }
   };
 
   const handleClose = () => {
@@ -119,6 +133,7 @@ export const EditCounterpartyModal = () => {
           <DialogDescription>
             Введите новые данные контрагента.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

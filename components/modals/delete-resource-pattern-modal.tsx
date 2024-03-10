@@ -14,10 +14,13 @@ import {
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteResourcePattern } from "@/http/resources/resourcesAPI";
-import { removeResource } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { removeResourcePattern } from "@/lib/features/resources-patterns/resourcesPatternsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteResourcePatternModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteResourcePattern";
   const dispatch = useAppDispatch();
@@ -29,13 +32,13 @@ export const DeleteResourcePatternModal = () => {
     try {
       await deleteResourcePattern(data.resourcePattern?.resourcePatternId!);
       dispatch(
-        removeResource({
+        removeResourcePattern({
           resourcePatternId: data.resourcePattern?.resourcePatternId!,
         })
       );
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении ресурса.");
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +59,7 @@ export const DeleteResourcePatternModal = () => {
             </span>{" "}
             будет удален без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

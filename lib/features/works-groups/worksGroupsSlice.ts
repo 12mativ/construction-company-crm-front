@@ -70,7 +70,7 @@ export const worksGroupsSlice = createSlice({
     addWorksGroups: (state, action: PayloadAction<IWorkGroup[]>) => {
       state.worksGroups = action.payload;
     },
-    addWorkGroup: (state, action: PayloadAction<IWorkGroup>) => {
+    addWorksGroup: (state, action: PayloadAction<IWorkGroup>) => {
       if (!findEqualItemsById(state.worksGroups, action.payload.id)) {
         state.worksGroups.push(action.payload);
       }
@@ -96,37 +96,56 @@ export const worksGroupsSlice = createSlice({
         }
       });
     },
-
-
     addWork: (state, action: PayloadAction<IWorkEntity>) => {
-      const currentWorkGroup = state.worksGroups.find((worksGroup) => worksGroup.id === action.payload.worksGroupId);
+      const currentWorkGroup = state.worksGroups.find(
+        (worksGroup) => worksGroup.id === action.payload.worksGroupId
+      );
 
-      if (!findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)) {
-        currentWorkGroup?.workEntityList.push(action.payload)
+      if (
+        !findEqualItemsById(currentWorkGroup?.workEntityList, action.payload.id)
+      ) {
+        currentWorkGroup?.workEntityList.push(action.payload);
       }
     },
-
-    removeWork: (
-      state,
-      action: PayloadAction<{ work_id: number }>
-    ) => {
-      state.worksGroups.forEach((workGroup) => {
-        workGroup.workEntityList = workGroup.workEntityList.filter((work) => work.id !== action.payload.work_id);
+    
+    addResourceToWork: (state, action: PayloadAction<IResourceEntity>) => {
+      state.worksGroups.forEach((worksGroup) => {
+        worksGroup.workEntityList.forEach((workEntity) => {
+          if (workEntity.id === action.payload.workId) {
+            if (
+              !findEqualItemsById(
+                workEntity.resourceEntityList,
+                action.payload.id
+              )
+            ) {
+              workEntity.resourceEntityList.push(action.payload);
+            }
+          }
+        });
       });
     },
-    
-    editWork: (state, action: PayloadAction<{
-      work_id: number,
-      workName: string,
-      workNumber: number,
-      quantity: number,
-      measureUnit: string,
-      startDate: string,
-      endDate: string,
-      worksGroupId: number,
-    }>) => {
-      state.worksGroups.forEach((group) => {
-        group.workEntityList.forEach((work) => {
+    removeWork: (state, action: PayloadAction<{ work_id: number }>) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList = workGroup.workEntityList.filter(
+          (work) => work.id !== action.payload.work_id
+        );
+      });
+    },
+    editWork: (
+      state,
+      action: PayloadAction<{
+        work_id: number;
+        workName: string;
+        workNumber: number;
+        quantity: number;
+        measureUnit: string;
+        startDate: string;
+        endDate: string;
+        worksGroupId: number;
+      }>
+    ) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList.forEach((work) => {
           if (work.id === action.payload.work_id) {
             work.name = action.payload.workName;
             work.number = action.payload.workNumber;
@@ -139,47 +158,57 @@ export const worksGroupsSlice = createSlice({
         });
       });
     },
-
-    addResourceToWork: (state, action: PayloadAction<IResourceEntity>) => {
-      state.worksGroups.forEach((worksGroup) => {
-        worksGroup.workEntityList.forEach((workEntity) => {
-          if (workEntity.id === action.payload.workId) {
-            if (!findEqualItemsById(workEntity.resourceEntityList, action.payload.id)) {
-              workEntity.resourceEntityList.push(action.payload);
-            }
-          }
-        })        
-      })
-    }, 
-
-    removeResourceToWork: (state, action: PayloadAction<{ resource_id: number }>) => {
+    editResource: (
+      state,
+      action: PayloadAction<IResourceEntity>
+    ) => {
       state.worksGroups.forEach((workGroup) => {
-        workGroup.workEntityList.forEach((workEntity) => {
-          workEntity.resourceEntityList = workEntity.resourceEntityList.filter((resource) => resource.id !== action.payload.resource_id);
-        });
-      });
-    },
-
-    editResourceToWork: (state, action: PayloadAction<IResourceEntityForEdit>) => {
-      state.worksGroups.forEach((group) => {
-        group.workEntityList.forEach((work) => {
-          if (work.id === action.payload.id) {
-            work.name = action.payload.name;
-            work.measureUnit = action.payload.measureUnit;
-            work.quantity = action.payload.quantity;
-            work.costPricePerUnit = action.payload.costPricePerUnit;
-            work.orderPricePerUnit = action.payload.orderPricePerUnit;
-            work.resourceType = action.payload.resourceType;
+        workGroup.workEntityList.forEach((work) => {
+          if (work.id === action.payload.workId) {
+            work.resourceEntityList.forEach((resourceEntity) => {
+              if (resourceEntity.id === action.payload.id) {
+                resourceEntity.name = action.payload.name
+                resourceEntity.measureUnit = action.payload.measureUnit
+                resourceEntity.quantity = action.payload.quantity
+                resourceEntity.costPricePerUnit = action.payload.costPricePerUnit
+                resourceEntity.orderPricePerUnit = action.payload.orderPricePerUnit
+                resourceEntity.extraCharge = action.payload.extraCharge
+                resourceEntity.costPrice = action.payload.costPrice
+                resourceEntity.orderPrice = action.payload.orderPrice
+                resourceEntity.resourceType = action.payload.resourceType
+                resourceEntity.workId = action.payload.workId
+              }
+            })
           }
         });
       });
     },
-    
-
-    
+    removeResource: (
+      state,
+      action: PayloadAction<IResourceEntity>
+    ) => {
+      state.worksGroups.forEach((workGroup) => {
+        workGroup.workEntityList.forEach((work) => {
+          if (work.id === action.payload.workId) {
+            work.resourceEntityList = work.resourceEntityList.filter((resourceEntity) => resourceEntity.id !== action.payload.id)
+          }
+        });
+      });
+    },
   },
 });
 
 export default worksGroupsSlice.reducer;
 
-export const { addWorksGroups, addWorkGroup, removeWorksGroup, editWorksGroup, addWork, removeWork, editWork, addResourceToWork, removeResourceToWork, editResourceToWork } = worksGroupsSlice.actions;
+export const {
+  addWorksGroups,
+  addWorksGroup,
+  removeWorksGroup,
+  editWorksGroup,
+  addWork,
+  addResourceToWork,
+  removeWork,
+  editWork,
+  editResource,
+  removeResource
+} = worksGroupsSlice.actions;
