@@ -1,10 +1,11 @@
 import { RoleType } from "@/http/roles-manage/rolesManageAPI";
+import { AuthorityType } from "@/http/user/userAPI";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IUser {
   username: string;
-  authorities: string[];
-  roles: string[];
+  authorities: AuthorityType[];
+  roles: RoleType[];
   isAuth: boolean;
 }
 

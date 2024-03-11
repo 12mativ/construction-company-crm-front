@@ -1,6 +1,6 @@
 import { $host } from "..";
 
-export type RoleType = "ADMIN" | "ACCOUNTANT" | "EMPLOYEE";
+export type RoleType = "SUPER_MEGA_ADMIN" | "ADMIN" | "ACCOUNTANT" | "EMPLOYEE";
 
 export const addRole = async ({
   username,

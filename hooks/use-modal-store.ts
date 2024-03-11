@@ -7,7 +7,7 @@ import {
 } from "@/lib/features/works-groups/worksGroupsSlice";
 import { create } from "zustand";
 import { IOrder } from "@/lib/features/orders/ordersSlice";
-import { IUser } from "@/lib/features/users/usersSlice";
+import { IUser } from "@/lib/features/project-users/projectUsersSlice";
 
 export type ModalType =
   | "createProject"

@@ -4,9 +4,11 @@ import { BookOpen, FolderDot, Settings, User, Wallet } from "lucide-react";
 import MenuItem from "../menu-item";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/hooks/redux-hooks";
 
 const MainMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();
+  const currentUser = useAppSelector(state => state.userReducer.user);
 
   const params = usePathname();
 
@@ -17,6 +19,7 @@ const MainMenu = () => {
       icon: <FolderDot className="stroke-1" size={25} />,
       href: "/projects",
       isActive: activeId === 1,
+      isVisible: true
     },
     {
       id: 2,
@@ -24,6 +27,7 @@ const MainMenu = () => {
       icon: <Wallet className="stroke-1" size={25} />,
       href: "/finance",
       isActive: activeId === 2,
+      isVisible: true
     },
     {
       id: 3,
@@ -31,6 +35,7 @@ const MainMenu = () => {
       icon: <BookOpen className="stroke-1" size={25} />,
       href: "/catalogs",
       isActive: activeId === 3,
+      isVisible: true
     },
     {
       id: 4,
@@ -38,6 +43,7 @@ const MainMenu = () => {
       icon: <Settings className="stroke-1" size={25} />,
       href: "/settings",
       isActive: activeId === 4,
+      isVisible: true
     },
     {
       id: 5,
@@ -45,6 +51,7 @@ const MainMenu = () => {
       icon: <User className="stroke-1" size={25} />,
       href: "/users",
       isActive: activeId === 5,
+      isVisible: currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN")
     },
   ];
 

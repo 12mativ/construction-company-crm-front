@@ -7,6 +7,7 @@ type MenuType = {
   href: string;
   projectMenuItemName: string;
   isActive: boolean;
+  isVisible: boolean;
 };
 
 interface ProjectMenuItem {
@@ -17,7 +18,10 @@ interface ProjectMenuItem {
 const MenuItem = ({ menuItem, changeIsActive }: ProjectMenuItem) => {
   return (
     <Link
-      className="h-fit"
+      className={cn(
+        "h-fit hidden",
+        menuItem.isVisible && "block" 
+      )}
       href={menuItem.href}
       onClick={() => changeIsActive(menuItem.id)}
     >

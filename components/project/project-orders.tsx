@@ -7,7 +7,7 @@ import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
 import { getOrders } from "@/http/orders/ordersAPI";
 import { addCounterparties } from "@/lib/features/counterparties/counterpartiesSlice";
 import { OrderType, addOrders } from "@/lib/features/orders/ordersSlice";
-import { cn } from "@/lib/utils";
+import { cn, formateComplexDate } from "@/lib/utils";
 import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -72,11 +72,11 @@ const ProjectOrders = () => {
               )?.name
             }
           </div>
-          <div className="w-[150px] text-center p-2">Дата</div>
+          <div className="w-[150px] text-center p-2">{formateComplexDate(order.paymentDate)}</div>
           <div className="w-[150px] text-center p-2">{order.queryEntityList.length}</div>
           <div className="w-[150px] text-center p-2">План ₽</div>
-          <div className="w-[150px] text-center p-2">Факт ₽</div>
-          <div className="w-[150px] text-center p-2">Экономия</div>
+          <div className="w-[150px] text-center p-2">{order.totalCost} ₽</div>
+          <div className="w-[150px] text-center p-2">{order.generalProfit} ₽</div>
           <div
             className={cn(
               "w-[150px] text-center p-2 rounded-lg",

@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { $authHost } from "..";
-import { IUser } from "@/lib/features/users/usersSlice";
+import { IUser } from "@/lib/features/project-users/projectUsersSlice";
 
 export const getUsers = async (
   projectId: number

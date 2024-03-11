@@ -43,7 +43,7 @@ export default function MainLayout({
     check()
       .then((res) => {
         if (res) {
-          dispatch(makeAuth({ username: res.data.username, roles: res.data.authorities, authorities: res.data.authorities, isAuth: true }));
+          dispatch(makeAuth({ username: res.data.username, roles: res.data.roles, authorities: res.data.authorities, isAuth: true }));
         }
       })
       .catch((error: AxiosError) => {

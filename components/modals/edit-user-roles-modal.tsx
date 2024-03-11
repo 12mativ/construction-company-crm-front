@@ -14,7 +14,7 @@ import {
   addRole,
   deleteRole,
 } from "@/http/roles-manage/rolesManageAPI";
-import { editUserRoles } from "@/lib/features/users/usersSlice";
+import { editUserRoles } from "@/lib/features/global-users/globalUsersSlice";
 import { useEffect, useState } from "react";
 
 import { X } from "lucide-react";

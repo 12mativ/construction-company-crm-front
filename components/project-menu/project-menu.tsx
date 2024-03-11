@@ -25,6 +25,7 @@ const ProjectMenu = () => {
       icon: <FolderDot className="stroke-1" size={25} />,
       href: `/project/${projectId}/planning`,
       isActive: activeId === 1,
+      isVisible: true
     },
     {
       id: 2,
@@ -32,6 +33,7 @@ const ProjectMenu = () => {
       icon: <FileCheck2 className="stroke-1" size={25} />,
       href: `/project/${projectId}/supply`,
       isActive: activeId === 2,
+      isVisible: true
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ const ProjectMenu = () => {
       icon: <Wallet className="stroke-1" size={25} />,
       href: `/project/${projectId}/finance`,
       isActive: activeId === 3,
+      isVisible: true
     },
     {
       id: 4,
@@ -46,6 +49,7 @@ const ProjectMenu = () => {
       icon: <HardHat className="stroke-1" size={25} />,
       href: `/project/${projectId}/development`,
       isActive: activeId === 4,
+      isVisible: true
     },
     {
       id: 5,
@@ -53,6 +57,7 @@ const ProjectMenu = () => {
       icon: <Image className="stroke-1" size={25} />,
       href: `/project/${projectId}/photos`,
       isActive: activeId === 5,
+      isVisible: true
     },
     {
       id: 6,
@@ -60,6 +65,7 @@ const ProjectMenu = () => {
       icon: <UsersRound className="stroke-1" size={25} />,
       href: `/project/${projectId}/team`,
       isActive: activeId === 6,
+      isVisible: true
     },
   ];
 

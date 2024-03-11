@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { addUserToProject } from "@/http/users/usersAPI";
-import { addUser } from "@/lib/features/users/usersSlice";
+import { addUser } from "@/lib/features/project-users/projectUsersSlice";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 

@@ -7,7 +7,8 @@ import transactionsReducer from "./features/transactions/transactionsSlice";
 import worksGroupsReducer from "./features/works-groups/worksGroupsSlice";
 import worksProgressReducer from "./features/works-progress/worksProgressSlice";
 import projectQueriesReducer from "./features/project-queries/projectQueriesSlice";
-import usersReducer from "./features/users/usersSlice";
+import projectUsersReducer from "./features/project-users/projectUsersSlice";
+import globalUsersReducer from "./features/global-users/globalUsersSlice";
 import ordersReducer from "./features/orders/ordersSlice";
 import userReducer from "./features/user/userSlice";
 
@@ -30,7 +31,8 @@ export const makeStore = () => {
       worksGroupsReducer,
       worksProgressReducer,
       projectQueriesReducer,
-      usersReducer,
+      projectUsersReducer,
+      globalUsersReducer,
       ordersReducer
     },
   });

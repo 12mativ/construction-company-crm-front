@@ -14,6 +14,7 @@ import { AxiosError } from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ErrorAlert } from "../errorAlert";
+import { formateComplexDate } from "@/lib/utils";
 
 const ProjectOrdersNeedToPay = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -71,26 +72,26 @@ const ProjectOrdersNeedToPay = () => {
 
       {orders.map((order) => (
         <div 
-					className="flex w-full items-center p-2 rounded-lg hover:bg-neutral-100 cursor-pointer transition" 
+					className="flex w-full items-center p-1 rounded-lg hover:bg-neutral-100 cursor-pointer transition" 
 					key={order.id}
 					onClick={() => onOpen("createOrderPayment", {order: order})}
 				>
           <div className="flex-1 pr-4 py-2">{order.description}</div>
-          <div className="w-[150px] text-center px-2">
+          <div className="w-[150px] text-center px-4">
             {
               counterparties.find(
                 (counterparty) => counterparty.id === order.partnerId
               )?.name
             }
           </div>
-          <div className="w-[150px] text-center px-2">{order.queryEntityList.length}</div>
-          <div className="w-[150px] text-center px-2">План ₽</div>
-          <div className="w-[150px] text-center px-2">Факт ₽</div>
-          <div className="w-[150px] text-center px-2">Экономия</div>
+          <div className="w-[150px] text-center px-4">{order.queryEntityList.length}</div>
+          <div className="w-[150px] text-center px-4">План ₽</div>
+          <div className="w-[150px] text-center px-4">{order.totalCost} ₽</div>
+          <div className="w-[150px] text-center px-4">{order.generalProfit} ₽</div>
           <div
             className="w-[150px] text-center p-2 bg-yellow-200 text-orange-500 rounded-lg"
           >
-            До Дата
+            До {formateComplexDate(order.paymentDate)}
           </div>
         </div>
       ))}

@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getUsers } from "@/http/users/usersAPI";
-import { addUsers } from "@/lib/features/users/usersSlice";
+import { addUsers } from "@/lib/features/project-users/projectUsersSlice";
 import { AxiosError } from "axios";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
@@ -22,7 +22,7 @@ const Page = () => {
   const [error, setError] = useState("");
   const { projectId } = useParams<{ projectId: string }>();
 
-  const users = useAppSelector((state) => state.usersReducer.users);
+  const users = useAppSelector((state) => state.projectUsersReducer.users);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

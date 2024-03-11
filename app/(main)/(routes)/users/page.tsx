@@ -11,26 +11,32 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { getAllUsers } from "@/http/users/usersAPI";
-import { addUsers } from "@/lib/features/users/usersSlice";
+import { addGlobalUsers } from "@/lib/features/global-users/globalUsersSlice";
 import { useEffect, useState } from "react";
 
 import { Pencil } from "lucide-react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "@/components/errorAlert";
+import { redirect } from "next/navigation";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const users = useAppSelector((state) => state.usersReducer.users);
+  const users = useAppSelector((state) => state.globalUsersReducer.globalUsers);
+  const currentUser = useAppSelector(state => state.userReducer.user);
   const dispatch = useAppDispatch();
 
   const { onOpen } = useModal();
+
+  if (!(currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN"))) {
+    return redirect("/finance")
+  }
 
   useEffect(() => {
     setIsLoading(true);
     getAllUsers()
       .then((res) => {
-        dispatch(addUsers(res.data));
+        dispatch(addGlobalUsers(res.data));
       })
       .catch((error: AxiosError | any) => {
         setError("Произошла ошибка при загрузке пользователей.");
