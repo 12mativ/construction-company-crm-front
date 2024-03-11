@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "@/components/errorAlert";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,10 +27,6 @@ const Page = () => {
   const dispatch = useAppDispatch();
 
   const { onOpen } = useModal();
-
-  if (!(currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN"))) {
-    return redirect("/finance")
-  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -45,6 +41,10 @@ const Page = () => {
         setIsLoading(false);
       });
   }, []);
+
+  if (!(currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN"))) {
+    return notFound();
+  }
 
   if (isLoading) {
     return <div>Загрузка...</div>;
