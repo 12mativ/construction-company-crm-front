@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
 import { $authHost } from "..";
-import { IUser } from "@/lib/features/project-users/projectUsersSlice";
+import { IProjectUser } from "@/lib/features/project-users/projectUsersSlice";
 
 export const getUsers = async (
   projectId: number
-): Promise<AxiosResponse<IUser[]>> => {
+): Promise<AxiosResponse<IProjectUser[]>> => {
   const response = await $authHost.get(`api/v1/projects/users/${projectId}`);
 
   return response;
@@ -16,7 +16,7 @@ export const addUserToProject = async ({
 }: {
   projectId: number;
   email: string;
-}): Promise<AxiosResponse<IUser>> => {
+}): Promise<AxiosResponse<IProjectUser>> => {
   const response = await $authHost.post(`api/v1/projects/users/${projectId}`, {
     email,
   });
@@ -24,6 +24,6 @@ export const addUserToProject = async ({
   return response;
 };
 
-export const getAllUsers = async (): Promise<AxiosResponse<IUser[]>> => {
+export const getAllUsers = async (): Promise<AxiosResponse<IProjectUser[]>> => {
   return await $authHost.get(`api/v1/user`);
 };

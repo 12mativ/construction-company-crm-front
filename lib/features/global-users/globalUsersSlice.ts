@@ -13,7 +13,7 @@ interface IProject {
   projectStatus: ProjectStatusType;
 }
 
-export interface IUser {
+export interface IGlobalUser {
   id: number;
   phoneNumber: string;
   email: string;
@@ -23,7 +23,7 @@ export interface IUser {
 }
 
 interface IUsersState {
-  globalUsers: IUser[];
+  globalUsers: IGlobalUser[];
 }
 
 const initialState: IUsersState = {
@@ -34,7 +34,7 @@ export const globalUsersSlice = createSlice({
   name: "users",
   initialState: initialState,
   reducers: {
-    addGlobalUsers: (state, action: PayloadAction<IUser[]>) => {
+    addGlobalUsers: (state, action: PayloadAction<IGlobalUser[]>) => {
       state.globalUsers = action.payload;
     },
     editUserRoles: (state, action: PayloadAction<{

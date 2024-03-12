@@ -7,7 +7,7 @@ import {
 } from "@/lib/features/works-groups/worksGroupsSlice";
 import { create } from "zustand";
 import { IOrder } from "@/lib/features/orders/ordersSlice";
-import { IUser } from "@/lib/features/project-users/projectUsersSlice";
+import { IProjectUser } from "@/lib/features/project-users/projectUsersSlice";
 
 export type ModalType =
   | "createProject"
@@ -52,7 +52,7 @@ interface IWorksGroupForModal {
 }
 
 interface IResourcePatternForModal {
-  resourcePatternId: number
+  resourcePatternId: number;
   resourcePatternName: string;
   resourcePatternCostPricePerUnit: number;
   resourcePatternOrderPricePerUnit: number;
@@ -67,7 +67,7 @@ interface IOrderForModal {
 }
 
 interface IResourceForModal {
-  resourceId: number
+  resourceId: number;
   resourceName: string;
   resourceMeasureUnit: string;
   resourceCostPricePerUnit: number;
@@ -99,7 +99,7 @@ export interface ModalData {
   orders?: IOrderForModal[];
   order?: IOrder;
   resource?: IResourceEntity;
-  user?: IUser;
+  user?: IProjectUser;
 }
 
 interface ModalStore {

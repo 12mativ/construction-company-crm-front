@@ -14,10 +14,13 @@ import {
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { deleteResource } from "@/http/resources/resourcesAPI";
-import { removeResourceToWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { removeResource } from "@/lib/features/works-groups/worksGroupsSlice";
+import { AxiosError } from "axios";
+import { ErrorAlert } from "../errorAlert";
 
 export const DeleteResourceModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const [error, setError] = useState("");
 
   const isModalOpen = isOpen && type === "deleteResource";
   const dispatch = useAppDispatch();
@@ -27,15 +30,13 @@ export const DeleteResourceModal = () => {
   const onClick = async () => {
     setIsLoading(true);
     try {
-      await deleteResource(data.resource?.resourceId!);
+      await deleteResource(data.resource!.id);
       dispatch(
-        removeResourceToWork({
-          resource_id: data.resource?.resourceId!,
-        })
+        removeResource(data.resource!)
       );
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch(error: AxiosError | any) {
+      setError("Произошла ошибка при удалении ресурса.");
     } finally {
       setIsLoading(false);
     }
@@ -52,10 +53,11 @@ export const DeleteResourceModal = () => {
             Вы уверены, что хотите сделать это? <br />
             Ресурс{" "}
             <span className="text-red-500">
-              {data?.resource?.resourceName}
+              {data.resource?.name}
             </span>{" "}
             будет удален без возможности восстановления.
           </DialogDescription>
+          {error && <ErrorAlert error={error} />}
         </DialogHeader>
         <DialogFooter className="px-6 py-4">
           <div className="flex items-center justify-between w-full">

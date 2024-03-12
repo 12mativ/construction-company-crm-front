@@ -14,7 +14,7 @@ interface IProject {
   projectStatus: ProjectStatusType;
 }
 
-export interface IUser {
+export interface IProjectUser {
   id: number;
   phoneNumber: string;
   email: string;
@@ -23,23 +23,23 @@ export interface IUser {
   roles: RoleType[];
 }
 
-interface IUsersState {
-  users: IUser[];
+interface IProjectUsersState {
+  users: IProjectUser[];
 }
 
-const initialState: IUsersState = {
-  users: []
+const initialState: IProjectUsersState = {
+  users: [],
 };
 
 export const projectUsersSlice = createSlice({
   name: "users",
   initialState: initialState,
   reducers: {
-    addUsers: (state, action: PayloadAction<IUser[]>) => {
+    addUsers: (state, action: PayloadAction<IProjectUser[]>) => {
       state.users = action.payload;
     },
-    addUser: (state, action: PayloadAction<IUser>) => {
-      if(!findEqualItemsById(state.users, action.payload.id)) {
+    addUser: (state, action: PayloadAction<IProjectUser>) => {
+      if (!findEqualItemsById(state.users, action.payload.id)) {
         state.users.push(action.payload);
       }
     },

@@ -18,6 +18,7 @@ import { Pencil } from "lucide-react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "@/components/errorAlert";
 import { notFound } from "next/navigation";
+import { isAdmin } from "@/lib/utils";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +43,7 @@ const Page = () => {
       });
   }, []);
 
-  if (!(currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN"))) {
+  if (!isAdmin(currentUser)) {
     return notFound();
   }
 

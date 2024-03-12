@@ -13,12 +13,14 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getUsers } from "@/http/users/usersAPI";
 import { addUsers } from "@/lib/features/project-users/projectUsersSlice";
+import { isAdmin } from "@/lib/utils";
 import { AxiosError } from "axios";
 import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const currentUser = useAppSelector((state) => state.userReducer.user);
   const [error, setError] = useState("");
   const { projectId } = useParams<{ projectId: string }>();
 
@@ -32,7 +34,7 @@ const Page = () => {
         dispatch(addUsers(res.data));
       })
       .catch((error: AxiosError | any) => {
-        setError("Произошла ошибка при загрузке пользователей.")
+        setError("Произошла ошибка при загрузке пользователей.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -61,10 +63,18 @@ const Page = () => {
         </TableBody>
       </Table>
       {users.length === 0 && (
-        <p className="text-center">В команде нет ни одного сотрудника.</p>
+        <p className="p-3 text-neutral-500 text-center">
+          В команде нет ни одного сотрудника.
+        </p>
       )}
 
-      <AddButton buttonText="Добавить сотрудника" modalName="addUserToProject" data={{projectId: projectId}} />
+      {isAdmin(currentUser) && (
+        <AddButton
+          buttonText="Добавить сотрудника"
+          modalName="addUserToProject"
+          data={{ projectId: projectId }}
+        />
+      )}
     </div>
   );
 };

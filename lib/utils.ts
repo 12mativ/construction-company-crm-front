@@ -1,10 +1,10 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { IUser } from "./features/user/userSlice";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
-
 
 export const formateComplexDate = (_date: string) => {
   const date = new Date(_date);
@@ -14,4 +14,10 @@ export const formateComplexDate = (_date: string) => {
   const year = date.getFullYear();
 
   return `${day}.${month}.${year}`;
-}
+};
+
+export const isAdmin = (user: IUser) => {
+  return (
+    user.roles.includes("ADMIN") || user.roles.includes("SUPER_MEGA_ADMIN")
+  );
+};

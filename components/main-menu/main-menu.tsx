@@ -5,6 +5,7 @@ import MenuItem from "../menu-item";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAppSelector } from "@/hooks/redux-hooks";
+import { isAdmin } from "@/lib/utils";
 
 const MainMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();
@@ -51,7 +52,7 @@ const MainMenu = () => {
       icon: <User className="stroke-1" size={25} />,
       href: "/users",
       isActive: activeId === 5,
-      isVisible: currentUser.roles.includes("ADMIN") || currentUser.roles.includes("SUPER_MEGA_ADMIN")
+      isVisible: isAdmin(currentUser)
     },
   ];
 
