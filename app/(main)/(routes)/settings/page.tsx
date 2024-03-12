@@ -7,12 +7,14 @@ import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getOrganisations } from "@/http/organisations/organisationsAPI";
 import { addOrganisations } from "@/lib/features/organisations/organisationsSlice";
+import { isAdmin } from "@/lib/utils";
 import { AxiosError } from "axios";
-import { AlertCircle } from "lucide-react";
+import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
   const [isOrganisationsLoading, setIsOrganisationsLoading] = useState(false);
+  const currentUser = useAppSelector(state => state.userReducer.user);
   const [error, setError] = useState("");
 
   const dispatch = useAppDispatch();
@@ -34,6 +36,10 @@ const Page = () => {
         setIsOrganisationsLoading(false);
       });
   }, []);
+
+  if (!isAdmin(currentUser)) {
+    return notFound()
+  }
 
   if (isOrganisationsLoading) {
     return <div>Загрузка...</div>;

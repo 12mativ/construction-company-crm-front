@@ -11,9 +11,12 @@ import {
 import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import MenuItem from "../menu-item";
+import { isAccountant, isAdmin, isEmployee } from "@/lib/utils";
+import { useAppSelector } from "@/hooks/redux-hooks";
 
 const ProjectMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();
+  const currentUser = useAppSelector(state => state.userReducer.user);
 
   const params = usePathname();
   const { projectId } = useParams<{ projectId: string }>();
@@ -25,7 +28,7 @@ const ProjectMenu = () => {
       icon: <FolderDot className="stroke-1" size={25} />,
       href: `/project/${projectId}/planning`,
       isActive: activeId === 1,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser) || isEmployee(currentUser)
     },
     {
       id: 2,
@@ -33,7 +36,7 @@ const ProjectMenu = () => {
       icon: <FileCheck2 className="stroke-1" size={25} />,
       href: `/project/${projectId}/supply`,
       isActive: activeId === 2,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser)
     },
     {
       id: 3,
@@ -41,7 +44,7 @@ const ProjectMenu = () => {
       icon: <Wallet className="stroke-1" size={25} />,
       href: `/project/${projectId}/finance`,
       isActive: activeId === 3,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser)
     },
     {
       id: 4,
@@ -49,7 +52,7 @@ const ProjectMenu = () => {
       icon: <HardHat className="stroke-1" size={25} />,
       href: `/project/${projectId}/development`,
       isActive: activeId === 4,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser) || isEmployee(currentUser)
     },
     {
       id: 5,
@@ -57,7 +60,7 @@ const ProjectMenu = () => {
       icon: <Image className="stroke-1" size={25} />,
       href: `/project/${projectId}/photos`,
       isActive: activeId === 5,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser) || isEmployee(currentUser)
     },
     {
       id: 6,
@@ -65,7 +68,7 @@ const ProjectMenu = () => {
       icon: <UsersRound className="stroke-1" size={25} />,
       href: `/project/${projectId}/team`,
       isActive: activeId === 6,
-      isVisible: true
+      isVisible: isAdmin(currentUser)
     },
   ];
 

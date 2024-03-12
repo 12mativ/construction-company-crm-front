@@ -15,7 +15,7 @@ import { getUsers } from "@/http/users/usersAPI";
 import { addUsers } from "@/lib/features/project-users/projectUsersSlice";
 import { isAdmin } from "@/lib/utils";
 import { AxiosError } from "axios";
-import { redirect, useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
@@ -40,6 +40,10 @@ const Page = () => {
         setIsLoading(false);
       });
   }, []);
+
+  if (!isAdmin(currentUser)) {
+    return notFound();
+  }
 
   if (isLoading) {
     return <div>Загрузка...</div>;

@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../errorAlert";
+import { isAccountant, isAdmin } from "@/lib/utils";
 
 const ProjectEstimate = () => {
   const iconMap = {
@@ -53,7 +54,7 @@ const ProjectEstimate = () => {
       />
     ),
   };
-
+  const currentUser = useAppSelector((state) => state.userReducer.user);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -126,36 +127,38 @@ const ProjectEstimate = () => {
             <p className="text-neutral-500 text-xl font-bold">
               {worksGroup.number}. {worksGroup.name}
             </p>
-            <div className="flex items-center gap-x-2">
-              <Pencil
-                onClick={() =>
-                  onOpen("editWorksGroup", {
-                    worksGroup: {
-                      worksGroupId: worksGroup.id,
-                      worksGroupName: worksGroup.name,
-                      worksGroupNumber: worksGroup.number,
-                    },
-                    projectId: projectId,
-                  })
-                }
-                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+            {(isAdmin(currentUser) || isAccountant(currentUser)) && (
+              <div className="flex items-center gap-x-2">
+                <Pencil
+                  onClick={() =>
+                    onOpen("editWorksGroup", {
+                      worksGroup: {
+                        worksGroupId: worksGroup.id,
+                        worksGroupName: worksGroup.name,
+                        worksGroupNumber: worksGroup.number,
+                      },
+                      projectId: projectId,
+                    })
+                  }
+                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                   p-1 text-neutral-500 transition"
-              />
-              <Trash2
-                onClick={() =>
-                  onOpen("deleteWorksGroup", {
-                    worksGroup: {
-                      worksGroupId: worksGroup.id,
-                      worksGroupName: worksGroup.name,
-                      worksGroupNumber: worksGroup.number,
-                    },
-                    projectId: projectId,
-                  })
-                }
-                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                />
+                <Trash2
+                  onClick={() =>
+                    onOpen("deleteWorksGroup", {
+                      worksGroup: {
+                        worksGroupId: worksGroup.id,
+                        worksGroupName: worksGroup.name,
+                        worksGroupNumber: worksGroup.number,
+                      },
+                      projectId: projectId,
+                    })
+                  }
+                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
               p-1 text-red-400 transition"
-              />
-            </div>
+                />
+              </div>
+            )}
           </div>
           {worksGroup.workEntityList.map((workEntity) => (
             <Accordion
@@ -197,26 +200,29 @@ const ProjectEstimate = () => {
                         <TableCell className="px-1 w-[140px]">
                           {workEntity.orderPrice} ₽
                         </TableCell>
-                        <TableCell className="px-1 w-[10px] group transition">
-                          <div className="flex items-center gap-x-2">
-                            <Pencil
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onOpen("editWork", { work: workEntity });
-                              }}
-                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                        {(isAdmin(currentUser) ||
+                          isAccountant(currentUser)) && (
+                          <TableCell className="px-1 w-[10px] group transition">
+                            <div className="flex items-center gap-x-2">
+                              <Pencil
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onOpen("editWork", { work: workEntity });
+                                }}
+                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
-                            />
-                            <Trash2
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onOpen("deleteWork", { work: workEntity });
-                              }}
-                              className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                              />
+                              <Trash2
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onOpen("deleteWork", { work: workEntity });
+                                }}
+                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
-                            />
-                          </div>
-                        </TableCell>
+                              />
+                            </div>
+                          </TableCell>
+                        )}
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -257,67 +263,78 @@ const ProjectEstimate = () => {
                           <TableCell className="px-1 w-[140px] text-center">
                             {resourceEntity.orderPrice} ₽
                           </TableCell>
-                          <TableCell className="px-1 w-[10px] group transition">
-                            <div className="flex items-center gap-x-2">
-                              <Pencil
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onOpen("editResource", {
-                                    resource: resourceEntity,
-                                    work: workEntity,
-                                  });
-                                }}
-                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                          {(isAdmin(currentUser) ||
+                            isAccountant(currentUser)) && (
+                            <TableCell className="px-1 w-[10px] group transition">
+                              <div className="flex items-center gap-x-2">
+                                <Pencil
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onOpen("editResource", {
+                                      resource: resourceEntity,
+                                      work: workEntity,
+                                    });
+                                  }}
+                                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
-                              />
-                              <Trash2
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onOpen("deleteResource", {
-                                    resource: resourceEntity,
-                                  });
-                                }}
-                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                />
+                                <Trash2
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onOpen("deleteResource", {
+                                      resource: resourceEntity,
+                                    });
+                                  }}
+                                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
-                              />
-                            </div>
-                          </TableCell>
+                                />
+                              </div>
+                            </TableCell>
+                          )}
                         </TableRow>
                       </TableBody>
                     </Table>
                   ))}
 
-                  <button
-                    className="flex items-center gap-x-3 p-3 group hover:text-red-600"
-                    onClick={() => onOpen("addResource", { work: workEntity })}
-                  >
-                    <PlusSquare className="hover:text-red-600 transition" />
-                    Добавить ресурс
-                  </button>
+                  {(isAdmin(currentUser) || isAccountant(currentUser)) && (
+                    <button
+                      className="flex items-center gap-x-3 p-3 group hover:text-red-600"
+                      onClick={() =>
+                        onOpen("addResource", { work: workEntity })
+                      }
+                    >
+                      <PlusSquare className="hover:text-red-600 transition" />
+                      Добавить ресурс
+                    </button>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           ))}
-          <AddButton
-            buttonText="Новая работа"
-            modalName="createWork"
-            data={{
-              worksGroup: {
-                worksGroupId: worksGroup.id,
-                worksGroupName: worksGroup.name,
-                worksGroupNumber: worksGroup.number,
-              },
-              workGroups: worksGroups,
-            }}
-          />
+          {(isAdmin(currentUser) || isAccountant(currentUser)) && (
+            <AddButton
+              buttonText="Новая работа"
+              modalName="createWork"
+              data={{
+                worksGroup: {
+                  worksGroupId: worksGroup.id,
+                  worksGroupName: worksGroup.name,
+                  worksGroupNumber: worksGroup.number,
+                },
+                workGroups: worksGroups,
+              }}
+            />
+          )}
         </React.Fragment>
       ))}
 
-      <AddButton
-        buttonText="Новый заголовок"
-        modalName="createWorkGroup"
-        data={{ projectId: projectId, workGroups: worksGroups }}
-      />
+      {(isAdmin(currentUser) || isAccountant(currentUser)) && (
+        <AddButton
+          buttonText="Новый заголовок"
+          modalName="createWorkGroup"
+          data={{ projectId: projectId, workGroups: worksGroups }}
+        />
+      )}
     </div>
   );
 };

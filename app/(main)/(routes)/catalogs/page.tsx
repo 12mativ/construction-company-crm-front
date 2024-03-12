@@ -1,9 +1,20 @@
+"use client";
+
 import Counterparties from "@/components/counterparty/counterparties";
 import ResourcePatterns from "@/components/resource-patterns/resource-patterns";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { isAccountant, isAdmin } from "@/lib/utils";
+import { notFound } from "next/navigation";
 
 const Page = () => {
+  const currentUser = useAppSelector(state => state.userReducer.user);
+
+  if (!isAdmin(currentUser) && !isAccountant(currentUser)) {
+    return notFound();
+  }
+
   return (
     <div  className="w-[400px] sm:w-[493px] lg:w-full">
       <Tabs defaultValue="resourcePatterns">

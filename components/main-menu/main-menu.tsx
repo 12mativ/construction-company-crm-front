@@ -5,7 +5,7 @@ import MenuItem from "../menu-item";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useAppSelector } from "@/hooks/redux-hooks";
-import { isAdmin } from "@/lib/utils";
+import { isAccountant, isAdmin } from "@/lib/utils";
 
 const MainMenu = () => {
   const [activeId, setIsActiveId] = useState<number>();
@@ -28,7 +28,7 @@ const MainMenu = () => {
       icon: <Wallet className="stroke-1" size={25} />,
       href: "/finance",
       isActive: activeId === 2,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser)
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ const MainMenu = () => {
       icon: <BookOpen className="stroke-1" size={25} />,
       href: "/catalogs",
       isActive: activeId === 3,
-      isVisible: true
+      isVisible: isAdmin(currentUser) || isAccountant(currentUser)
     },
     {
       id: 4,
@@ -44,7 +44,7 @@ const MainMenu = () => {
       icon: <Settings className="stroke-1" size={25} />,
       href: "/settings",
       isActive: activeId === 4,
-      isVisible: true
+      isVisible: isAdmin(currentUser)
     },
     {
       id: 5,

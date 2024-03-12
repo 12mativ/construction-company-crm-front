@@ -21,3 +21,15 @@ export const isAdmin = (user: IUser) => {
     user.roles.includes("ADMIN") || user.roles.includes("SUPER_MEGA_ADMIN")
   );
 };
+
+export const isAccountant = (user: IUser) => {
+  return (
+    user.roles.includes("ACCOUNTANT")
+  );
+};
+
+export const isEmployee = (user: IUser) => {
+  return (
+    user.roles.includes("EMPLOYEE")
+  );
+};
