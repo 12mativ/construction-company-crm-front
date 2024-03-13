@@ -74,7 +74,7 @@ const ProjectOrdersJournal = () => {
             {formateComplexDate(order.factPaymentDate)}
           </div>
 					<div className="w-[150px] text-center px-2">
-            {order.totalCost} ₽
+            {order.factCostPrice} ₽
           </div>
           <div className="w-[150px] text-center px-2">
             {

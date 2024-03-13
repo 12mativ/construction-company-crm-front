@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { redirect, useParams, useRouter } from "next/navigation";
 import ProjectMenu from "@/components/project-menu/project-menu";
-import { formateComplexDate } from "@/lib/utils";
+import { formateComplexDate, isAdmin } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -36,7 +36,7 @@ export default function MainLayout({
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector(state => state.userReducer.user);
+  const currentUser = useAppSelector(state => state.userReducer.user);
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,7 +52,7 @@ export default function MainLayout({
       .finally(() => setIsLoading(false));
   }, []);
 
-  if (!user.isAuth) {
+  if (!currentUser.isAuth) {
     return redirect('/login');
   }
 
@@ -94,6 +94,7 @@ export default function MainLayout({
             <Select
               onValueChange={(e) => handleUpdateProjectStatus(e)}
               defaultValue={currentProject?.projectStatus}
+              disabled={!isAdmin(currentUser)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Выберите статус проекта" />

@@ -183,7 +183,7 @@ export const CreateOrderModal = () => {
                   <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Выберите контрагента" />
+                        <SelectValue placeholder="Выберите поставщика" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

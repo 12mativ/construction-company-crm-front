@@ -113,7 +113,7 @@ const ProjectEstimate = () => {
             <TableHead className="w-[140px]">Наценка</TableHead>
             <TableHead className="w-[140px]">Цена для заказчика</TableHead>
             <TableHead className="w-[140px]">Стоим. для заказчика</TableHead>
-            <TableHead className="w-[10px]"></TableHead>
+            {isAdmin(currentUser) || isAccountant(currentUser) && <TableHead className="w-[10px]"></TableHead>}
           </TableRow>
         </TableHeader>
       </Table>

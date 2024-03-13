@@ -196,9 +196,6 @@ export const UpdateWorkProgressModal = () => {
             />
 
             <DialogFooter className="flex gap-x-2">
-              <Button disabled={isLoading} type="submit">
-                Создать
-              </Button>
               <Button
                 onClick={handleClose}
                 className="bg-red-500 hover:bg-red-400"
@@ -206,6 +203,9 @@ export const UpdateWorkProgressModal = () => {
                 type="button"
               >
                 Отмена
+              </Button>
+              <Button disabled={isLoading} type="submit">
+                Создать
               </Button>
             </DialogFooter>
           </form>

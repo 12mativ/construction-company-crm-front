@@ -72,11 +72,11 @@ const ProjectOrdersNeedToPay = () => {
 
       {orders.map((order) => (
         <div 
-					className="flex w-full items-center p-1 rounded-lg hover:bg-neutral-100 cursor-pointer transition" 
+					className="flex w-full items-center p-1 pl-0 rounded-lg hover:bg-neutral-100 cursor-pointer transition" 
 					key={order.id}
 					onClick={() => onOpen("createOrderPayment", {order: order})}
 				>
-          <div className="flex-1 pr-4 py-2">{order.description}</div>
+          <div className="flex-1 px-4 py-2">{order.description}</div>
           <div className="w-[150px] text-center px-4">
             {
               counterparties.find(
@@ -85,9 +85,9 @@ const ProjectOrdersNeedToPay = () => {
             }
           </div>
           <div className="w-[150px] text-center px-4">{order.queryEntityList.length}</div>
-          <div className="w-[150px] text-center px-4">План ₽</div>
-          <div className="w-[150px] text-center px-4">{order.totalCost} ₽</div>
-          <div className="w-[150px] text-center px-4">{order.generalProfit} ₽</div>
+          <div className="w-[150px] text-center px-4">{order.costPrice} ₽</div>
+          <div className="w-[150px] text-center px-4">{order.factCostPrice} ₽</div>
+          <div className="w-[150px] text-center px-4">{order.profit} ₽</div>
           <div
             className="w-[150px] text-center p-2 bg-yellow-200 text-orange-500 rounded-lg"
           >

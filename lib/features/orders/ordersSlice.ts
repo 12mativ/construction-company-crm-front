@@ -16,13 +16,15 @@ export interface IOrder {
     profit: number,
     needDate: string,
     resourceEntity: IResourceEntity
+    ordered: boolean
   }[],
   creationDate: string,
   paymentDate: string,
   factPaymentDate: string,
-  generalProfit: number,
+  profit: number,
   orderType: OrderType,
-  totalCost: number,
+  costPrice: number,
+  factCostPrice: number,
   description: string
 }
 
