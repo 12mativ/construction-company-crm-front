@@ -74,9 +74,9 @@ const ProjectOrders = () => {
           </div>
           <div className="w-[150px] text-center p-2">{formateComplexDate(order.paymentDate)}</div>
           <div className="w-[150px] text-center p-2">{order.queryEntityList.length}</div>
-          <div className="w-[150px] text-center p-2">План ₽</div>
-          <div className="w-[150px] text-center p-2">{order.totalCost} ₽</div>
-          <div className="w-[150px] text-center p-2">{order.generalProfit} ₽</div>
+          <div className="w-[150px] text-center p-2">{order.costPrice} ₽</div>
+          <div className="w-[150px] text-center p-2">{order.factCostPrice} ₽</div>
+          <div className="w-[150px] text-center p-2">{order.profit} ₽</div>
           <div
             className={cn(
               "w-[150px] text-center p-2 rounded-lg",

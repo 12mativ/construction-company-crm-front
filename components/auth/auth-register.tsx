@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ErrorAlert } from "../errorAlert";
+import Image from "next/image";
 
 const formSchema = z.object({
   username: z.string().email({ message: "Неверный формат электронной почты." }),
@@ -82,7 +83,7 @@ const AuthRegister = () => {
   return (
     <div className="flex bg-white p-5 rounded-lg shadow-lg"> 
        <div className="hidden sm:block"> 
-        <img src="/soyuz.png" alt="" width={380} height={100}/> 
+        <Image src="/soyuz.png" alt="" width={380} height={100}/> 
       </div> 
       <div className=" w-80 flex flex-col justify-between"> 
         <p className="text-center font-bold text-lg pt-8">Зарегистрируйтесь</p> 
