@@ -72,7 +72,7 @@ export default function MainLayout({
   return (
     <div className="pb-5">
       <Header />
-      <div className="px-20 pt-32 flex">
+      <div className="mx-auto px-20 pt-32 flex flex-col sm:flex-row">
         <div className="flex items-center gap-x-4 w-[295px] mb-6">
           <ChevronLeft
             onClick={() => router.push("/projects")}
@@ -108,9 +108,12 @@ export default function MainLayout({
             </Select>
           </div>
         </div>
-        <ProjectMenu />
+        <div className="mb-4">
+          <ProjectMenu />
+        </div>
+        
       </div>
-      <div className="bg-neutral-100 px-20">
+      <div className="max-w-[560px] sm:min-w-[1040px] md:min-w-[1150px] lg:min-w-[1400px] bg-neutral-100 px-20 mx-auto">
         <main>{children}</main>
       </div>
     </div>

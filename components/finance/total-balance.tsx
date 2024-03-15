@@ -71,12 +71,19 @@ const TotalBalance = () => {
       <Table>
         <TableBody>
           <TableRow key="totalAmount">
+            {/* <div className="flex sm:justify-center">
+              <div className="font-medium text-2xl">Общий баланс</div>
+              <div className="font-bold text-2xl text-right">
+              {calculateTotalBalance(organisations)} ₽
+              </div>
+            </div> */}
             <TableCell className="font-medium text-2xl">Общий баланс</TableCell>
             <TableCell></TableCell>
             <TableCell className="font-bold text-2xl text-right">
               {calculateTotalBalance(organisations)} ₽
             </TableCell>
           </TableRow>
+
           {organisations.map((organisation) => {
             return (
               <React.Fragment key={organisation.id}>

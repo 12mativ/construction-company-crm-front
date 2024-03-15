@@ -16,7 +16,7 @@ const Page = () => {
   }
 
   return (
-    <div  className="w-[400px] sm:w-[493px] lg:w-full">
+    <div  className="w-[340px] sm:w-[620px] lg:w-full">
       <Tabs defaultValue="resourcePatterns">
         <TabsList className="grid w-full grid-cols-2 h-16 bg-neutral-200">
           <TabsTrigger value="resourcePatterns" className="py-3 hover:bg-neutral-300">

@@ -17,7 +17,7 @@ const Page = () => {
   }
   
   return (
-    <div className="flex w-[400px] sm:w-full flex-col gap-y-5 lg:w-full">
+    <div className="flex w-[340px] sm:w-[620px] flex-col gap-y-5 lg:w-full">
       <TotalBalance />
 
       <Tabs defaultValue="transactionLog">

@@ -46,7 +46,7 @@ const Page = () => {
   }
 
   return (
-    <div className='flex flex-col w-[400px] sm:w-[493px] lg:w-full gap-y-4 bg-white p-10 rounded-lg'>
+    <div className='flex flex-col w-[340px] sm:w-[620px] lg:w-full gap-y-4 bg-white p-10 rounded-lg'>
       {error && <ErrorAlert error={error} />}
       <p className="text-2xl font-semibold pb-2">Счета</p>
       <Table>
