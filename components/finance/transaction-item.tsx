@@ -11,7 +11,7 @@ const TransactionItem = ({
   description: string;
 }) => {
   return (
-    <TableRow key={date} className="text-[16px]">
+    <TableRow key={date} className="text-[14px] sm:text-[16px]">
       <TableCell className="w-[33%]">{formateComplexDate(date)}</TableCell>
       <TableCell className="w-[33%] text-center">{description}</TableCell>
       <TableCell className="w-[33%] text-right font-bold">{amount} ₽</TableCell>

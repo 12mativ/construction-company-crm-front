@@ -25,10 +25,10 @@ const TransactionLog = () => {
   );
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-lg">
+    <div className="bg-white rounded-lg sm:p-4 shadow-lg">
       <Table>
         <TableHeader>
-          <TableRow className="text-neutral-400 px-10 text-[16px]">
+          <TableRow className="text-neutral-400 sm:px-10 text-[16px]">
             <TableHead className="w-[33%]">Дата</TableHead>
             <TableHead className="w-[33%] text-center">
               Операция

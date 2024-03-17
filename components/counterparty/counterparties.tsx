@@ -49,13 +49,13 @@ const Counterparties = () => {
             className="text-neutral-400 px-10 text-[16px]"
           >
             <TableHead className="flex-1">Компания</TableHead>
-            <TableHead className="flex-2 w-[165px] text-center px-1">
+            <TableHead className="flex-2 w-[32%] text-center px-2">
               Телефон
             </TableHead>
-            <TableHead className="flex-2 w-[165px] text-center px-1">
+            <TableHead className="flex-2 w-[32%] text-center px-2">
               Почта
             </TableHead>
-            <TableHead className="flex-2 w-[167px] text-center px-1">
+            <TableHead className="flex-2 w-[36%] text-center px-2">
               Тип
             </TableHead>
           </TableRow>

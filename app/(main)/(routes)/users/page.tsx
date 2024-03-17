@@ -52,7 +52,7 @@ const Page = () => {
   }
 
   return (
-    <div className="bg-white p-3 rounded-lg">
+    <div className="w-[340px] sm:w-[620px] lg:w-full bg-white p-10 rounded-lg">
       {error && <ErrorAlert error={error} />}
 
       <Table>
@@ -79,8 +79,7 @@ const Page = () => {
                       user,
                     })
                   }
-                  className="w-8 h-8 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
-                        p-1 text-neutral-500 transition"
+                  className="mx-4 w-8 h-8 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg p-1 text-neutral-500 transition"
                 />
               </TableCell>
             </TableRow>
