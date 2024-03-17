@@ -32,7 +32,7 @@ const PhotoUploader = ({ progressOfWorkId }: PhotoUploaderProps) => {
       dispatch(
         addWorkProgressImage({
           progressOfWorkId: progressOfWorkId,
-          imageId: response.data.id,
+          imageId: response.data.uuid,
         })
       );
       setFile(undefined);
