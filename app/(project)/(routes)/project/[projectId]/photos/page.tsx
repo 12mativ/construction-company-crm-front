@@ -91,7 +91,7 @@ const Page = () => {
                   {workProgress.imageIdsList.map((imageId) => (
                     <PhotoView
                       key={`${currentWork?.id}-${imageId}`}
-                      src={`http://178.154.222.147:8000/api/v1/photos/static/${imageId}`}
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/photos/static/${imageId}`}
                     >
                       <div className="relative w-64 h-64 cursor-pointer">
                         <X
@@ -105,7 +105,7 @@ const Page = () => {
                         <Image
                           fill
                           className="rounded-lg"
-                          src={`http://178.154.222.147:8000/api/v1/photos/static/${imageId}`}
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/photos/static/${imageId}`}
                           alt={currentWork?.name || "work progress"}
                         />
                       </div>

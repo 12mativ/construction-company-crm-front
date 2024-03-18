@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const $host = axios.create({
-  baseURL: "http://176.109.106.55:8000",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 const $authHost = axios.create({
-  baseURL: "http://176.109.106.55:8000",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 const authInterceptor = (config: any) => {
