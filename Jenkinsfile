@@ -6,7 +6,7 @@ pipeline {
         dockerImageName = 'souz-frontend-image'
     }
     stages {
-        stage('create .env file') {
+        stage('create .env file') { // TODO: redo with OS env variables
             steps {
                 sh 'echo "NEXT_PUBLIC_BASE_URL=http://176.109.106.55:8000\nNEXT_PUBLIC_SERVER_PROTOCOL=http\nNEXT_PUBLIC_SERVER_HOSTNAME=176.109.106.55\nNEXT_PUBLIC_SERVER_PORT=8000" >> .env.local'
             }
