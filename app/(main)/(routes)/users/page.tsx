@@ -14,11 +14,13 @@ import { getAllUsers } from "@/http/users/usersAPI";
 import { addGlobalUsers } from "@/lib/features/global-users/globalUsersSlice";
 import { useEffect, useState } from "react";
 
-import { Pencil } from "lucide-react";
-import { AxiosError } from "axios";
 import { ErrorAlert } from "@/components/errorAlert";
+import { isAdmin, translateRole } from "@/lib/utils";
+import { AxiosError } from "axios";
+import { Pencil } from "lucide-react";
 import { notFound } from "next/navigation";
-import { isAdmin } from "@/lib/utils";
+
+
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +71,7 @@ const Page = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>
                 {user.roles.map((role) => (
-                  <div key={`role-${user.id}-${role}-id`}>{role}</div>
+                  <div key={`role-${user.id}-${role}-id`}>{translateRole(role)}</div>
                 ))}
               </TableCell>
               <TableCell>

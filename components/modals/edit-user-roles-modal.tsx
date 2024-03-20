@@ -21,6 +21,7 @@ import { X } from "lucide-react";
 import { editCurrentUserRoles } from "@/lib/features/user/userSlice";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../errorAlert";
+import { translateRole } from "@/lib/utils";
 
 export const EditUserRolesModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -37,7 +38,7 @@ export const EditUserRolesModal = () => {
     onClose();
   };
 
-  const roleTypes: RoleType[] = ["ADMIN", "ACCOUNTANT", "EMPLOYEE"]; // надо подумать как избегать такого
+  const roleTypes: RoleType[] = ["ADMIN", "ACCOUNTANT", "EMPLOYEE"];
 
   const [selectedValue, setSelectedValue] = useState("");
   const [availableValues, setAvailableValues] = useState<RoleType[]>([]);
@@ -115,7 +116,7 @@ export const EditUserRolesModal = () => {
                   removeRole(role);
                 }}
               >
-                {role} <X />
+                {translateRole(role)} <X />
               </button>
             </div>
           ))}
@@ -131,7 +132,7 @@ export const EditUserRolesModal = () => {
             <option value="">Выберите роль</option>
             {availableValues.map((value_to_name, index) => (
               <option value={value_to_name} key={`${index}-${value_to_name}`}>
-                {value_to_name}
+                {translateRole(value_to_name)}
               </option>
             ))}
           </select>

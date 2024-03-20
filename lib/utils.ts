@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { IUser } from "./features/user/userSlice";
+import { RoleType } from "@/http/roles-manage/rolesManageAPI";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,3 +34,22 @@ export const isEmployee = (user: IUser) => {
     user.roles.includes("EMPLOYEE")
   );
 };
+
+export const isCustomer = (user: IUser) => {
+  return (
+    user.authorities.includes("CUSTOMER")
+  );
+};  
+
+export const translateRole = (role: RoleType) => {
+  switch (role) {
+    case "ACCOUNTANT":
+      return "Бухгалтер"
+    case "EMPLOYEE":
+      return "Прораб"
+    case "ADMIN":
+      return "Администратор"
+    default:
+      return ""
+  }
+}

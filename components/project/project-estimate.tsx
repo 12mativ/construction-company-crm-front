@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../errorAlert";
-import { isAccountant, isAdmin } from "@/lib/utils";
+import { isAccountant, isAdmin, isCustomer } from "@/lib/utils";
 
 const ProjectEstimate = () => {
   const iconMap = {
@@ -106,15 +106,37 @@ const ProjectEstimate = () => {
         <TableHeader>
           <TableRow key="projectHeader">
             <TableHead className="w-[18%] px-4">Ресурсы и работа</TableHead>
-            <TableHead className="w-[140px]">Кол-во</TableHead>
-            <TableHead className="w-[140px]">Ед. изм.</TableHead>
-            <TableHead className="w-[140px]">Цена, ед.</TableHead>
-            <TableHead className="w-[140px]">Себестоимость</TableHead>
-            <TableHead className="w-[140px]">Наценка</TableHead>
-            <TableHead className="w-[140px]">Цена для заказчика, ед.</TableHead>
-            <TableHead className="w-[140px]">Стоим. для заказчика</TableHead>
+            <TableHead className="w-[140px] text-center">Кол-во</TableHead>
+            <TableHead className="w-[140px] text-center">Ед. изм.</TableHead>
+            {!isCustomer(currentUser) && (
+              <>
+                <TableHead className="w-[140px] text-center">
+                  Цена, ед.
+                </TableHead>
+                <TableHead className="w-[140px] text-center">
+                  Себестоимость
+                </TableHead>
+                <TableHead className="w-[140px] text-center">Наценка</TableHead>
+                <TableHead className="w-[140px] text-center">
+                  Цена для заказчика, ед.
+                </TableHead>
+                <TableHead className="w-[140px] text-center">
+                  Стоим. для заказчика
+                </TableHead>
+              </>
+            )}
+            {isCustomer(currentUser) && (
+              <>
+                <TableHead className="w-[140px] text-center">
+                  Цена, ед.
+                </TableHead>
+                <TableHead className="w-[140px] text-center">
+                  Общая стоимость
+                </TableHead>
+              </>
+            )}
             {(isAdmin(currentUser) || isAccountant(currentUser)) && (
-              <TableHead className="w-[10px]"></TableHead>
+              <TableHead className="w-[80px]"></TableHead>
             )}
           </TableRow>
         </TableHeader>
@@ -187,21 +209,35 @@ const ProjectEstimate = () => {
                         <TableCell className="px-4 w-[140px]">
                           {workEntity.measureUnit}
                         </TableCell>
-                        <TableCell className="px-4 w-[140px]">
-                          {workEntity.costPricePerUnit} ₽
-                        </TableCell>
-                        <TableCell className="px-4 w-[140px]">
-                          {workEntity.costPrice} ₽
-                        </TableCell>
-                        <TableCell className="px-4 w-[140px]">
-                          {workEntity.extraCharge} %
-                        </TableCell>
-                        <TableCell className="px-4 w-[140px]">
-                          {workEntity.orderPricePerUnit} ₽
-                        </TableCell>
-                        <TableCell className="px-4 w-[140px]">
-                          {workEntity.orderPrice} ₽
-                        </TableCell>
+                        {!isCustomer(currentUser) && (
+                          <>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.costPricePerUnit} ₽
+                            </TableCell>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.costPrice} ₽
+                            </TableCell>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.extraCharge} %
+                            </TableCell>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.orderPricePerUnit} ₽
+                            </TableCell>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.orderPrice} ₽
+                            </TableCell>
+                          </>
+                        )}
+                        {isCustomer(currentUser) && (
+                          <>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.orderPricePerUnit} ₽
+                            </TableCell>
+                            <TableCell className="px-4 w-[140px]">
+                              {workEntity.orderPrice} ₽
+                            </TableCell>
+                          </>
+                        )}
                         {(isAdmin(currentUser) ||
                           isAccountant(currentUser)) && (
                           <TableCell className="px-1 w-[10px] group transition">
@@ -250,21 +286,35 @@ const ProjectEstimate = () => {
                           <TableCell className="px-4 w-[140px] text-center">
                             {resourceEntity.measureUnit}
                           </TableCell>
-                          <TableCell className="px-4 w-[140px] text-center">
-                            {resourceEntity.costPricePerUnit} ₽
-                          </TableCell>
-                          <TableCell className="px-4 w-[140px] text-center">
-                            {resourceEntity.costPrice} ₽
-                          </TableCell>
-                          <TableCell className="px-4 w-[140px] text-center">
-                            {resourceEntity.extraCharge} %
-                          </TableCell>
-                          <TableCell className="px-4 w-[140px] text-center">
-                            {resourceEntity.orderPricePerUnit} ₽
-                          </TableCell>
-                          <TableCell className="px-4 w-[140px] text-center">
-                            {resourceEntity.orderPrice} ₽
-                          </TableCell>
+                          {!isCustomer(currentUser) && (
+                            <>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.costPricePerUnit} ₽
+                              </TableCell>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.costPrice} ₽
+                              </TableCell>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.extraCharge} %
+                              </TableCell>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.orderPricePerUnit} ₽
+                              </TableCell>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.orderPrice} ₽
+                              </TableCell>
+                            </>
+                          )}
+                          {isCustomer(currentUser) && (
+                            <>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.orderPricePerUnit} ₽
+                              </TableCell>
+                              <TableCell className="px-4 w-[140px] text-center">
+                                {resourceEntity.orderPrice} ₽
+                              </TableCell>
+                            </>
+                          )}
                           {(isAdmin(currentUser) ||
                             isAccountant(currentUser)) && (
                             <TableCell className="px-1 w-[10px] group transition">
