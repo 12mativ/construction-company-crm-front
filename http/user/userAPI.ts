@@ -18,7 +18,7 @@ export const register = async (
   //@ts-ignore
   localStorage.setItem("token", responseWithJwt.data.jwt);
   //@ts-ignore
-  return { authorities: responseWithJwt.data.authorities, roles: responseWithJwt.data.roles, ...jwtDecode(responseWithJwt.data.jwt) };
+  return { ...jwtDecode(responseWithJwt.data.jwt), authorities: responseWithJwt.data.authorities, roles: responseWithJwt.data.roles };
 };
 
 export const login = async (username: string, password: string) => {
@@ -29,7 +29,7 @@ export const login = async (username: string, password: string) => {
 
   localStorage.setItem("token", response.data.jwt);
 
-  return { authorities: response.data.authorities, roles: response.data.roles, ...jwtDecode(response.data.jwt) };
+  return { ...jwtDecode(response.data.jwt), authorities: response.data.authorities, roles: response.data.roles };
 };
 
 export const loginJWT = async (username: string, password: string) => {
