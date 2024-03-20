@@ -30,7 +30,7 @@ import {
 import { useAppDispatch } from "@/hooks/redux-hooks";
 import { useModal } from "@/hooks/use-modal-store";
 import { updateWork } from "@/http/works-groups/worksAPI";
-import { editWork } from "@/lib/features/works-groups/worksGroupsSlice";
+import { addWorksGroups, editWork } from "@/lib/features/works-groups/worksGroupsSlice";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -40,6 +40,8 @@ import { getProjects } from "@/http/projects/projectsAPI";
 import { addProjects } from "@/lib/features/projects/projectsSlice";
 import { AxiosError } from "axios";
 import { ErrorAlert } from "../errorAlert";
+import { getWorksGroups } from "@/http/works-groups/worksGroupsAPI";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -73,6 +75,7 @@ export const EditWorkModal = () => {
   const isModalOpen = isOpen && type === "editWork";
 
   const dispatch = useAppDispatch();
+  const { projectId } = useParams<{ projectId: string }>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -119,6 +122,10 @@ export const EditWorkModal = () => {
 
       const newProjects = await getProjects();
       dispatch(addProjects(newProjects.data));
+
+      getWorksGroups(projectId).then((res) => {
+        dispatch(addWorksGroups(res.data));
+      });
 
       form.reset();
       handleClose();

@@ -69,7 +69,7 @@ const Page = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>
                 {user.roles.map((role) => (
-                  <div key={`role-${user.id}-id`}>{role}</div>
+                  <div key={`role-${user.id}-${role}-id`}>{role}</div>
                 ))}
               </TableCell>
               <TableCell>
