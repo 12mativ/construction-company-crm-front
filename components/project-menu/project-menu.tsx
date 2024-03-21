@@ -80,7 +80,7 @@ const ProjectMenu = () => {
   }, [params]);
 
   return (
-    <div className="flex flex-wrap justify-center flex-row gap-x-6 gap-y-2 mx-auto sm:flex-nowrap  sm:gap-1">
+    <div className="min-w-[260px] flex flex-wrap justify-center flex-row gap-x-6 gap-y-2 mx-auto sm:flex-nowrap  sm:gap-1">
       {menuItems.map((menuItem) => {
         return (
           <MenuItem

@@ -140,7 +140,7 @@ const ProjectEstimate = () => {
                       projectId: projectId,
                     })
                   }
-                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                  className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                   p-1 text-neutral-500 transition"
                 />
                 <Trash2
@@ -154,7 +154,7 @@ const ProjectEstimate = () => {
                       projectId: projectId,
                     })
                   }
-                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                  className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
               p-1 text-red-400 transition"
                 />
               </div>
@@ -203,13 +203,13 @@ const ProjectEstimate = () => {
                         {(isAdmin(currentUser) ||
                           isAccountant(currentUser)) && (
                           <TableCell className="px-1 w-[10px] group transition">
-                            <div className="flex items-center gap-x-2">
+                            <div className="flex items-center gap-x-4 lg:gap-x-2">
                               <Pencil
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   onOpen("editWork", { work: workEntity });
                                 }}
-                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
                               />
                               <Trash2
@@ -217,7 +217,7 @@ const ProjectEstimate = () => {
                                   e.stopPropagation();
                                   onOpen("deleteWork", { work: workEntity });
                                 }}
-                                className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
                               />
                             </div>
@@ -266,7 +266,7 @@ const ProjectEstimate = () => {
                           {(isAdmin(currentUser) ||
                             isAccountant(currentUser)) && (
                             <TableCell className="px-1 w-[10px] group transition">
-                              <div className="flex items-center gap-x-2">
+                              <div className="flex items-center gap-x-4 lg:gap-x-2">
                                 <Pencil
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -275,7 +275,7 @@ const ProjectEstimate = () => {
                                       work: workEntity,
                                     });
                                   }}
-                                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                  className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                                 p-1 text-neutral-500 transition"
                                 />
                                 <Trash2
@@ -285,7 +285,7 @@ const ProjectEstimate = () => {
                                       resource: resourceEntity,
                                     });
                                   }}
-                                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                                  className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                             p-1 text-red-400 transition"
                                 />
                               </div>

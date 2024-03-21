@@ -1,6 +1,6 @@
 "use client";
 
-import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from "@/components/ui/table";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getCounterparties } from "@/http/counterparties/counterpartiesAPI";
@@ -62,36 +62,43 @@ const ProjectOrders = () => {
         </TableHeader>
       </Table>
 
+
       {orders.map((order) => (
-        <div className="flex w-full items-center" key={order.id}>
-          <div className="flex-1 px-4 p-2">1231</div>
-          <div className="w-[150px] text-center p-2">
-            {
-              counterparties.find(
-                (counterparty) => counterparty.id === order.partnerId
-              )?.name
-            }
-          </div>
-          <div className="w-[150px] text-center p-2">{formateComplexDate(order.paymentDate)}</div>
-          <div className="w-[150px] text-center p-2">{order.queryEntityList.length}</div>
-          <div className="w-[150px] text-center p-2">{order.costPrice} ₽</div>
-          <div className="w-[150px] text-center p-2">{order.factCostPrice} ₽</div>
-          <div className="w-[150px] text-center p-2">{order.profit} ₽</div>
-          <div
-            className={cn(
-              "w-[150px] text-center p-2 rounded-lg",
-              order.orderType === "NOT_PAID"
-                ? "bg-yellow-200 text-orange-500"
-                : "bg-emerald-200 text-emerald-500"
-            )}
-          >
-            {order.orderType === "NOT_PAID" ? (
-              <p>Ожидается оплата</p>
-            ) : (
-              <p>Оплачено</p>
-            )}
-          </div>
-        </div>
+        <Table>
+          <TableBody>
+            <TableRow className="flex items-center" key={order.id}>
+              <TableCell className="flex-1 w-[30%] px-4 p-2">1231</TableCell>
+              <TableCell className=" w-[20%] text-right p-2">
+                {
+                  counterparties.find(
+                    (counterparty) => counterparty.id === order.partnerId
+                  )?.name
+                }
+              </TableCell>
+              <TableCell className=" w-[12%] text-center p-2">{formateComplexDate(order.paymentDate)}</TableCell>
+              <TableCell className=" w-[11%] text-center p-2">{order.queryEntityList.length}</TableCell>
+              <TableCell className=" w-[10%] text-center p-2">{order.costPrice} ₽</TableCell>
+              <TableCell className=" w-[10%] text-center p-2">{order.factCostPrice} ₽</TableCell>
+              <TableCell className=" w-[10%] text-center p-2">{order.profit} ₽</TableCell>
+              <TableCell
+                className={cn(
+                  "w-[100px] lg:w-[150px] text-center p-2 rounded-lg",
+                  order.orderType === "NOT_PAID"
+                    ? "bg-yellow-200 text-orange-500"
+                    : "bg-emerald-200 text-emerald-500"
+                )}
+              >
+                {order.orderType === "NOT_PAID" ? (
+                  <p>Ожидается оплата</p>
+                ) : (
+                  <p>Оплачено</p>
+                )}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+
+        
       ))}
     </div>
   );

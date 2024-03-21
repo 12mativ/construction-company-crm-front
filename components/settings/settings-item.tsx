@@ -10,10 +10,9 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
   return (
     <>
       <div
-        className="flex h-[64px] items-center justify-between group 
-        bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl transition"
+        className="flex h-[64px] items-center justify-between group bg-neutral-200 rounded-lg p-4 pl-10 shadow-xl transition"
       >
-        <p className="text-neutral-600 text-xl font-semibold">{name}</p>
+        <p className="text-neutral-600 text-base lg:text-xl font-semibold">{name}</p>
         <div className="flex items-center gap-x-2">
           <Pencil
             onClick={() =>
@@ -22,7 +21,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                 organisationName: name,
               })
             }
-            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+            className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
               p-1 text-neutral-500 transition"
           />
           <Trash2
@@ -32,8 +31,8 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                 organisationName: name,
               })
             }
-            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
-          p-1 text-red-400 transition"
+            className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+          p-1 text-red-400 lg:transition"
           />
         </div>
       </div>
@@ -42,7 +41,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
           {moneyAccountList.map((moneyAccount) => (
             <TableRow
               key={moneyAccount.id}
-              className="group flex items-center text-[16px] transition"
+              className="group flex items-center text-[12px] lg:text-[16px] transition"
             >
               <TableCell className="w-[30%] px-10 group transition">
                 {moneyAccount.name}
@@ -53,8 +52,9 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
               <TableCell className="w-[30%] text-right px-10">
                 {moneyAccount.balance} ₽
               </TableCell>
-              <TableCell className="flex w-[10%] ">
-                <Pencil
+              <TableCell className="flex w-[100px] ">
+              <div className="flex items-center gap-x-4 lg:gap-x-2">
+              <Pencil
                     onClick={() =>
                       onOpen("editMoneyAccount", {
                         moneyAccountId: moneyAccount.id,
@@ -64,7 +64,7 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                         numberOfAccount: moneyAccount.numberOfAccount,
                       })
                     }
-                    className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                    className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                       p-1 text-neutral-500 transition"
                   />
                 <Trash2
@@ -74,9 +74,10 @@ const SettingsItem = ({ id, name, moneyAccountList }: IOrganisation) => {
                       moneyAccountName: moneyAccount.name,
                     })
                   }
-                  className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                  className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                   p-1 text-red-400 transition"
                 />
+              </div>
               </TableCell>
             </TableRow>
           ))}

@@ -6,7 +6,7 @@ import { TableCell, TableRow } from "../ui/table";
 const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounterparty) => {
   const { onOpen } = useModal();
   return (
-    <TableRow className='group transition text-[16px]'>
+    <TableRow className='group transition text-[12px] lg:text-[16px]'>
       <TableCell className="flex-1 font-semibold">{name}</TableCell>
       <TableCell className="flex-2 w-[165px] text-center px-1">
         {phoneNumber}
@@ -18,7 +18,7 @@ const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounte
         {partnerType === "LEGAL" ? "Юр. лицо" : "Физ. лицо"}
       </TableCell>
       <TableCell className="flex-3 w-[10px]">
-        <div className="flex">
+        <div className="flex gap-x-4 lg:gap-x-2">
           <Pencil
             onClick={() =>
               onOpen("editCounterparty", {
@@ -29,7 +29,7 @@ const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounte
                 partnerType: partnerType,
               })
             }
-            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+            className="w-8 h-8 opacity-100 lg:opacity-0  group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
               p-1 text-neutral-500 transition"
           />
           <Trash2
@@ -39,7 +39,7 @@ const CounterpartyItem = ({ id, name, phoneNumber, email, partnerType,}: ICounte
                 counterpartyName: name,
               })
             }
-            className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+            className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
           p-1 text-red-400 transition"
           />
         </div>

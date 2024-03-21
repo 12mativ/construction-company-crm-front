@@ -108,12 +108,12 @@ export default function MainLayout({
             </Select>
           </div>
         </div>
-        <div className="mb-4">
+        <div className=" mb-4">
           <ProjectMenu />
         </div>
         
       </div>
-      <div className="max-w-[560px] sm:min-w-[1040px] md:min-w-[1150px] lg:min-w-[1400px] bg-neutral-100 px-20 mx-auto">
+      <div className="min-w-[460px] sm:min-w-[1040px] md:min-w-[1150px] lg:min-w-[1400px] bg-neutral-100 px-20 mx-auto">
         <main>{children}</main>
       </div>
     </div>

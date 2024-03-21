@@ -133,7 +133,7 @@ const ResourcePatterns = () => {
                     <div className="flex-2 w-[167px] text-center px-1">
                       {resource.orderPricePerUnit} ₽
                     </div>
-                    <div className="flex w-[70px] text-center px-1">
+                    <div className="flex gap-x-4 lg:gap-x-2 text-center px-1">
                       <Pencil
                       onClick={() =>
                         onOpen("editResourcePattern", {
@@ -147,7 +147,7 @@ const ResourcePatterns = () => {
                           resourceType: resource.resourceType
                         })
                       }
-                      className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                      className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                         p-1 text-neutral-500 transition"
                     />
                     <Trash2
@@ -162,7 +162,7 @@ const ResourcePatterns = () => {
                           }
                         })
                       }
-                      className="w-8 h-8 opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
+                      className="w-8 h-8 opacity-100 lg:opacity-0 group-hover:opacity-100 hover:bg-neutral-300/50 cursor-pointer rounded-lg 
                     p-1 text-red-400 transition"
                     />
                     </div>
